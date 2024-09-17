@@ -64,7 +64,10 @@ export async function DeveloperDashboard() {
 							{apps.map((app) => (
 								<TableRow key={app.id} className="border-b-2 border-black">
 									<TableCell className="text-white font-bold">
-										<Link href={`/protected/developer/apps/${app.id}`}>
+										<Link
+											href={`/protected/dashboard/apps/${app.id}`}
+											className="hover:underline"
+										>
 											{app.name}
 										</Link>
 									</TableCell>
