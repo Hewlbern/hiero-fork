@@ -33,11 +33,9 @@ export function DeleteAppButton({ appId }: DeleteAppButtonProps) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className="bg-[#D05353] text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-					Delete
-				</Button>
+				<Button>Delete</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[#4A7B9D] border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:max-w-[425px]">
+			<DialogContent>
 				<form
 					onSubmit={(event) => {
 						handleConfirmDelete().then(() => setOpen(false));
@@ -45,30 +43,19 @@ export function DeleteAppButton({ appId }: DeleteAppButtonProps) {
 					}}
 				>
 					<DialogHeader>
-						<DialogTitle className="text-2xl font-bold text-white">
-							Confirm Deletion
-						</DialogTitle>
-						<DialogDescription className="text-white">
+						<DialogTitle>Confirm Deletion</DialogTitle>
+						<DialogDescription>
 							Are you sure you want to delete this app? This action can&apos;t
 							be undone.
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter className="mt-4">
 						<DialogClose asChild>
-							<Button
-								type="button"
-								variant="outline"
-								className="bg-[#E6C9A8] text-[#2D4B73] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-							>
+							<Button type="button" variant="outline">
 								Cancel
 							</Button>
 						</DialogClose>
-						<Button
-							type="submit"
-							className="bg-[#D05353] text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-						>
-							Delete
-						</Button>
+						<Button type="submit">Delete</Button>
 					</DialogFooter>
 				</form>
 			</DialogContent>

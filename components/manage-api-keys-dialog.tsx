@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogTrigger,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
 	createApiKey,
@@ -97,47 +102,35 @@ export function ManageApiKeysDialog({ appId }: { appId: string }) {
 			}}
 		>
 			<DialogTrigger asChild>
-				<Button className="bg-[#7C9885] text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all mr-2">
-					Manage API Keys
-				</Button>
+				<Button>Manage API Keys</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[600px] bg-transparent p-0">
-				<div className="bg-[#4A7B9D] border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 w-full relative">
-					<h2 className="text-3xl font-bold text-white mb-6">
-						Manage API Keys
-					</h2>
-					<Button
-						onClick={handleCreateApiKey}
-						className="bg-[#7C9885] text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all mb-4"
-					>
-						Create New API Key
-					</Button>
+			<DialogContent>
+				<DialogTitle>Manage API Keys</DialogTitle>
+				<div className="flex flex-col gap-2">
+					<h2>Manage API Keys</h2>
+					<Button onClick={handleCreateApiKey}>Create New API Key</Button>
 					{newApiKey && (
-						<div className="mb-4 p-4 bg-yellow-100 border-2 border-yellow-500 rounded">
-							<p className="font-bold mb-2">
-								New API Key (copy it now, it won&apos;t be shown again):
-							</p>
-							<div className="flex items-center space-x-2">
-								<code className="bg-white p-2 rounded flex-grow overflow-x-auto">
-									{newApiKey}
-								</code>
+						<div className="flex flex-col gap-2 p-2">
+							<p>New API Key (copy it now, it won&apos;t be shown again):</p>
+							<div className="flex flex-row gap-2">
+								<code>{newApiKey}</code>
 								<CopyToClipboardButton code={newApiKey} />
 							</div>
-							<Button
-								onClick={handleDone}
-								className="mt-2 bg-[#7C9885] text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-							>
+							<Button onClick={handleDone} className="w-20 self-end">
 								Done
 							</Button>
 						</div>
 					)}
-					<ul className="space-y-2">
+					<ul>
 						{apiKeys.map((key) => (
-							<li key={key.id} className="flex justify-between items-center">
-								<span className="font-mono">{key.masked_key}</span>
+							<li
+								key={key.id}
+								className="flex flex-row gap-2 p-2 justify-between"
+							>
+								<span>{key.masked_key}</span>
 								<Button
 									onClick={() => handleDeleteApiKey(key.id)}
-									className="bg-[#D05353] text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+									className="w-20"
 								>
 									Delete
 								</Button>

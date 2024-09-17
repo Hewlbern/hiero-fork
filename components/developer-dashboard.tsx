@@ -64,28 +64,21 @@ export async function DeveloperDashboard() {
 							{apps.map((app) => (
 								<TableRow key={app.id} className="border-b-2 border-black">
 									<TableCell className="text-white font-bold">
-										{app.name}
+										<Link href={`/protected/developer/apps/${app.id}`}>
+											{app.name}
+										</Link>
 									</TableCell>
 									<TableCell className="text-white font-bold">
 										{app.status}
 									</TableCell>
-									<TableCell>
+									<TableCell className="flex flex-row gap-2 justify-end">
 										<ManageApiKeysDialog appId={app.id} />
 										<AppDialog
 											mode="edit"
 											app={app}
-											triggerButton={
-												<Button className="bg-[#E6C9A8] text-[#2D4B73] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all mr-2">
-													Edit
-												</Button>
-											}
+											triggerButton={<Button>Edit</Button>}
 										/>
 										<DeleteAppButton appId={app.id} />
-										<Link href={`/protected/apps/${app.id}`}>
-											<Button className="bg-[#E6C9A8] text-[#2D4B73] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all ml-2">
-												Generate User Key
-											</Button>
-										</Link>
 									</TableCell>
 								</TableRow>
 							))}
