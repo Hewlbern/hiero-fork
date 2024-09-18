@@ -34,16 +34,17 @@ export async function DeveloperDashboard() {
 
 	return (
 		<main className="flex-1 p-4 md:p-8 overflow-auto">
-			<header className="flex justify-between items-center mb-8">
-				<h1 className="text-3xl font-bold">Developer Portal</h1>
-				<div className="flex space-x-4">
-					<Link href="/protected/developers/documentation">Documentation</Link>
-				</div>
-			</header>
-
+			<div className="flex justify-end p-2">
+				<Link
+					href="/protected/developers/documentation"
+					className="hover:underline"
+				>
+					Documentation
+				</Link>
+			</div>
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-2xl font-bold text-white flex justify-between items-center">
+					<CardTitle className="text-2xl font-bold flex justify-between items-center">
 						Your Apps
 						<AppDialog
 							mode="create"
@@ -55,15 +56,15 @@ export async function DeveloperDashboard() {
 					<Table>
 						<TableHeader>
 							<TableRow className="border-b-2 border-black">
-								<TableHead className="text-white font-bold">App Name</TableHead>
-								<TableHead className="text-white font-bold">Status</TableHead>
-								<TableHead className="text-white font-bold">Actions</TableHead>
+								<TableHead className="font-bold">App Name</TableHead>
+								<TableHead className="font-bold">Status</TableHead>
+								<TableHead className="font-bold text-right">Actions</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{apps.map((app) => (
 								<TableRow key={app.id} className="border-b-2 border-black">
-									<TableCell className="text-white font-bold">
+									<TableCell className="font-bold">
 										<Link
 											href={`/protected/dashboard/apps/${app.id}`}
 											className="hover:underline"
@@ -71,9 +72,7 @@ export async function DeveloperDashboard() {
 											{app.name}
 										</Link>
 									</TableCell>
-									<TableCell className="text-white font-bold">
-										{app.status}
-									</TableCell>
+									<TableCell className="font-bold">{app.status}</TableCell>
 									<TableCell className="flex flex-row gap-2 justify-end">
 										<ManageApiKeysDialog appId={app.id} />
 										<AppDialog
