@@ -6,6 +6,13 @@ export async function GET(request: NextRequest) {
 	const userApiKey = request.headers.get("x-user-api-key") || "";
 	const supabase = createClient({ developerApiKey, userApiKey });
 
+	let { data, error } = await supabase.rpc("get_user_id_from_api_keys", {
+		p_developer_api_key: developerApiKey,
+		p_user_api_key: userApiKey,
+	});
+	if (error) console.error(error);
+	else console.log(data);
+
 	/*
 	// If not using SQL permissions... do it this way. The user should only have permission to see the balance of the user with this key combo
 	

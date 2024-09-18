@@ -57,24 +57,16 @@ export async function POST(request: NextRequest) {
 		}
 
 		const adjustedAmount = Math.round(amount * multiplier);
-		console.log("params", {
-			p_user_id: user.id,
-			p_amount: adjustedAmount,
-			p_developer_id: developerData.developer_id,
-			p_app_id: developerData.app_id,
-			p_original_amount: amount,
-			p_multiplier: multiplier,
-			p_model: model,
-			p_label: label,
-		});
 		const { data, error } = await supabase.rpc("deduct_tokens_and_audit", {
+			p_user_api_key: userApiKey,
+			p_developer_api_key: developerApiKey,
 			p_amount: adjustedAmount,
 			p_original_amount: amount,
 			p_multiplier: multiplier,
 			p_model: model,
 			p_label: label,
 		});
-
+		console.log(" data and error", data, error);
 		if (error) throw error;
 
 		const [result] = data;
