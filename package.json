@@ -29,9 +29,13 @@
     "simple-icons": "^13.10.0"
   },
   "devDependencies": {
+    "@snaplet/copycat": "^5.0.0",
+    "@snaplet/seed": "0.98.0",
     "@types/node": "20.10.6",
+    "@types/pg": "^8.11.10",
     "@types/react": "18.2.46",
     "@types/react-dom": "18.2.18",
+    "pg": "^8.13.0",
     "postcss": "8.4.33",
     "tailwind-merge": "^2.5.2",
     "tailwindcss": "3.4.1",
