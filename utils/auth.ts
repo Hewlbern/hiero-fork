@@ -19,12 +19,9 @@ export async function verifyDeveloperApiKey(
 ): Promise<DeveloperApiKeyData | null> {
 	const { data, error } = await supabase
 		.from("developer_api_keys")
-		.select("id, app_id, developer_id")
+		.select("id, app_id")
 		.eq("key", apiKey)
 		.single();
-
-	console.log("data", data);
-	console.log("error", error);
 
 	if (error || !data) {
 		return null;

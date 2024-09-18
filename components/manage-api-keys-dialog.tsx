@@ -15,6 +15,7 @@ import {
 } from "@/app/actions/api-keys";
 import { useToast } from "@/hooks/use-toast";
 import { CopyToClipboardButton } from "@/components/copy-to-clipboard-button";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface ApiKey {
 	id: string;
@@ -30,6 +31,7 @@ export function ManageApiKeysDialog({ appId }: { appId: string }) {
 
 	const handleFetchApiKeys = useCallback(async () => {
 		const result = await fetchApiKeys(appId);
+		console.log(result);
 		if (result.success) {
 			setApiKeys(result.apiKeys || []);
 		} else {
@@ -107,7 +109,7 @@ export function ManageApiKeysDialog({ appId }: { appId: string }) {
 			<DialogContent>
 				<DialogTitle>Manage API Keys</DialogTitle>
 				<div className="flex flex-col gap-2">
-					<h2>Manage API Keys</h2>
+					<DialogDescription>Create or delete API keys</DialogDescription>
 					<Button onClick={handleCreateApiKey}>Create New API Key</Button>
 					{newApiKey && (
 						<div className="flex flex-col gap-2 p-2">

@@ -1,58 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { verifyDeveloperApiKey, verifyUserApiKey } from "@/utils/auth";
 
 export async function GET(request: NextRequest) {
-	const supabase = createClient();
-	const developerApiKey = request.headers.get("x-developer-api-key");
-	const userApiKey = request.headers.get("x-user-api-key");
+	const developerApiKey = request.headers.get("x-developer-api-key") || "";
+	const userApiKey = request.headers.get("x-user-api-key") || "";
+	const supabase = createClient({ developerApiKey, userApiKey });
 
-	if (!developerApiKey || !userApiKey) {
-		return NextResponse.json(
-			{ error: "Both Developer API Key and User API Key are required" },
-			{ status: 400 }
-		);
-	}
-
-	// Verify developer API key
-	const developerVerification = await verifyDeveloperApiKey(
-		supabase,
-		developerApiKey
-	);
-	if (!developerVerification) {
-		return NextResponse.json(
-			{ error: "Invalid developer API key" },
-			{ status: 401 }
-		);
-	}
-
-	// Verify user API key
-	const userVerification = await verifyUserApiKey(
-		supabase,
-		userApiKey,
-		developerVerification.app_id
-	);
-	if (!userVerification) {
-		return NextResponse.json(
-			{ error: "Invalid user API key" },
-			{ status: 401 }
-		);
-	}
-
-	// Fetch the user's token balance
-	const { data, error } = await supabase
+	// Now that we have verified the user, fetch the token balance
+	const { data: tokenData, error: tokenError } = await supabase
 		.from("user_tokens")
 		.select("token_balance")
-		.eq("user_id", userVerification.user_id)
 		.single();
 
-	if (error) {
-		console.error("Error fetching token balance", error);
+	if (tokenError) {
+		console.error("Error fetching token balance", tokenError);
+		return NextResponse.json({ error: tokenError.message }, { status: 500 });
+	}
+
+	if (!tokenData) {
 		return NextResponse.json(
-			{ error: "Error fetching token balance" },
-			{ status: 500 }
+			{ error: "Token balance not found" },
+			{ status: 404 }
 		);
 	}
 
-	return NextResponse.json({ balance: data.token_balance });
+	return NextResponse.json({ balance: tokenData.token_balance });
 }

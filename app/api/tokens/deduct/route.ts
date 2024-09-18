@@ -9,10 +9,10 @@ export async function POST(request: NextRequest) {
 		model = "",
 		label = "",
 	} = await request.json();
-	const developerApiKey = request.headers.get("X-Developer-API-Key");
-	const userApiKey = request.headers.get("X-User-API-Key");
+	const developerApiKey = request.headers.get("X-Developer-API-Key") || "";
+	const userApiKey = request.headers.get("X-User-API-Key") || "";
 
-	const supabase = createClient();
+	const supabase = createClient({ developerApiKey, userApiKey });
 
 	console.log("developerApiKey", developerApiKey);
 	console.log("userApiKey", userApiKey);
@@ -68,10 +68,7 @@ export async function POST(request: NextRequest) {
 			p_label: label,
 		});
 		const { data, error } = await supabase.rpc("deduct_tokens_and_audit", {
-			p_user_id: user.id,
 			p_amount: adjustedAmount,
-			p_developer_id: developerData.developer_id,
-			p_app_id: developerData.app_id,
 			p_original_amount: amount,
 			p_multiplier: multiplier,
 			p_model: model,
