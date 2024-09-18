@@ -6,6 +6,50 @@ export async function GET(request: NextRequest) {
 	const userApiKey = request.headers.get("x-user-api-key") || "";
 	const supabase = createClient({ developerApiKey, userApiKey });
 
+	/*
+	// If not using SQL permissions... do it this way. The user should only have permission to see the balance of the user with this key combo
+	
+	if (!developerApiKey || !userApiKey) {
+		return NextResponse.json(
+			{ error: "Both Developer API Key and User API Key are required" },
+			{ status: 400 }
+		);
+	}
+
+	// Verify developer API key
+	const developerVerification = await verifyDeveloperApiKey(
+		supabase,
+		developerApiKey
+	);
+	if (!developerVerification) {
+		return NextResponse.json(
+			{ error: "Invalid developer API key" },
+			{ status: 401 }
+		);
+	}
+
+	// Verify user API key
+	const userVerification = await verifyUserApiKey(
+		supabase,
+		userApiKey,
+		developerVerification.app_id
+	);
+	if (!userVerification) {
+		return NextResponse.json(
+			{ error: "Invalid user API key" },
+			{ status: 401 }
+		);
+	}
+
+	// Fetch the user's token balance
+	const { data, error } = await supabase
+		.from("user_tokens")
+		.select("token_balance")
+		.eq("user_id", userVerification.user_id)
+		.single();
+
+	*/
+
 	// Now that we have verified the user, fetch the token balance
 	const { data: tokenData, error: tokenError } = await supabase
 		.from("user_tokens")
