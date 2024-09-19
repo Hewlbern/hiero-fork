@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { GitHubSignInButton } from "@/components/github-sign-in-button";
-import { SmtpMessage } from "../smtp-message";
 
 export default function SignUp({ searchParams }: { searchParams: Message }) {
 	if ("message" in searchParams) {
@@ -18,7 +17,7 @@ export default function SignUp({ searchParams }: { searchParams: Message }) {
 
 	return (
 		<>
-			<form className="flex flex-col min-w-64 max-w-64 mx-auto">
+			<form className="flex flex-col min-w-64 max-w-64 mx-auto mt-8">
 				<h1 className="text-2xl font-medium">Sign up</h1>
 				<p className="text-sm text text-foreground">
 					Already have an account?{" "}
@@ -54,7 +53,6 @@ export default function SignUp({ searchParams }: { searchParams: Message }) {
 					<FormMessage message={searchParams} />
 				</div>
 			</form>
-			<SmtpMessage />
 		</>
 	);
 }
