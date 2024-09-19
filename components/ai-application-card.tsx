@@ -50,31 +50,6 @@ export function AIApplicationCard({ app }: AIAppProps) {
 		}
 	};
 
-	const StarRating = ({ rating }: { rating: number }) => {
-		const fullStars = Math.floor(rating);
-		const hasHalfStar = rating % 1 !== 0;
-		const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
-		return (
-			<div>
-				{[...Array(fullStars)].map((_, i) => (
-					<Star key={`full-${i}`} />
-				))}
-				{hasHalfStar && (
-					<div>
-						<Star />
-						<div>
-							<Star />
-						</div>
-					</div>
-				)}
-				{[...Array(emptyStars)].map((_, i) => (
-					<Star key={`empty-${i}`} />
-				))}
-			</div>
-		);
-	};
-
 	return (
 		<Card className="w-full max-w-md bg-white/90 backdrop-blur-sm">
 			<CardHeader className="space-y-1">
