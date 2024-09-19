@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export const createClient = ({
 	developerApiKey = "",
-	userApiKey = "",
+	userConnectionKey = "",
 } = {}) => {
 	const cookieStore = cookies();
 
@@ -30,7 +30,7 @@ export const createClient = ({
 			global: {
 				headers: {
 					"x-developer-api-key": developerApiKey,
-					"x-user-api-key": userApiKey,
+					"x-user-connection-key": userConnectionKey,
 				},
 			},
 		}

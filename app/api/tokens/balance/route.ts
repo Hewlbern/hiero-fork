@@ -3,12 +3,12 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: NextRequest) {
 	const developerApiKey = request.headers.get("x-developer-api-key") || "";
-	const userApiKey = request.headers.get("x-user-api-key") || "";
-	const supabase = createClient({ developerApiKey, userApiKey });
+	const userConnectionKey = request.headers.get("x-user-connection-key") || "";
+	const supabase = createClient({ developerApiKey, userConnectionKey });
 
-	let { data, error } = await supabase.rpc("get_user_id_from_api_keys", {
+	let { data, error } = await supabase.rpc("get_user_id_from_connection_keys", {
 		p_developer_api_key: developerApiKey,
-		p_user_api_key: userApiKey,
+		p_user_connection_key: userConnectionKey,
 	});
 	if (error) console.error(error);
 	else console.log(data);
@@ -16,9 +16,9 @@ export async function GET(request: NextRequest) {
 	/*
 	// If not using SQL permissions... do it this way. The user should only have permission to see the balance of the user with this key combo
 	
-	if (!developerApiKey || !userApiKey) {
+	if (!developerApiKey || !userConnectionKey) {
 		return NextResponse.json(
-			{ error: "Both Developer API Key and User API Key are required" },
+			{ error: "Both Developer API Key and User Connection Key are required" },
 			{ status: 400 }
 		);
 	}
@@ -35,15 +35,15 @@ export async function GET(request: NextRequest) {
 		);
 	}
 
-	// Verify user API key
-	const userVerification = await verifyUserApiKey(
+	// Verify user connection key
+	const userVerification = await verifyUserConnectionKey(
 		supabase,
-		userApiKey,
+		userConnectionKey,
 		developerVerification.app_id
 	);
 	if (!userVerification) {
 		return NextResponse.json(
-			{ error: "Invalid user API key" },
+			{ error: "Invalid user connection key" },
 			{ status: 401 }
 		);
 	}
@@ -51,9 +51,9 @@ export async function GET(request: NextRequest) {
 	// Fetch the user's token balance
 	const { data, error } = await supabase
 		.from("user_tokens")
-		.select("token_balance")
-		.eq("user_id", userVerification.user_id)
-		.single();
+			.select("token_balance")
+			.eq("user_id", userVerification.user_id)
+			.single();
 
 	*/
 
