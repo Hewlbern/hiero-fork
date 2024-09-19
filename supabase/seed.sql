@@ -21,10 +21,10 @@ INSERT INTO "public"."developer_api_keys" ("id", "key", "app_id", "created_at") 
 
 
 --
--- Data for Name: user_api_keys; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: user_connection_keys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."user_api_keys" ("id", "key", "user_id", "app_id", "created_at") VALUES
+INSERT INTO "public"."user_connection_keys" ("id", "key", "user_id", "app_id", "created_at") VALUES
 	('1d89eec1-e294-453c-9078-d255f5c9bba4', '1443f051-c89f-4863-a8a4-ba32d13d567c', 'f7a25109-f16f-458e-82d4-ae0f4f03f604', '71b46209-7116-4b81-a212-eafd1dc78c14', '2024-09-13 02:40:43.138181+00');
 
 
