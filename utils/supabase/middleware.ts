@@ -53,8 +53,11 @@ export const updateSession = async (request: NextRequest) => {
 				new URL("/protected/dashboard", request.url)
 			);
 		}
+		console.log("returning response", response);
+
 		return response;
 	} catch (e) {
+		console.log("middleware error", e);
 		// If you are here, a Supabase client could not be created!
 		// This is likely because you have not set up environment variables.
 		// Check out http://localhost:3000 for Next Steps.
