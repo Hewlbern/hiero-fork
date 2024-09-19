@@ -5,9 +5,28 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const signInAction = async (formData: FormData) => {
+	const email = formData.get("email") as string;
+	const password = formData.get("password") as string;
+	const supabase = createClient();
+	const next = formData.get("next") as string;
+
+	const { error } = await supabase.auth.signInWithPassword({
+		email,
+		password,
+	});
+
+	if (error) {
+		return encodedRedirect("error", "/sign-in", error.message);
+	}
+	return redirect(decodeURIComponent(next) || "/protected");
+};
+
 export const signUpAction = async (formData: FormData) => {
 	const email = formData.get("email")?.toString();
 	const password = formData.get("password")?.toString();
+	const next = formData.get("next") as string;
+
 	const supabase = createClient();
 	const origin = headers().get("origin");
 
@@ -15,11 +34,12 @@ export const signUpAction = async (formData: FormData) => {
 		return { error: "Email and password are required" };
 	}
 
+	const emailRedirectTo = `${origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
 	const { error } = await supabase.auth.signUp({
 		email,
 		password,
 		options: {
-			emailRedirectTo: `${origin}/auth/callback`,
+			emailRedirectTo,
 		},
 	});
 
@@ -33,23 +53,6 @@ export const signUpAction = async (formData: FormData) => {
 			"Thanks for signing up! Please check your email for a verification link."
 		);
 	}
-};
-
-export const signInAction = async (formData: FormData) => {
-	const email = formData.get("email") as string;
-	const password = formData.get("password") as string;
-	const supabase = createClient();
-
-	const { error } = await supabase.auth.signInWithPassword({
-		email,
-		password,
-	});
-
-	if (error) {
-		return encodedRedirect("error", "/sign-in", error.message);
-	}
-
-	return redirect("/protected");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {

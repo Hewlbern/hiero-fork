@@ -6,7 +6,13 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { GitHubSignInButton } from "@/components/github-sign-in-button";
 
-export default function SignUp({ searchParams }: { searchParams: Message }) {
+export default function SignUp({
+	searchParams,
+}: {
+	searchParams: Message & { next?: string };
+}) {
+	const next = searchParams.next || "";
+
 	if ("message" in searchParams) {
 		return (
 			<div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
@@ -21,7 +27,10 @@ export default function SignUp({ searchParams }: { searchParams: Message }) {
 				<h1 className="text-2xl font-medium">Sign up</h1>
 				<p className="text-sm text text-foreground">
 					Already have an account?{" "}
-					<Link className="text-primary font-medium underline" href="/sign-in">
+					<Link
+						className="text-primary font-medium underline"
+						href={`/sign-in${next ? `?next=${encodeURIComponent(next)}` : ""}`}
+					>
 						Sign in
 					</Link>
 				</p>
@@ -36,6 +45,7 @@ export default function SignUp({ searchParams }: { searchParams: Message }) {
 						minLength={6}
 						required
 					/>
+					<input type="hidden" name="next" value={next} />
 					<SubmitButton formAction={signUpAction} pendingText="Signing up...">
 						Sign up
 					</SubmitButton>

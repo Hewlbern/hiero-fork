@@ -12,6 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, DollarSign, Copy, Check } from "lucide-react";
 import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
+import { createClient } from "@/utils/supabase/client";
+import { encodedRedirect } from "@/utils/utils";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 type AIApp = {
 	id: string;
@@ -32,12 +36,25 @@ type AIAppProps = {
 };
 
 export function AIApplicationCard({ app }: AIAppProps) {
+	const router = useRouter();
+	const pathname = usePathname();
 	const [uuid, setUUID] = useState<string | null>(null);
 	const [copiedUUID, setCopiedUUID] = useState(false);
 	const appName = app.name;
 	const avgSpent = 6.73;
+	const supabase = createClient();
 
 	const handleGenerateUUID = async () => {
+		const {
+			data: { user },
+		} = await supabase.auth.getUser();
+
+		if (!user) {
+			const next = encodeURIComponent(pathname);
+			router.push(`/sign-in?message=You need to sign in&next=${next}`);
+			return;
+		}
+
 		const newUUID = await generateUserConnectionKey(app.id);
 		setUUID(newUUID);
 	};

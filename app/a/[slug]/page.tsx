@@ -51,7 +51,6 @@ export default async function AppPage({
 		amountSpent: Math.floor(Math.random() * 15) + 1,
 		usage: Math.floor(Math.random() * 100),
 	};
-
 	return (
 		<div className="container mx-auto px-4 py-8">
 			<AIApplicationCard app={mockAppData} />
