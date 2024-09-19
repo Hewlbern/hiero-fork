@@ -21,14 +21,14 @@ const colorMap = {
 export default async function AppPage({
 	params,
 }: {
-	params: { app_id: string };
+	params: { slug: string };
 }) {
 	const supabase = createClient();
 
 	const { data: app, error } = await supabase
 		.from("apps")
 		.select("*")
-		.eq("id", params.app_id)
+		.eq("slug", params.slug)
 		.single();
 
 	if (error || !app) {
@@ -54,7 +54,6 @@ export default async function AppPage({
 
 	return (
 		<div className="container mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold mb-4">{app.name}</h1>
 			<AIApplicationCard app={mockAppData} />
 		</div>
 	);

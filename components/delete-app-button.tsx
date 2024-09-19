@@ -10,7 +10,7 @@ import {
 	DialogTrigger,
 	DialogClose,
 } from "@/components/ui/dialog";
-import { deleteApp } from "@/app/actions/delete-app";
+import { deleteApp } from "@/app/actions/apps";
 import { useState } from "react";
 
 interface DeleteAppButtonProps {

@@ -22,7 +22,7 @@ export async function DeveloperDashboard() {
 
 	const { data: apps, error } = await supabase
 		.from("apps")
-		.select("id, name, status, description, url")
+		.select("id, name, status, description, url, slug")
 		.eq("user_id", user?.id)
 		.is("deleted_at", null)
 		.order("created_at", { ascending: false });
@@ -65,10 +65,7 @@ export async function DeveloperDashboard() {
 							{apps.map((app) => (
 								<TableRow key={app.id} className="border-b-2 border-black">
 									<TableCell className="font-bold">
-										<Link
-											href={`/protected/dashboard/apps/${app.id}`}
-											className="hover:underline"
-										>
+										<Link href={`/a/${app.slug}`} className="hover:underline">
 											{app.name}
 										</Link>
 									</TableCell>
