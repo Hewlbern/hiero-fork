@@ -1,3 +1,5 @@
+DROP SEQUENCE IF EXISTS public.audit_trail_id_seq;
+
 create sequence "public"."audit_trail_id_seq";
 
 create table "public"."apps" (
