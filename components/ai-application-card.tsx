@@ -11,8 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, DollarSign, Copy, Check } from "lucide-react";
-import { generateUserKey } from "@/app/actions/generate-user-key";
-import { createClient } from "@/utils/supabase/server";
+import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
 
 type AIApp = {
 	id: string;
@@ -39,7 +38,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
 	const avgSpent = 6.73;
 
 	const handleGenerateUUID = async () => {
-		const newUUID = await generateUserKey(app.id);
+		const newUUID = await generateUserConnectionKey(app.id);
 		setUUID(newUUID);
 	};
 

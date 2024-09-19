@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { verifyDeveloperApiKey, verifyUserApiKey } from "@/utils/auth";
+import { verifyDeveloperApiKey, verifyUserConnectionKey } from "@/utils/auth";
 
 export async function POST(request: NextRequest) {
 	const {
@@ -10,16 +10,16 @@ export async function POST(request: NextRequest) {
 		label = "",
 	} = await request.json();
 	const developerApiKey = request.headers.get("X-Developer-API-Key") || "";
-	const userApiKey = request.headers.get("X-User-API-Key") || "";
+	const userConnectionKey = request.headers.get("X-User-Connection-Key") || "";
 
-	const supabase = createClient({ developerApiKey, userApiKey });
+	const supabase = createClient({ developerApiKey, userConnectionKey });
 
 	console.log("developerApiKey", developerApiKey);
-	console.log("userApiKey", userApiKey);
+	console.log("userConnectionKey", userConnectionKey);
 
-	if (!developerApiKey || !userApiKey) {
+	if (!developerApiKey || !userConnectionKey) {
 		return NextResponse.json(
-			{ error: "Both Developer API Key and User API Key are required" },
+			{ error: "Both Developer API Key and User Connection Key are required" },
 			{ status: 400 }
 		);
 	}
@@ -37,15 +37,15 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Verify the user API key and check if it's associated with the developer's app
-		const userData = await verifyUserApiKey(
+		// Verify the user connection key and check if it's associated with the developer's app
+		const userData = await verifyUserConnectionKey(
 			supabase,
-			userApiKey,
+			userConnectionKey,
 			developerData.app_id
 		);
 		if (!userData) {
 			return NextResponse.json(
-				{ error: "Invalid User API Key" },
+				{ error: "Invalid User Connection Key" },
 				{ status: 401 }
 			);
 		}
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
 		const adjustedAmount = Math.round(amount * multiplier);
 		const { data, error } = await supabase.rpc("deduct_tokens_and_audit", {
-			p_user_api_key: userApiKey,
+			p_user_connection_key: userConnectionKey,
 			p_developer_api_key: developerApiKey,
 			p_amount: adjustedAmount,
 			p_original_amount: amount,

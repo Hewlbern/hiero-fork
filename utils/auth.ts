@@ -7,7 +7,8 @@ type DeveloperApiKeyData = {
 	developer_id: string;
 };
 
-type UserApiKeyData = {
+// Rename type
+type UserConnectionKeyData = {
 	id: string;
 	user_id: string;
 	app_id: string;
@@ -30,15 +31,16 @@ export async function verifyDeveloperApiKey(
 	return data as DeveloperApiKeyData;
 }
 
-export async function verifyUserApiKey(
+// Rename function
+export async function verifyUserConnectionKey(
 	supabase: SupabaseClient,
-	apiKey: string,
+	connectionKey: string,
 	appId: string
-): Promise<UserApiKeyData | null> {
+): Promise<UserConnectionKeyData | null> {
 	const { data, error } = await supabase
-		.from("user_api_keys")
+		.from("user_connection_keys")
 		.select("id, user_id, app_id")
-		.eq("key", apiKey)
+		.eq("key", connectionKey)
 		.eq("app_id", appId)
 		.single();
 
@@ -46,5 +48,5 @@ export async function verifyUserApiKey(
 		return null;
 	}
 
-	return data as UserApiKeyData;
+	return data as UserConnectionKeyData;
 }
