@@ -11,7 +11,7 @@ export default function SignUp({
 }: {
 	searchParams: Message & { next?: string };
 }) {
-	const next = searchParams.next || "";
+	const next = searchParams.next ? encodeURIComponent(searchParams.next) : "";
 
 	if ("message" in searchParams) {
 		return (
@@ -29,7 +29,7 @@ export default function SignUp({
 					Already have an account?{" "}
 					<Link
 						className="text-primary font-medium underline"
-						href={`/sign-in${next ? `?next=${encodeURIComponent(next)}` : ""}`}
+						href={`/sign-in${next ? `?next=${next}` : ""}`}
 					>
 						Sign in
 					</Link>

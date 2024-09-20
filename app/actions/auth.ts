@@ -1,6 +1,6 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
+import { encodedRedirect } from "@/utils/auth";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -17,7 +17,7 @@ export const signInAction = async (formData: FormData) => {
 	});
 
 	if (error) {
-		return encodedRedirect("error", "/sign-in", error.message);
+		return encodedRedirect("error", "/sign-in", error.message, next);
 	}
 	return redirect(decodeURIComponent(next) || "/protected");
 };
@@ -45,7 +45,7 @@ export const signUpAction = async (formData: FormData) => {
 
 	if (error) {
 		console.error(error.code + " " + error.message);
-		return encodedRedirect("error", "/sign-up", error.message);
+		return encodedRedirect("error", "/sign-up", error.message, next);
 	} else {
 		return encodedRedirect(
 			"success",

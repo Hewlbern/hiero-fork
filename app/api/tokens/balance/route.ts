@@ -10,8 +10,6 @@ export async function GET(request: NextRequest) {
 		p_developer_api_key: developerApiKey,
 		p_user_connection_key: userConnectionKey,
 	});
-	if (error) console.error(error);
-	else console.log(data);
 
 	/*
 	// If not using SQL permissions... do it this way. The user should only have permission to see the balance of the user with this key combo

@@ -15,7 +15,6 @@ export async function checkSlugAvailability(
 		.is("deleted_at", null)
 		.single();
 
-	console.log(data, error);
 	if (error && error.code !== "PGRST116") {
 		console.error("Error checking slug availability:", error);
 		throw new Error("Failed to check slug availability");
