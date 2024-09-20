@@ -10,7 +10,6 @@ export async function generateUserConnectionKey(
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	console.log("Generating user connection key for appId:", appId);
 	const { data, error } = await supabase
 		.from("user_connection_keys")
 		.insert({

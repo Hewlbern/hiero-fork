@@ -41,7 +41,10 @@ export const updateSession = async (request: NextRequest) => {
 
 		if (user.error) {
 			// Not signed in
-			if (!request.nextUrl.pathname.startsWith("/sign")) {
+			if (
+				!request.nextUrl.pathname.startsWith("/sign") &&
+				!request.nextUrl.pathname.startsWith("/forgot")
+			) {
 				// If it's not a sign-in or sign-up page, and it's not a public app page, redirect to sign-in
 				// Note this currently also directs the main commercial page to sign in
 				return NextResponse.redirect(new URL("/sign-in", request.url));
@@ -66,7 +69,7 @@ export const updateSession = async (request: NextRequest) => {
 		}
 		return response;
 	} catch (e) {
-		console.log("middleware error", e);
+		console.error("middleware error", e);
 		// If you are here, a Supabase client could not be created!
 		// This is likely because you have not set up environment variables.
 		// Check out http://localhost:3000 for Next Steps.

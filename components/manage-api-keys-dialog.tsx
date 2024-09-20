@@ -31,7 +31,6 @@ export function ManageApiKeysDialog({ appId }: { appId: string }) {
 
 	const handleFetchApiKeys = useCallback(async () => {
 		const result = await fetchApiKeys(appId);
-		console.log(result);
 		if (result.success) {
 			setApiKeys(result.apiKeys || []);
 		} else {

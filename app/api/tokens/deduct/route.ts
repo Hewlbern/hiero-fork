@@ -14,9 +14,6 @@ export async function POST(request: NextRequest) {
 
 	const supabase = createClient({ developerApiKey, userConnectionKey });
 
-	console.log("developerApiKey", developerApiKey);
-	console.log("userConnectionKey", userConnectionKey);
-
 	if (!developerApiKey || !userConnectionKey) {
 		return NextResponse.json(
 			{ error: "Both Developer API Key and User Connection Key are required" },
@@ -66,7 +63,6 @@ export async function POST(request: NextRequest) {
 			p_model: model,
 			p_label: label,
 		});
-		console.log(" data and error", data, error);
 		if (error) throw error;
 
 		const [result] = data;

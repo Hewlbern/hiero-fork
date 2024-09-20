@@ -12,9 +12,12 @@ import { redirect } from "next/navigation";
 export function encodedRedirect(
 	type: "error" | "success",
 	path: string,
-	message: string
+	message: string,
+	next?: string // the url to direct to next
 ) {
-	return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
+	return redirect(
+		`${path}?${type}=${encodeURIComponent(message)}${next ? `&next=${next}` : ""}`
+	);
 }
 
 // Types for the returned data
