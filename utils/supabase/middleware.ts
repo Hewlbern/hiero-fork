@@ -41,10 +41,7 @@ export const updateSession = async (request: NextRequest) => {
 
 		if (user.error) {
 			// Not signed in
-			if (
-				!request.nextUrl.pathname.startsWith("/sign") &&
-				!request.nextUrl.pathname.startsWith("/a/")
-			) {
+			if (!request.nextUrl.pathname.startsWith("/sign")) {
 				// If it's not a sign-in or sign-up page, and it's not a public app page, redirect to sign-in
 				// Note this currently also directs the main commercial page to sign in
 				return NextResponse.redirect(new URL("/sign-in", request.url));
@@ -67,8 +64,6 @@ export const updateSession = async (request: NextRequest) => {
 				new URL("/protected/dashboard", request.url)
 			);
 		}
-		console.log("returning response", response);
-
 		return response;
 	} catch (e) {
 		console.log("middleware error", e);
