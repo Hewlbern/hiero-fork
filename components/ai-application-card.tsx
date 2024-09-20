@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Star, DollarSign, Copy, Check } from "lucide-react";
 import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
 import { createClient } from "@/utils/supabase/client";
-import { encodedRedirect } from "@/utils/utils";
+import { encodedRedirect } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
