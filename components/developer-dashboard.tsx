@@ -35,10 +35,7 @@ export async function DeveloperDashboard() {
 	return (
 		<main className="flex-1 p-4 md:p-8 overflow-auto">
 			<div className="flex justify-end p-2">
-				<Link
-					href="/protected/developers/documentation"
-					className="hover:underline"
-				>
+				<Link href="/docs" className="hover:underline">
 					Documentation
 				</Link>
 			</div>
