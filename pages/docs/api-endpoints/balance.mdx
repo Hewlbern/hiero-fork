@@ -2,7 +2,7 @@ import { Tabs } from "nextra/components";
 
 ### Get Token Balance
 
-Retrieves the current token balance for a user.
+Retrieves the current token balance for a user. You may never need to use this endpoint as the balance is returned with every deduction. As a general rule, it should _not_ be called before every operation. As Hiero is designed to be called 1000s of times for very small amounts, the chances of losing a token or two are very low. It should only be used to render a balance if you want to include a token balance component.
 
 - **URL**:`/api/tokens/balance`
 - **Method**:`GET`
@@ -32,15 +32,19 @@ Retrieves the current token balance for a user.
 <Tabs.Tab>
 
 ```ts filename="get-balance.ts" copy
-const response = await fetch("https://api.hiero.gl/api/tokens/balance", {
-	method: "GET",
-	headers: {
-		"X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
-		"X-User-Connection-Key": "USER_CONNECTION_KEY",
-	},
-});
+const getBalance = async (userConnectionKey: string) => {
+	const response = await fetch("https://api.hiero.gl/api/tokens/balance", {
+		method: "GET",
+		headers: {
+			"X-Developer-API-Key": `${process.env.HIERO_API_KEY}`,
+			"X-User-Connection-Key": userConnectionKey,
+		},
+	});
 
-const data = await response.json();
+	const data = await response.json();
+
+	return data;
+};
 ```
 
 </Tabs.Tab>
@@ -49,12 +53,12 @@ const data = await response.json();
 ```py filename="get-balance.py" copy
 import requests
 
-def get_balance():
+def get_balance(user_connection_key: str):
   response = requests.get(
     "https://api.hiero.gl/api/tokens/balance",
     headers={
-      "X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
-      "X-User-Connection-Key": "USER_CONNECTION_KEY",
+      "X-Developer-API-Key": f"{process.env.HIERO_API_KEY}",
+      "X-User-Connection-Key": user_connection_key,
     },
   )
   data = response.json()

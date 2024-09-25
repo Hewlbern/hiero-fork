@@ -2,67 +2,36 @@ import { Steps } from "nextra/components";
 
 # Getting Started
 
-Welcome to the Hiero API documentation. This guide will help you integrate Hiero\'s powerful features into your applications.
+Welcome to the Hiero API documentation. This guide will help you integrate Hiero into your application to start generating income instantly. We have designed the Hiero API to be simple and easy to use for AI application developers particularly. It is designed to remove all the thinking and complexity of figuring out pricing, billing, and payments.
 
-## Getting Started
-
-To use the Hiero API, you\'ll need to:
+To get started with the Hiero API, you\'ll need to:
 
 <Steps>
-### Step 1
-Sign up for a Hiero account
+## Sign Up
+Sign up for a Hiero account at [https://hiero.gl](https://hiero.gl). All users sign up the same way - subscribers and developers.
 
-### Step 2
+When signing up, you will be asked to subscribe to a plan. You are free to do this if you want to start using Hiero to access other apps. It is also possible to skip this by clicking the "Skip" link.
 
-Create an app in your developer dashboard
+## Create an App
 
-### Step 3
+Once you are logged in, you will be able to create a new app on the developer dashboard. This will give you a unique link for your app which looks like this:
 
-Generate an API key for your app
-
-### Step 4
-
-Obtain a user connection key for each user of your app
-
-   </Steps>
-
-## Authentication
-
-All API requests must be authenticated using two keys:
-
-1. Your Developer API Key
-2. A User Connection Key
-
-Include these keys in the headers of your requests:
-
-```http
-X-Developer-API-Key: YOUR_DEVELOPER_API_KEY
-X-User-Connection-Key: USER_CONNECTION_KEY
+```
+https://hiero.gl/a/yourappname
 ```
 
-## API Endpoints
+This is the link you will share with your users so they can connect your app to Hiero. See our guide on [how to integrate Hiero in your UX](/docs/integration) for more information.
 
-## Error Handling
+When a user connects to your app, they will be given a connection key. You will need this connection key to deduct tokens from the user's balance. Make sure you give the user a field to enter this key, then store this connection key securely. Note, the connection key is specific to the user and app and cannot be used by another user or app.
 
-The API uses conventional HTTP response codes to indicate the success or failure of requests:
+## Generate an API Key
 
-- 200: Success
-- 400: Bad Request
-- 401: Unauthorized
-- 404: Not Found
-- 500: Internal Server Error
+Once you have created an app, you will be able to generate an API key. This key will be used to authenticate your requests. You should keep this key secret and not share it with anyone. It should be used on your backend only and never exposed to the client. Ideally this should be stored in a secure environment such as an environment variable. Call the environment variable `HIERO_API_KEY` as we use this in the examples below.
 
-When an error occurs, the response will include an \`error\` field with a description of the problem.
+## Deduct Tokens on usage
 
-## Rate Limiting
+Once you have an API key and a User Connection Key, you can deduct tokens from the user's balance when they use your app. We've designed Hiero for the "AI World". Pass in the number of tokens you want to deduct. Optionally you can pass in a multiplier to deduct more or less than the cost of the AI call. You can also pass in a model, and label so that you can track usage by app, user, and model.
 
-To ensure fair usage and protect our services, the API implements rate limiting. If you exceed the rate limit, you\'ll receive a \`429 Too Many Requests\` response. Please implement appropriate backoff strategies in your applications.
+It's easy to deduct tokens with Hiero. Simply add a callback to your AI call, and deduct the tokens from the user's balance. We have SDKs available to make this easy.
 
-## Best Practices
-
-1. Always store your Developer API Key securely and never expose it in client-side code.
-2. Implement proper error handling in your applications to gracefully handle API errors.
-3. Use appropriate multipliers when deducting tokens to account for different usage scenarios.
-4. Regularly check and update the user\'s token balance to ensure a smooth user experience.
-
-For any questions or support, please contact our developer support team at dev-support@hiero.gl.
+</Steps>
