@@ -45,8 +45,9 @@ Deducts tokens from a user\'s account.
 
 <Tabs items={["TypeScript", "Python", "CURL"]}>
 <Tabs.Tab>
-```tsx filename="demo.js" copy
-const response = await fetch("https://api.hiero.com/api/tokens/deduct", {
+
+```ts filename="demo.ts" copy
+const response = await fetch("https://api.hiero.gl/api/tokens/deduct", {
 	method: "POST",
 	headers: {
 		"X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
@@ -60,40 +61,43 @@ const response = await fetch("https://api.hiero.com/api/tokens/deduct", {
 		label: "Chat completion",
 	}),
 });
-
 const data = await response.json();
+```
 
-````
 </Tabs.Tab>
 <Tabs.Tab>
-```python filename="demo.py" copy
+
+```py filename="demo.py" copy
 import requests
 
-url = "https://api.hiero.com/api/tokens/deduct"
+url = "https://api.hiero.gl/api/tokens/deduct"
 headers = {
-    "X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
-    "X-User-Connection-Key": "USER_CONNECTION_KEY",
-    "Content-Type": "application/json",
+  "X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
+  "X-User-Connection-Key": "USER_CONNECTION_KEY",
+  "Content-Type": "application/json",
 }
 payload = {
-    "amount": 100,
-    "multiplier": 1.5,
-    "model": "gpt-4",
-    "label": "Chat completion",
+  "amount": 100,
+  "multiplier": 1.5,
+"model": "gpt-4",
+  "label": "Chat completion",
 }
 
 response = requests.post(url, headers=headers, json=payload)
 data = response.json()
-````
+
+```
 
 </Tabs.Tab>
 <Tabs.Tab>
+
 ```bash filename="demo.sh" copy
-curl -X POST "https://api.hiero.com/api/tokens/deduct" \
--H "X-Developer-API-Key: YOUR_DEVELOPER_API_KEY" \
--H "X-User-Connection-Key: USER_CONNECTION_KEY" \
--H "Content-Type: application/json" \
--d '{"amount": 100, "multiplier": 1.5, "model": "gpt-4", "label": "Chat completion"}'
+curl -X POST "https://api.hiero.gl/api/tokens/deduct" \
+  -H "X-Developer-API-Key: YOUR_DEVELOPER_API_KEY" \
+  -H "X-User-Connection-Key: USER_CONNECTION_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 100, "multiplier": 1.5, "model": "gpt-4", "label": "Chat completion"}'
 ```
+
 </Tabs.Tab>
 </Tabs>

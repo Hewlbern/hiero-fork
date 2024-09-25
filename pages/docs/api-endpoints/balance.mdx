@@ -26,26 +26,13 @@ Retrieves the current token balance for a user.
 }
 ```
 
-```typescript filename="get-balance.ts" {3} copy
-const response = await fetch("https://api.hiero.com/api/tokens/balance", {
-	method: "GET",
-	headers: {
-		"X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
-		"X-User-Connection-Key": "USER_CONNECTION_KEY",
-	},
-});
-
-const data = await response.json();
-```
-
 #### Example
 
-<Tabs items={['TypeScript', 'Python', 'Curl']}>
+<Tabs items={['TypeScript', 'Python', 'CURL']}>
 <Tabs.Tab>
-  This is the TypeScript example.
 
-```ts filename="get-balance.ts" {3} copy
-const response = await fetch("https://api.hiero.com/api/tokens/balance", {
+```ts filename="get-balance.ts" copy
+const response = await fetch("https://api.hiero.gl/api/tokens/balance", {
 	method: "GET",
 	headers: {
 		"X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
@@ -55,19 +42,16 @@ const response = await fetch("https://api.hiero.com/api/tokens/balance", {
 
 const data = await response.json();
 ```
-
-End example
 
 </Tabs.Tab>
 <Tabs.Tab>
-This is the Python example.
 
-```py filename="get-balance.py" {3} copy
+```py filename="get-balance.py" copy
 import requests
 
 def get_balance():
   response = requests.get(
-    "https://api.hiero.com/api/tokens/balance",
+    "https://api.hiero.gl/api/tokens/balance",
     headers={
       "X-Developer-API-Key": "YOUR_DEVELOPER_API_KEY",
       "X-User-Connection-Key": "USER_CONNECTION_KEY",
@@ -77,18 +61,14 @@ def get_balance():
   return data
 ```
 
-End example
-
 </Tabs.Tab>
 
 <Tabs.Tab>
-This is the Curl example.
-```bash filename="get-balance.sh" {3} copy
-curl -X GET "https://api.hiero.com/api/tokens/balance" \
+```bash filename="get-balance.sh" copy
+curl -X GET "https://api.hiero.gl/api/tokens/balance" \
   -H "X-Developer-API-Key: YOUR_DEVELOPER_API_KEY" \
   -H "X-User-Connection-Key: USER_CONNECTION_KEY"
 ```
-End example
 
 </Tabs.Tab>
 </Tabs>
