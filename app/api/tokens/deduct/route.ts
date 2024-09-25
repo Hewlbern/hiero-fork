@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
 		const [result] = data;
 
 		if (!result.success) {
+			// This will include an error message if the deduction fails
 			return NextResponse.json({ error: result.message }, { status: 400 });
 		}
 

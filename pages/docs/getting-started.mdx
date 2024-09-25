@@ -1,0 +1,37 @@
+import { Steps } from "nextra/components";
+
+# Getting Started
+
+Welcome to the Hiero API documentation. This guide will help you integrate Hiero into your application to start generating income instantly. We have designed the Hiero API to be simple and easy to use for AI application developers particularly. It is designed to remove all the thinking and complexity of figuring out pricing, billing, and payments.
+
+To get started with the Hiero API, you\'ll need to:
+
+<Steps>
+## Sign Up
+Sign up for a Hiero account at [https://hiero.gl](https://hiero.gl). All users sign up the same way - subscribers and developers.
+
+When signing up, you will be asked to subscribe to a plan. You are free to do this if you want to start using Hiero to access other apps. It is also possible to skip this by clicking the "Skip" link.
+
+## Create an App
+
+Once you are logged in, you will be able to create a new app on the developer dashboard. This will give you a unique link for your app which looks like this:
+
+```
+https://hiero.gl/a/yourappname
+```
+
+This is the link you will share with your users so they can connect your app to Hiero. See our guide on [how to integrate Hiero in your UX](/docs/integration) for more information.
+
+When a user connects to your app, they will be given a connection key. You will need this connection key to deduct tokens from the user's balance. Make sure you give the user a field to enter this key, then store this connection key securely. Note, the connection key is specific to the user and app and cannot be used by another user or app.
+
+## Generate an API Key
+
+Once you have created an app, you will be able to generate an API key. This key will be used to authenticate your requests. You should keep this key secret and not share it with anyone. It should be used on your backend only and never exposed to the client. Ideally this should be stored in a secure environment such as an environment variable. Call the environment variable `HIERO_API_KEY` as we use this in the examples below.
+
+## Deduct Tokens on usage
+
+Once you have an API key and a User Connection Key, you can deduct tokens from the user's balance when they use your app. We've designed Hiero for the "AI World". Pass in the number of tokens you want to deduct. Optionally you can pass in a multiplier to deduct more or less than the cost of the AI call. You can also pass in a model, and label so that you can track usage by app, user, and model.
+
+It's easy to deduct tokens with Hiero. Simply add a callback to your AI call, and deduct the tokens from the user's balance. We have SDKs available to make this easy.
+
+</Steps>

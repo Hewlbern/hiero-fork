@@ -50,7 +50,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
 		} = await supabase.auth.getUser();
 
 		if (!user) {
-			const next = encodeURIComponent(pathname);
+			const next = pathname ? encodeURIComponent(pathname) : undefined;
 			router.push(`/sign-in?message=You need to sign in&next=${next}`);
 			return;
 		}
