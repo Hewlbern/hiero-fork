@@ -43,7 +43,8 @@ export const updateSession = async (request: NextRequest) => {
 			// Not signed in
 			if (
 				!request.nextUrl.pathname.startsWith("/sign") &&
-				!request.nextUrl.pathname.startsWith("/forgot")
+				!request.nextUrl.pathname.startsWith("/forgot") &&
+				request.nextUrl.pathname !== "/"
 			) {
 				// If it's not a sign-in or sign-up page, and it's not a public app page, redirect to sign-in
 				// Note this currently also directs the main commercial page to sign in
