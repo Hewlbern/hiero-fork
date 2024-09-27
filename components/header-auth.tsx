@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import Image from "next/image";
 
 export default async function AuthButton() {
 	const {
@@ -64,5 +65,27 @@ export default async function AuthButton() {
 				<Link href="/sign-up">Sign up</Link>
 			</Button>
 		</div>
+	);
+}
+
+export function Header() {
+	return (
+		<header className="w-full bg-black border-b-4 border-white p-4">
+			<div className="container mx-auto flex justify-between items-center">
+				<Link href="/" className="flex items-center">
+					<Image
+						src="/0_0.jpeg"
+						alt="Logo"
+						width={40}
+						height={40}
+						className="border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+					/>
+					<span className="ml-3 text-white text-2xl font-black uppercase tracking-tighter">
+						Hiero
+					</span>
+				</Link>
+				<AuthButton />
+			</div>
+		</header>
 	);
 }
