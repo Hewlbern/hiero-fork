@@ -40,14 +40,14 @@ export default function Home() {
 						Be part of the future.
 					</span>
 				</p>
-				{/* <JoinWaitlistModal>
+				<JoinWaitlistModal>
 					<Button className="mb-4 bg-white text-black text-3xl sm:text-4xl md:text-6xl font-black py-6 sm:py-8 md:py-12 px-10 sm:px-16 md:px-20 hover:bg-gray-200 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border-4 sm:border-8 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden group">
 						<span className="relative z-10 transform -skew-x-12">
 							Join Waitlist
 						</span>
 						<span className="absolute inset-0 bg-red-600 transform -skew-x-12 -translate-x-full transition-transform duration-300 group-hover:translate-x-0"></span>
 					</Button>
-				</JoinWaitlistModal> */}
+				</JoinWaitlistModal>
 			</main>
 		</>
 	);
