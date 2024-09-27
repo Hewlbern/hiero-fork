@@ -16,6 +16,6 @@ export const config = {
 		 * - apps - e.g. /a/catvideogenerator
 		 * Feel free to modify this pattern to include more paths.
 		 */
-		"/((?!docs|_next/static|_next/image|favicon.ico|a/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+		"/((?!api/subscribe|docs|_next/static|_next/image|favicon.ico|a/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
 	],
 };
