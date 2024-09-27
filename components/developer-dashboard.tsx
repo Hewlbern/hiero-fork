@@ -1,3 +1,4 @@
+"use server";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import {
 import { ManageApiKeysDialog } from "@/components/manage-api-keys-dialog";
 import { DeleteAppButton } from "@/components/delete-app-button";
 import { AppDialog } from "@/components/app-dialog";
+import { appUrl } from "@/lib/appUrl";
 
 export async function DeveloperDashboard() {
 	const supabase = createClient();
@@ -61,9 +63,16 @@ export async function DeveloperDashboard() {
 						<TableBody>
 							{apps.map((app) => (
 								<TableRow key={app.id} className="border-b-2 border-black">
-									<TableCell className="font-bold">
-										<Link href={`/a/${app.slug}`} className="hover:underline">
+									<TableCell>
+										<Link
+											href={`/a/${app.slug}`}
+											className="hover:underline font-bold text-lg"
+										>
 											{app.name}
+										</Link>
+										<br />
+										<Link href={`/a/${app.slug}`} className="hover:underline">
+											{appUrl(app.slug)}
 										</Link>
 									</TableCell>
 									<TableCell className="font-bold">{app.status}</TableCell>

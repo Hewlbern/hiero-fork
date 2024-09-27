@@ -13,9 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createApp, editApp, checkSlugAvailability } from "@/app/actions/apps";
 import { useDebounce } from "@/utils/use-debounce";
+import { appUrl } from "@/lib/appUrl";
 
 // Add this near the top of your file, outside the component
-const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
+const BASE_URL =
+	process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL || "localhost:3000";
 
 type AppDialogProps = {
 	mode: "create" | "edit";
@@ -113,7 +115,7 @@ export function AppDialog({ mode, app, triggerButton }: AppDialogProps) {
 		}
 	}, [debouncedSlug, mode, app?.id]);
 
-	const fullAppUrl = `${BASE_URL}/a/${slug}`;
+	const fullAppUrl = appUrl(slug);
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
