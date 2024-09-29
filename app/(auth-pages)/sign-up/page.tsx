@@ -24,16 +24,8 @@ export default function SignUp({
 	return (
 		<>
 			<form className="flex flex-col min-w-64 max-w-64 mx-auto mt-8">
-				<h1 className="text-2xl font-medium">Sign up</h1>
-				<p className="text-sm text text-foreground">
-					Already have an account?{" "}
-					<Link
-						className="text-primary font-medium underline"
-						href={`/sign-in${next ? `?next=${next}` : ""}`}
-					>
-						Sign in
-					</Link>
-				</p>
+				<h1 className="text-2xl font-medium">Create an account</h1>
+
 				<div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
 					<Label htmlFor="email">Email</Label>
 					<Input name="email" placeholder="you@example.com" required />
@@ -60,6 +52,17 @@ export default function SignUp({
 						</div>
 					</div>
 					<GitHubSignInButton />
+					<div className="flex flex-row justify-center gap-2">
+						<p className="text-sm text text-foreground">
+							Already have an account?{" "}
+							<Link
+								className="text-primary font-medium underline text-blue-500"
+								href={`/sign-in${next ? `?next=${next}` : ""}`}
+							>
+								Sign in
+							</Link>
+						</p>
+					</div>
 					<FormMessage message={searchParams} />
 				</div>
 			</form>
