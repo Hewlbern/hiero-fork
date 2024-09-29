@@ -51,7 +51,7 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 			<DialogContent className="bg-[#E6C9A8] border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-0 w-full max-w-md">
 				<DialogHeader className="bg-[#D05353] text-white p-6 border-b-8 border-black">
 					<DialogTitle className="text-3xl font-black uppercase">
-						Join the Waitlist
+						Become a Hiero Developer.
 					</DialogTitle>
 				</DialogHeader>
 				<div className="p-8">
@@ -62,7 +62,7 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 					) : (
 						<>
 							<p className="mb-6 text-black font-black text-xl">
-								Become a Hiero developer.
+								Apply for early access to Hiero.
 							</p>
 							<form onSubmit={handleSubmit} className="space-y-6">
 								<div>
@@ -107,7 +107,7 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 									className="w-full bg-black text-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-none hover:translate-x-[8px] hover:translate-y-[8px] hover:bg-[#00FF00] hover:text-black transition-all font-black text-xl uppercase p-4"
 									disabled={isSubmitting}
 								>
-									{isSubmitting ? "Submitting..." : "Embrace the Future"}
+									{isSubmitting ? "Submitting..." : "Apply Today"}
 								</Button>
 							</form>
 						</>
