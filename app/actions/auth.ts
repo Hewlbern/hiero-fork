@@ -153,3 +153,31 @@ export const signInWithGitHub = async () => {
 
 	return redirect(data.url);
 };
+
+export const signInWithGoogleAuth = async (next?: string) => {
+	console.log("Starting Google sign-in process");
+	const supabase = createClient();
+	const origin = headers().get("origin");
+	const redirectTo = `${origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+	
+	console.log("Redirect URL:", redirectTo);
+
+	const { data, error } = await supabase.auth.signInWithOAuth({
+		provider: "google",
+		options: {
+			redirectTo,
+		},
+	});
+
+	if (error) {
+		console.error("Error signing in with Google:", error);
+		return encodedRedirect(
+			"error",
+			"/sign-in",
+			"Could not sign in with Google"
+		);
+	}
+
+	console.log("Google sign-in successful, redirecting to:", data.url);
+	return redirect(data.url);
+};
