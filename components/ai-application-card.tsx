@@ -1,154 +1,158 @@
 "use client";
+
 import React, { useState } from "react";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	CardFooter,
-	CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, DollarSign, Copy, Check } from "lucide-react";
+import { DollarSign, Copy, Check } from "lucide-react";
 import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
 import { createClient } from "@/utils/supabase/client";
-import { encodedRedirect } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 type AIApp = {
-	id: string;
-	name: string;
-	icon: React.ReactNode;
-	color: string;
-	loginUrl: string;
-	uuid: string;
-	rating: string;
-	multiplier: string;
-	tokenPrice: string;
-	amountSpent: number;
-	usage: number;
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+  color: string;
+  loginUrl: string;
+  uuid: string;
+  rating: string;
+  multiplier: string;
+  tokenPrice: string;
+  amountSpent: number;
+  usage: number;
 };
 
 type AIAppProps = {
-	app: AIApp;
+  app: AIApp;
 };
 
 export function AIApplicationCard({ app }: AIAppProps) {
-	const router = useRouter();
-	const pathname = usePathname();
-	const [uuid, setUUID] = useState<string | null>(null);
-	const [copiedUUID, setCopiedUUID] = useState(false);
-	const appName = app.name;
-	const avgSpent = 6.73;
-	const supabase = createClient();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [uuid, setUUID] = useState<string | null>(null);
+  const [copiedUUID, setCopiedUUID] = useState(false);
+  const appName = app.name;
+  const avgSpent = 6.73;
+  const supabase = createClient();
 
-	const handleGenerateUUID = async () => {
-		const {
-			data: { user },
-		} = await supabase.auth.getUser();
+  const handleGoogleSignIn = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-		if (!user) {
-			const next = pathname ? encodeURIComponent(pathname) : undefined;
-			router.push(`/sign-in?message=You need to sign in&next=${next}`);
-			return;
-		}
+      if (error) throw error;
 
-		const newUUID = await generateUserConnectionKey(app.id);
-		setUUID(newUUID);
-	};
+      if (data) {
+        const newUUID = await generateUserConnectionKey(app.id);
+        setUUID(newUUID);
+      }
+    } catch (error) {
+      console.error('Error signing in with Google:', error);
+    }
+  };
 
-	const handleCopyUUID = () => {
-		if (uuid) {
-			navigator.clipboard.writeText(uuid);
-			setCopiedUUID(true);
-			setTimeout(() => setCopiedUUID(false), 2000);
-		}
-	};
+  const handleCopyUUID = () => {
+    if (uuid) {
+      navigator.clipboard.writeText(uuid);
+      setCopiedUUID(true);
+      setTimeout(() => setCopiedUUID(false), 2000);
+    }
+  };
 
-	const truncateAppName = (name: string, maxLength: number) => {
-		return name.length > maxLength
-			? name.substring(0, maxLength - 3) + "..."
-			: name;
-	};
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white p-4">
+      <div className="w-full max-w-3xl bg-white border-8 border-black shadow-[24px_24px_0_0_#000] transition-all duration-300 hover:shadow-[12px_12px_0_0_#000] hover:translate-x-3 hover:translate-y-3">
+        <div className="p-6 space-y-8">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Image
+                src="/0_0.jpeg"
+                alt="Hiero logo"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+              />
+              <h2 className="text-6xl text-black font-black uppercase tracking-tighter">Hiero</h2>
+            </div>
+            <div className="bg-black text-white text-sm font-bold uppercase py-2 px-4 transform rotate-2">
+              Beta
+            </div>
+          </div>
 
-	return (
-		<div className="flex justify-center p-4 pt-8 sm:pt-16">
-			<Card className="w-full max-w-md bg-white/90 backdrop-blur-sm">
-				<CardHeader className="space-y-1 p-4 sm:p-6">
-					<div className="flex items-center justify-center mb-2 sm:mb-4">
-						<div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-full mr-2 transform rotate-12"></div>
-						<CardTitle className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-							HIERO
-						</CardTitle>
-					</div>
-					<CardDescription className="text-center text-base sm:text-lg">
-						Access 100s of apps with one subscription!
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-4 p-4 sm:p-6">
-					<div className="bg-blue-50 p-3 sm:p-4 rounded-lg text-center">
-						<h3 className="text-xl sm:text-2xl font-bold text-blue-800 mb-2">
-							{appName}
-						</h3>
-						<div className="flex justify-center space-x-2 sm:space-x-4 mb-2">
-							<Badge
-								variant="secondary"
-								className="flex items-center text-sm sm:text-lg"
-							>
-								<DollarSign className="w-4 h-4 sm:w-5 sm:h-5 mr-1 text-green-500" />
-								${avgSpent.toFixed(2)}/month
-							</Badge>
-						</div>
-						<p className="text-xs sm:text-sm text-blue-600">
-							Average cost per user per month
-						</p>
-					</div>
-				</CardContent>
-				<CardFooter className="flex flex-col space-y-4 p-4 sm:p-6">
-					{!uuid ? (
-						<Button
-							onClick={handleGenerateUUID}
-							className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 sm:py-3 px-4 transition-all duration-200 transform hover:scale-105 text-base sm:text-lg"
-						>
-							Connect to Hiero
-						</Button>
-					) : (
-						<div className="w-full space-y-2">
-							<div className="flex items-center justify-between bg-gray-100 p-2 rounded">
-								<span className="font-mono text-xs sm:text-sm truncate text-black flex-grow mr-2">
-									{uuid}
-								</span>
-								<Button
-									onClick={handleCopyUUID}
-									size="sm"
-									className="flex-shrink-0"
-								>
-									{copiedUUID ? (
-										<Check className="h-4 w-4" />
-									) : (
-										<Copy className="h-4 w-4" />
-									)}
-								</Button>
-							</div>
-							<p className="text-xs sm:text-sm text-center text-gray-600">
-								Your UUID has been generated. Copy it to use with {appName}.
-							</p>
-						</div>
-					)}
-					<p className="text-xs sm:text-sm text-center text-gray-600">
-						By connecting, you agree to Hiero&apos;s{" "}
-						<a href="#" className="text-blue-600 hover:underline">
-							Terms of Service
-						</a>{" "}
-						and{" "}
-						<a href="#" className="text-blue-600 hover:underline">
-							Privacy Policy
-						</a>
-					</p>
-				</CardFooter>
-			</Card>
-		</div>
-	);
+          {/* Tagline */}
+          <p className="text-2xl font-bold text-center border-y-4 border-black py-4 text-black">
+            One Subscription for everything, use any AI application from one subscription.
+          </p>
+
+          {/* App Info */}
+          <div className="bg-black text-white p-8 -mx-8">
+            <h3 className="text-4xl font-bold mb-4">{appName}</h3>
+            <div className="flex items-center space-x-3">
+              <DollarSign className="w-12 h-12" />
+              <span className="text-5xl font-bold">${avgSpent.toFixed(2)}/month</span>
+            </div>
+            <p className="text-2xl mt-2">Average cost per user per month</p>
+          </div>
+
+          {/* Action Area */}
+          <div className="space-y-6 flex justify-center"> {/* Added flex and justify-center */}
+            {!uuid ? (
+              <button
+                onClick={handleGoogleSignIn}
+                className="w-2/3 p-0 flex justify-center items-center transition-all duration-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              >
+                <Image
+                  src="/gauth/Web/svg/dark/web_dark_rd_SI.svg"
+                  alt="Sign in with Google"
+                  width={100}
+                  height={91}
+                  className="w-full h-auto"
+                />
+              </button>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between bg-gray-100 p-6 border-4 border-black">
+                  <span className="font-mono text-2xl truncate flex-grow mr-4">{uuid}</span>
+                  <Button
+                    onClick={handleCopyUUID}
+                    size="lg"
+                    className="bg-black text-white hover:bg-white hover:text-black border-2 border-black text-2xl py-4 px-6"
+                  >
+                    {copiedUUID ? (
+                      <Check className="h-8 w-8" />
+                    ) : (
+                      <Copy className="h-8 w-8" />
+                    )}
+                  </Button>
+                </div>
+                <p className="text-xl text-center font-bold">
+                  Your UUID has been generated. Copy it to use with {appName}.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t-4 border-black p-6 text-black">
+          <p className="text-sm text-center">
+            By connecting, you agree to Hiero's{" "}
+            <a href="#" className="underline font-bold hover:text-gray-600">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="#" className="underline font-bold hover:text-gray-600">
+              Privacy Policy
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }
