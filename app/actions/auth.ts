@@ -153,3 +153,25 @@ export const signInWithGitHub = async () => {
 
 	return redirect(data.url);
 };
+
+export const signInWithGoogleAuth = async () => {
+	const supabase = createClient();
+	const origin = headers().get("origin");
+	const { data, error } = await supabase.auth.signInWithOAuth({
+		provider: "google",
+		options: {
+			redirectTo: `${origin}/auth/callback`,
+		},
+	});
+
+	if (error) {
+		console.error("Error signing in with Google:", error);
+		return encodedRedirect(
+			"error",
+			"/sign-in",
+			"Could not sign in with Google"
+		);
+	}
+
+	return redirect(data.url);
+};
