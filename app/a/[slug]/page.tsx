@@ -52,7 +52,7 @@ export default async function AppPage({
 		usage: Math.floor(Math.random() * 100),
 	};
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<div className="container  py-4">
 			<AIApplicationCard app={mockAppData} />
 		</div>
 	);
