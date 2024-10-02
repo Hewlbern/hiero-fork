@@ -84,7 +84,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
 						</CardTitle>
 					</div>
 					<CardDescription className="text-center text-base sm:text-lg">
-						Access 100s of apps with one subscription!
+						Access 100s of apps with one subscription
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4 p-4 sm:p-6">
@@ -112,7 +112,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
 							onClick={handleGenerateUUID}
 							className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 sm:py-3 px-4 transition-all duration-200 transform hover:scale-105 text-base sm:text-lg"
 						>
-							Connect to Hiero
+							Access with Hiero
 						</Button>
 					) : (
 						<div className="w-full space-y-2">

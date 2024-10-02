@@ -17,16 +17,18 @@ export default function Login({
 
 	return (
 		<form className="flex-1 flex flex-col min-w-64 mt-8">
-			<h1 className="text-2xl font-medium">Sign in</h1>
-			<p className="text-sm text-foreground">
-				Don't have an account?{" "}
-				<Link
-					className="text-foreground font-medium underline"
-					href={signUpLink}
-				>
-					Sign up
-				</Link>
-			</p>
+			<div className="flex flex-col justify-center items-center">
+				<h1 className="text-2xl font-medium">Sign in</h1>
+				<p className="text-sm text-foreground">
+					or{" "}
+					<Link
+						className="text-foreground font-medium text-blue-500 underline"
+						href={signUpLink}
+					>
+						create an account
+					</Link>
+				</p>
+			</div>
 			<div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
 				<Label htmlFor="email">Email</Label>
 				<Input name="email" placeholder="you@example.com" />
