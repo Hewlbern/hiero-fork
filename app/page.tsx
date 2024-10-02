@@ -3,7 +3,6 @@
 import Head from "next/head";
 import { Button } from "@/components/ui/button";
 import { JoinWaitlistModal } from "@/components/join-waitlist-modal";
-import Image from "next/image";
 
 export default function Home() {
 	return (
