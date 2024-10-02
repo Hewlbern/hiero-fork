@@ -143,11 +143,11 @@ export function AIApplicationCard({ app }: AIAppProps) {
         <div className="border-t-4 border-black p-6 text-black">
           <p className="text-sm text-center">
             By connecting, you agree to Hiero's{" "}
-            <a href="#" className="underline font-bold hover:text-gray-600">
+            <a href="/terms" className="underline font-bold hover:text-gray-600">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="underline font-bold hover:text-gray-600">
+            <a href="/privacy" className="underline font-bold hover:text-gray-600">
               Privacy Policy
             </a>
           </p>

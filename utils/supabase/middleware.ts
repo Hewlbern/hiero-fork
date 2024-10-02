@@ -44,10 +44,11 @@ export const updateSession = async (request: NextRequest) => {
 			if (
 				!request.nextUrl.pathname.startsWith("/sign") &&
 				!request.nextUrl.pathname.startsWith("/forgot") &&
+				!request.nextUrl.pathname.startsWith("/terms") &&
+				!request.nextUrl.pathname.startsWith("/privacy") &&
 				request.nextUrl.pathname !== "/"
 			) {
-				// If it's not a sign-in or sign-up page, and it's not a public app page, redirect to sign-in
-				// Note this currently also directs the main commercial page to sign in
+				// If it's not a sign-in, sign-up, terms, privacy, or public app page, redirect to sign-in
 				return NextResponse.redirect(new URL("/sign-in", request.url));
 			}
 		} else {
@@ -56,7 +57,7 @@ export const updateSession = async (request: NextRequest) => {
 				request.nextUrl.pathname.startsWith("/sign") ||
 				request.nextUrl.pathname === "/"
 			) {
-				// If it's not a sign-in or sign-up page, and it's not a public app page, redirect to sign-in
+				// If it's a sign-in or sign-up page, or the root page, redirect to dashboard
 				return NextResponse.redirect(
 					new URL("/protected/dashboard", request.url)
 				);
