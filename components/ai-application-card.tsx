@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DollarSign, Copy, Check } from "lucide-react";
 import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
-import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { signInWithGoogleAuth } from "@/app/actions/auth";
 
 type AIApp = {
   id: string;
@@ -34,23 +34,12 @@ export function AIApplicationCard({ app }: AIAppProps) {
   const [copiedUUID, setCopiedUUID] = useState(false);
   const appName = app.name;
   const avgSpent = 6.73;
-  const supabase = createClient();
 
   const handleGoogleSignIn = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-
-      if (error) throw error;
-
-      if (data) {
-        const newUUID = await generateUserConnectionKey(app.id);
-        setUUID(newUUID);
-      }
+      await signInWithGoogleAuth();
+      const newUUID = await generateUserConnectionKey(app.id);
+      setUUID(newUUID);
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }
