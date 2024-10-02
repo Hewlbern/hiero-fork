@@ -37,7 +37,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogleAuth();
+      await signInWithGoogleAuth("/protected/checkout");
       const newUUID = await generateUserConnectionKey(app.id);
       setUUID(newUUID);
     } catch (error) {

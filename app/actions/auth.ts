@@ -154,13 +154,18 @@ export const signInWithGitHub = async () => {
 	return redirect(data.url);
 };
 
-export const signInWithGoogleAuth = async () => {
+export const signInWithGoogleAuth = async (next?: string) => {
+	console.log("Starting Google sign-in process");
 	const supabase = createClient();
 	const origin = headers().get("origin");
+	const redirectTo = `${origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+	
+	console.log("Redirect URL:", redirectTo);
+
 	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider: "google",
 		options: {
-			redirectTo: `${origin}/auth/callback`,
+			redirectTo,
 		},
 	});
 
@@ -173,5 +178,6 @@ export const signInWithGoogleAuth = async () => {
 		);
 	}
 
+	console.log("Google sign-in successful, redirecting to:", data.url);
 	return redirect(data.url);
 };
