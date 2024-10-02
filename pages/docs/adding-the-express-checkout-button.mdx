@@ -1,0 +1,78 @@
+import { Steps } from "nextra/components";
+
+# Adding the Express Checkout Button
+
+The Hiero Express Checkout Button allows users to pay for usage using Hiero, enabling them to either log into their existing Hiero account or pay with Hiero directly. This guide will walk you through the process of adding and configuring the Hiero Express Checkout Button in your application.
+
+<Steps>
+## Install the Hiero UI Package
+
+First, install the Hiero UI package in your project:
+
+```bash copy
+npm install @hiero/ui
+```
+
+## Import and Use the HieroCheckoutButton
+
+Import the `HieroCheckoutButton` component from the `@hiero/ui` package:
+
+```jsx copy
+import { HieroCheckoutButton } from '@hiero/ui';
+```
+
+Then, use the component in your React application:
+
+```jsx copy
+<HieroCheckoutButton 
+  appName="your-app-name"
+  redirectUrl="https://your-app.com/success"
+  email="user@example.com" // Optional
+/>
+```
+
+Make sure to replace `"your-app-name"` with your actual Hiero app name, and `"https://your-app.com/success"` with your actual redirect URL. The `email` prop is optional and can be omitted if you don't have the user's email address.
+
+## Customize the Button (Optional)
+
+The `HieroCheckoutButton` component comes pre-styled. If you need to customize its appearance, refer to the `@hiero/ui` documentation for available customization options.
+
+## Handle Checkout Completion
+
+After the user completes the checkout process on Hiero, they will be redirected back to your application. The redirect URL will include a connection key as a parameter.
+
+1. Create a completion page (e.g., `pages/checkout/complete.tsx`)
+2. In this page, retrieve the connection key from the URL parameters
+3. Use the connection key to verify the transaction status with the Hiero API
+4. Update your application's state accordingly (e.g., grant access, update user balance)
+5. If an email is provided during the checkout process, use it to update the user's information as needed
+
+## Test the Integration
+
+Before going live, thoroughly test the integration:
+
+1. Click the Checkout with Hiero button
+2. Complete the checkout process on Hiero
+3. Verify that you're redirected back to your application with the connection key
+4. Confirm that the transaction is properly recorded and the user's access is updated
+
+</Steps>
+
+## Best Practices
+
+1. **Security**: Ensure that the `appName` is not exposed to the client-side. You may need to generate this value server-side.
+
+2. **Connection Key Handling**: Securely store and manage the connection key received after the checkout process.
+
+3. **Email Verification**: If an email is provided during checkout, verify it against your existing user records and update as necessary.
+
+4. **Error Handling**: Implement proper error handling for cases where the checkout process is interrupted or fails.
+
+5. **User Experience**: Consider adding loading states and clear messaging throughout the checkout process.
+
+6. **Responsive Design**: Ensure that the checkout button and process work well on various device sizes.
+
+
+By following these steps and best practices, you can successfully integrate the Hiero Express Checkout Button into your application, providing a seamless payment experience for your users.
+
+
