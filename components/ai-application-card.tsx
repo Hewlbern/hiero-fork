@@ -65,7 +65,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
     try {
       const newUUID = await generateUserConnectionKey(app.id);
       setUUID(newUUID);
-      router.push(`/protected/checkout?uuid=${encodeURIComponent(newUUID)}`);
+      router.push(`/protected/save-card?uuid=${encodeURIComponent(newUUID)}`);
     } catch (error) {
       console.error('Error generating UUID:', error);
     }
