@@ -1,53 +1,54 @@
 import Head from "next/head";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Link from 'next/link';
 
 export default function UserFAQ() {
 	const structuredData = {
 		"@context": "https://schema.org",
-		"@type": "FAQPage",
-		"mainEntity": [
-			{
-				"@type": "Question",
-				"name": "What is Hiero and how does it work for users?",
-				"acceptedAnswer": {
-					"@type": "Answer",
-					"text": "Hiero is a single subscription service that gives you access to multiple AI applications. You pay one fee to Hiero, and we distribute payments to AI providers based on your actual usage across different platforms."
+			"@type": "FAQPage",
+			"mainEntity": [
+				{
+					"@type": "Question",
+					"name": "What is Hiero and how does it work for users?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Hiero is a single subscription service that gives you access to multiple AI applications. You pay one fee to Hiero, and we distribute payments to AI providers based on your actual usage across different platforms."
+					}
+				},
+				{
+					"@type": "Question",
+					"name": "Can I switch between different AI platforms with Hiero?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Yes! One of the key benefits of Hiero is the ability to switch between any AI platform provider at will. Your single subscription allows you to explore and use various AI services without being locked into a specific provider."
+					}
+				},
+				{
+					"@type": "Question",
+					"name": "How does Hiero's usage-based payment model benefit me?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Hiero's model ensures you only pay for what you use across different AI services. This flexibility allows you to try various AI tools without committing to multiple subscriptions, potentially saving you money and providing a more tailored AI experience."
+					}
+				},
+				{
+					"@type": "Question",
+					"name": "Are there any limitations on which AI services I can use with Hiero?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Hiero partners with a wide range of AI service providers. While you can access any of our partner services, the specific offerings may vary. We're constantly expanding our network to provide you with more options and capabilities."
+					}
+				},
+				{
+					"@type": "Question",
+					"name": "How does Hiero simplify my AI service experience?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Hiero streamlines your AI experience by offering a single point of billing and access for multiple AI services. This means one subscription, one payment, and one platform to manage all your AI needs, saving you time and reducing complexity."
+					}
 				}
-			},
-			{
-				"@type": "Question",
-				"name": "Can I switch between different AI platforms with Hiero?",
-				"acceptedAnswer": {
-					"@type": "Answer",
-					"text": "Yes! One of the key benefits of Hiero is the ability to switch between any AI platform provider at will. Your single subscription allows you to explore and use various AI services without being locked into a specific provider."
-				}
-			},
-			{
-				"@type": "Question",
-				"name": "How does Hiero's usage-based payment model benefit me?",
-				"acceptedAnswer": {
-					"@type": "Answer",
-					"text": "Hiero's model ensures you only pay for what you use across different AI services. This flexibility allows you to try various AI tools without committing to multiple subscriptions, potentially saving you money and providing a more tailored AI experience."
-				}
-			},
-			{
-				"@type": "Question",
-				"name": "Are there any limitations on which AI services I can use with Hiero?",
-				"acceptedAnswer": {
-					"@type": "Answer",
-					"text": "Hiero partners with a wide range of AI service providers. While you can access any of our partner services, the specific offerings may vary. We're constantly expanding our network to provide you with more options and capabilities."
-				}
-			},
-			{
-				"@type": "Question",
-				"name": "How does Hiero simplify my AI service experience?",
-				"acceptedAnswer": {
-					"@type": "Answer",
-					"text": "Hiero streamlines your AI experience by offering a single point of billing and access for multiple AI services. This means one subscription, one payment, and one platform to manage all your AI needs, saving you time and reducing complexity."
-				}
-			}
-		]
-	};
+			]
+		};
 
 	return (
 		<>
@@ -94,6 +95,11 @@ export default function UserFAQ() {
 								</Accordion>
 							</div>
 						))}
+					</div>
+					<div className="mt-12 text-center">
+						<p className="text-lg mb-4">For more information:</p>
+						<Link href="/blog/business-faq" className="text-blue-600 hover:underline mr-4">Business FAQ</Link>
+						<Link href="/blog/all-in-one-ai-subscription" className="text-blue-600 hover:underline">All-in-One AI Subscription</Link>
 					</div>
 				</div>
 			</main>

@@ -157,6 +157,11 @@ export default function HieroLandingPage() {
 								answer="Yes! Hiero offers unified AI management, allowing you to oversee all your AI apps from a single, user-friendly dashboard."
 							/>
 						</div>
+						<div className="mt-8 text-center">
+							<p className="text-lg mb-4">For more information, check out our detailed FAQs:</p>
+							<Link href="/blog/user-faq" className="text-blue-600 hover:underline mr-4">User FAQ</Link>
+							<Link href="/blog/business-faq" className="text-blue-600 hover:underline">Business FAQ</Link>
+						</div>
 					</div>
 				</section>
 

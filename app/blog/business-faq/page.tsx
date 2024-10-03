@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Link from 'next/link';
 
 export default function BusinessFAQ() {
 	const structuredData = {
@@ -94,6 +95,11 @@ export default function BusinessFAQ() {
 								</Accordion>
 							</div>
 						))}
+					</div>
+					<div className="mt-12 text-center">
+						<p className="text-lg mb-4">For more information:</p>
+						<Link href="/blog/user-faq" className="text-blue-600 hover:underline mr-4">User FAQ</Link>
+						<Link href="/blog/all-in-one-ai-subscription" className="text-blue-600 hover:underline">All-in-One AI Subscription</Link>
 					</div>
 				</div>
 			</main>
