@@ -14,6 +14,8 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^4.6.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
@@ -29,7 +31,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "resend": "^4.0.0",
-    "simple-icons": "^13.11.0"
+    "simple-icons": "^13.11.0",
+    "stripe": "^17.0.0"
   },
   "devDependencies": {
     "@snaplet/copycat": "^5.0.0",
@@ -45,5 +48,5 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.3.3"
   },
-  "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
+  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
 }
