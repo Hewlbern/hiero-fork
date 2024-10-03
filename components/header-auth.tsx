@@ -1,77 +1,61 @@
 import { signOutAction } from "@/app/actions/auth";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { JoinWaitlistModal } from "./join-waitlist-modal";
+import { createClient } from "@/utils/supabase/server";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Menu } from "lucide-react";
 
-export default async function AuthButton() {
+export async function AuthButton() {
 	const {
 		data: { user },
 	} = await createClient().auth.getUser();
 
-	if (!hasEnvVars) {
-		return (
-			<>
-				<div className="flex gap-4 items-center">
-					<div>
-						<Badge
-							variant={"default"}
-							className="font-normal pointer-events-none"
-						>
-							Please update .env.local file with anon key and url
-						</Badge>
-					</div>
-					<div className="flex gap-2">
-						<Button
-							asChild
-							size="sm"
-							variant={"outline"}
-							disabled
-							className="opacity-75 cursor-none pointer-events-none"
-						>
-							<Link href="/sign-in">Sign in</Link>
-						</Button>
-						<Button
-							asChild
-							size="sm"
-							variant={"default"}
-							disabled
-							className="opacity-75 cursor-none pointer-events-none"
-						>
-							<Link href="/sign-up">Sign up</Link>
-						</Button>
-					</div>
-				</div>
-			</>
-		);
-	}
-	return user ? (
-		<div className="flex items-center gap-4">
-			Hey, {user.email}!
-			<form action={signOutAction}>
-				<Button type="submit" variant={"outline"}>
-					Sign out
-				</Button>
-			</form>
-		</div>
-	) : (
-		<div className="flex gap-2">
-			<Button asChild size="sm" variant={"outline"}>
-				<Link href="/sign-in">Sign in</Link>
-			</Button>
-			<Button asChild size="sm" variant={"default"}>
-				<Link href="/sign-up">Sign up</Link>
-			</Button>
+	return (
+		<div className="flex justify-end">
+			{user ? (
+				<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button className="bg-white text-black border-2 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px] transition-all font-bold text-lg">
+								{user.email}
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent className="border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] bg-black text-white">
+							<DropdownMenuItem>
+								<form action={signOutAction} className="w-full">
+									<Button
+										type="submit"
+										variant="ghost"
+										className="w-full justify-start font-bold hover:bg-white hover:text-black transition-colors"
+									>
+										Log Out
+									</Button>
+								</form>
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+				</DropdownMenu>
+			) : (
+				<JoinWaitlistModal>
+					<Button className="bg-[#D05353] text-white border-2 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px] hover:bg-[#FF8C00] transition-all font-bold text-lg">
+						Join Waitlist
+					</Button>
+				</JoinWaitlistModal>
+			)}
 		</div>
 	);
 }
 
-export function Header() {
+export default function Header() {
 	return (
-		<header className="w-full bg-black border-b-4 border-white p-4">
-			<div className="container mx-auto flex justify-between items-center">
+		<header className="w-full bg-black border-b-3 border-white p-3">
+			<div className="container mx-auto flex flex-wrap justify-between items-center">
 				<Link href="/" className="flex items-center">
 					<Image
 						src="/0_0.jpeg"
@@ -80,11 +64,29 @@ export function Header() {
 						height={40}
 						className="border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
 					/>
-					<span className="ml-3 text-white text-2xl font-black uppercase tracking-tighter">
+					<span className="ml-3 text-white text-xl md:text-2xl font-black uppercase tracking-tighter">
 						Hiero
 					</span>
 				</Link>
-				<AuthButton />
+				<div className="flex items-center space-x-2 md:space-x-4">
+					<div className="hidden md:block">
+						<AuthButton />
+					</div>
+					<ThemeSwitcher />
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild className="md:hidden">
+							<Button variant="outline" size="icon">
+								<Menu className="h-5 w-5" />
+								<span className="sr-only">Menu</span>
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end" className="w-48 md:hidden">
+							<DropdownMenuItem>
+								<AuthButton />
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
 			</div>
 		</header>
 	);

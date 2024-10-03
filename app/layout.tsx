@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import  Header  from "@/components/header-auth";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import "../styles/globals.css";
@@ -20,20 +20,17 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en" className={GeistSans.className} suppressHydrationWarning>
-			<body className="bg-background text-foreground flex flex-col min-h-screen">
+			<body className="bg-background text-foreground">
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"
 					enableSystem
 					disableTransitionOnChange
 				>
+					<Header />
 					<main className="flex-grow flex flex-col items-center">
 						{children}
 					</main>
-
-					<footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-1 py-1">
-						<ThemeSwitcher />
-					</footer>
 				</ThemeProvider>
 			</body>
 		</html>

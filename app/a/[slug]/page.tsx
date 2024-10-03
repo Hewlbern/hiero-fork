@@ -54,8 +54,8 @@ export default async function AppPage({
 	};
 
 	return (
-		<div className="container py-4">
+		<>
 			<AIApplicationCard app={mockAppData} />
-		</div>
+		</>
 	);
 }
