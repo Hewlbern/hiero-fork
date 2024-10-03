@@ -63,8 +63,8 @@ importers:
         specifier: ^1.3.1
         version: 1.3.1(next@14.2.14(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       hiero-ui:
-        specifier: ^0.0.7
-        version: 0.0.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^0.0.10
+        version: 0.0.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       lucide-react:
         specifier: ^0.436.0
         version: 0.436.0(react@18.2.0)
@@ -2100,8 +2100,8 @@ packages:
   hastscript@8.0.0:
     resolution: {integrity: sha512-dMOtzCEd3ABUeSIISmrETiKuyydk1w0pa+gE/uormcTpSYuaNJPbX1NU3JLyscSLjwAQM8bWMhhIlnCqnRvDTw==}
 
-  hiero-ui@0.0.7:
-    resolution: {integrity: sha512-ojj/Zl0+FL8K6vN2yDRVaFabCuWyQT2rVVc++9pEngSp2BS9Z/dVTYj2xdhnE4lbvZ9HakjrGHlKQKGz8C495Q==}
+  hiero-ui@0.0.10:
+    resolution: {integrity: sha512-e4oomKkoc5N919Hm47BsYLzEUFRYN5wX6UaMSSV4Hc9dCgw1m/2omwMxr9ytxLj8PZYg4fMHuXD/vSbOpgD4pg==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -5970,7 +5970,7 @@ snapshots:
       property-information: 6.5.0
       space-separated-tokens: 2.0.2
 
-  hiero-ui@0.0.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  hiero-ui@0.0.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
