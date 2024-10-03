@@ -31,7 +31,7 @@ export default function RootLayout({
 						{children}
 					</main>
 
-					<footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-4">
+					<footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-1 py-1">
 						<ThemeSwitcher />
 					</footer>
 				</ThemeProvider>

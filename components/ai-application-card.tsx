@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
+import { signInWithGoogleAuth } from "@/app/actions/auth";
 
 type AIApp = {
   id: string;
@@ -22,6 +23,7 @@ type AIApp = {
   tokenPrice: string;
   amountSpent: number;
   usage: number;
+  slug: string; // Add this new property
 };
 
 type AIAppProps = {
@@ -46,16 +48,11 @@ export function AIApplicationCard({ app }: AIAppProps) {
     };
     checkUser();
   }, []);
-
+  
   const handleGoogleSignIn = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}${pathname}`,
-        },
-      });
-      if (error) throw error;
+      console.log(`Redirecting to: /a/${app.slug}`);
+      await signInWithGoogleAuth(`/a/${app.slug}`);
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }
@@ -65,7 +62,6 @@ export function AIApplicationCard({ app }: AIAppProps) {
     try {
       const newUUID = await generateUserConnectionKey(app.id);
       setUUID(newUUID);
-      // Redirect to checkout page with UUID as a query parameter
       router.push(`/protected/checkout?uuid=${encodeURIComponent(newUUID)}`);
     } catch (error) {
       console.error('Error generating UUID:', error);
@@ -131,39 +127,35 @@ export function AIApplicationCard({ app }: AIAppProps) {
                   className="w-full h-auto"
                 />
               </button>
-            ) : !uuid ? (
+            ) : (
               <Button
                 onClick={handleGenerateUUID}
                 size="lg"
-                className="w-full bg-black text-white hover:bg-green-500 hover:text-black border-2 sm:border-4 border-black text-base sm:text-3xl py-3 sm:py-6 px-4 sm:px-8 font-extrabold uppercase tracking-wider transform transition-all duration-200 hover:scale-105 hover:rotate-1 relative overflow-hidden group before:content-[''] before:absolute before:top-0 before:right-0 before:w-1/2 before:h-full before:bg-green-500 before:transform before:skew-x-[-12deg] before:transition-transform before:duration-300 hover:before:translate-x-[-100%] shadow-lg hover:shadow-xl"
+                className="w-full bg-black text-white hover:bg-green-500 hover:text-black border-2 sm:border-4 border-black text-xl sm:text-3xl py-3 sm:py-6 px-4 sm:px-8 font-extrabold uppercase tracking-wider transform transition-all duration-200 hover:scale-105 hover:rotate-1 relative overflow-hidden group before:content-[''] before:absolute before:top-0 before:right-0 before:w-1/2 before:h-full before:bg-green-500 before:transform before:skew-x-[-12deg] before:transition-transform before:duration-300 hover:before:translate-x-[-100%] shadow-lg hover:shadow-xl"
               >
-                <span className="relative z-10 flex flex-col sm:flex-row items-center justify-center">
-                  <span className="block sm:inline">Connect your</span>
-                  <span className="block sm:inline sm:ml-2">Hiero Wallet!</span>
-                </span>
+                <span className="relative z-10">Connect your Hiero Wallet!</span>
                 <span className="absolute inset-0 bg-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
               </Button>
-            ) : (
-              <div className="w-full space-y-4">
-                <div className="flex items-center justify-between bg-gray-100 p-3 sm:p-6 border-2 sm:border-4 border-black">
-                  <span className="font-mono text-lg sm:text-2xl truncate flex-grow mr-2 sm:mr-4">{uuid}</span>
-                  <Button
-                    onClick={handleCopyUUID}
-                    size="sm"
-                    className="bg-black text-white hover:bg-white hover:text-black border-2 border-black text-xl sm:text-2xl py-2 sm:py-4 px-3 sm:px-6"
-                  >
-                    {copiedUUID ? (
-                      <Check className="h-6 w-6 sm:h-8 sm:w-8" />
-                    ) : (
-                      <Copy className="h-6 w-6 sm:h-8 sm:w-8" />
-                    )}
-                  </Button>
-                </div>
-                <p className="text-base sm:text-xl text-center font-bold">
-                  Your UUID has been generated. Copy it to use with {appName}.
-                </p>
-              </div>
             )}
+            <div className="w-full space-y-4">
+              <div className="flex items-center justify-between bg-gray-100 p-3 sm:p-6 border-2 sm:border-4 border-black">
+                <span className="font-mono text-lg sm:text-2xl truncate flex-grow mr-2 sm:mr-4">{uuid}</span>
+                <Button
+                  onClick={handleCopyUUID}
+                  size="sm"
+                  className="bg-black text-white hover:bg-white hover:text-black border-2 border-black text-xl sm:text-2xl py-2 sm:py-4 px-3 sm:px-6"
+                >
+                  {copiedUUID ? (
+                    <Check className="h-6 w-6 sm:h-8 sm:w-8" />
+                  ) : (
+                    <Copy className="h-6 w-6 sm:h-8 sm:w-8" />
+                  )}
+                </Button>
+              </div>
+              <p className="text-base sm:text-xl text-center font-bold">
+                Your UUID has been generated. Copy it to use with {appName}.
+              </p>
+            </div>
           </div>
         </div>
 

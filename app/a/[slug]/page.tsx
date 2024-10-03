@@ -50,9 +50,11 @@ export default async function AppPage({
 		tokenPrice: (Math.random() * 0.0001 + 0.0001).toFixed(5),
 		amountSpent: Math.floor(Math.random() * 15) + 1,
 		usage: Math.floor(Math.random() * 100),
+		slug: params.slug, // Add this new property
 	};
+
 	return (
-		<div className="container  py-4">
+		<div className="container py-4">
 			<AIApplicationCard app={mockAppData} />
 		</div>
 	);

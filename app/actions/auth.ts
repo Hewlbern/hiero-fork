@@ -155,12 +155,15 @@ export const signInWithGitHub = async () => {
 };
 
 export const signInWithGoogleAuth = async (next?: string) => {
-	console.log("Starting Google sign-in process");
+	
+
 	const supabase = createClient();
 	const origin = headers().get("origin");
-	const redirectTo = `${origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+	const isLocalEnv = process.env.NODE_ENV === "development";
 	
-	console.log("Redirect URL:", redirectTo);
+	const baseRedirectUrl = isLocalEnv ? `${origin}/auth/callback` : "https://hiero.gl/auth/callback";
+	const redirectTo = `${baseRedirectUrl}${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+	
 
 	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider: "google",
