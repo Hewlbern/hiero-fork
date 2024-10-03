@@ -8,26 +8,26 @@ export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>Hiero: Get Paid for AI Agent Tasks | AI Payment Platform</title>
+				<title>Hiero: One Subscription for Everything AI | All-in-One AI Platform</title>
 				<meta
 					name="description"
-					content="Hiero connects skilled individuals with AI agents. Earn money by fulfilling AI-driven tasks and shaping the future of artificial intelligence."
+					content="Hiero offers a single subscription for all your AI needs. Access a wide range of AI tools, services, and resources with one simple plan."
 				/>
 				<meta
 					name="keywords"
-					content="AI payments, AI agent tasks, earn money with AI, artificial intelligence jobs, Hiero"
+					content="AI subscription, all-in-one AI, AI platform, artificial intelligence services, Hiero"
 				/>
 				<meta
 					property="og:title"
-					content="Hiero: Get Paid for AI Agent Tasks | AI Payment Platform"
+					content="Hiero: One Subscription for Everything AI | All-in-One AI Platform"
 				/>
 				<meta
 					property="og:description"
-					content="Earn money by fulfilling AI-driven tasks and shaping the future of artificial intelligence with Hiero."
+					content="Simplify your AI journey with Hiero's all-inclusive subscription. One plan for all your artificial intelligence needs."
 				/>
 				<meta property="og:type" content="website" />
 				<meta property="og:url" content="https://hiero.gl" />
-				<link rel="canonical" href="https://hiero.gl" />
+					<link rel="canonical" href="https://hiero.gl" />
 			</Head>
 			<main className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
 				<h1 className="text-5xl sm:text-7xl md:text-9xl font-black mb-6 sm:mb-12 text-center text-white uppercase tracking-tighter transform -skew-x-12 rotate-2 border-4 sm:border-8 border-black p-2 sm:p-4 bg-black shadow-[8px_8px_0px_0px_rgba(255,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(255,0,0,1)] transition-all duration-300 hover:rotate-0 hover:skew-x-0 hover:scale-105 hover:shadow-[0px_0px_0px_4px_rgba(255,255,255,1),0px_0px_0px_8px_rgba(0,0,0,1)] hover:translate-x-2 hover:translate-y-2">

@@ -62,6 +62,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
     try {
       const newUUID = await generateUserConnectionKey(app.id);
       setUUID(newUUID);
+      // Redirect to checkout page with UUID as a query parameter
       router.push(`/protected/checkout?uuid=${encodeURIComponent(newUUID)}`);
     } catch (error) {
       console.error('Error generating UUID:', error);
@@ -127,7 +128,7 @@ export function AIApplicationCard({ app }: AIAppProps) {
                   className="w-full h-auto"
                 />
               </button>
-            ) : (
+            ) : !uuid ? (
               <Button
                 onClick={handleGenerateUUID}
                 size="lg"
@@ -136,26 +137,27 @@ export function AIApplicationCard({ app }: AIAppProps) {
                 <span className="relative z-10">Connect your Hiero Wallet!</span>
                 <span className="absolute inset-0 bg-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
               </Button>
-            )}
-            <div className="w-full space-y-4">
-              <div className="flex items-center justify-between bg-gray-100 p-3 sm:p-6 border-2 sm:border-4 border-black">
-                <span className="font-mono text-lg sm:text-2xl truncate flex-grow mr-2 sm:mr-4">{uuid}</span>
-                <Button
-                  onClick={handleCopyUUID}
-                  size="sm"
-                  className="bg-black text-white hover:bg-white hover:text-black border-2 border-black text-xl sm:text-2xl py-2 sm:py-4 px-3 sm:px-6"
-                >
-                  {copiedUUID ? (
-                    <Check className="h-6 w-6 sm:h-8 sm:w-8" />
-                  ) : (
-                    <Copy className="h-6 w-6 sm:h-8 sm:w-8" />
-                  )}
-                </Button>
+            ) : (
+              <div className="w-full space-y-4">
+                <div className="flex items-center justify-between bg-gray-100 p-3 sm:p-6 border-2 sm:border-4 border-black">
+                  <span className="font-mono text-lg sm:text-2xl truncate flex-grow mr-2 sm:mr-4">{uuid}</span>
+                  <Button
+                    onClick={handleCopyUUID}
+                    size="sm"
+                    className="bg-black text-white hover:bg-white hover:text-black border-2 border-black text-xl sm:text-2xl py-2 sm:py-4 px-3 sm:px-6"
+                  >
+                    {copiedUUID ? (
+                      <Check className="h-6 w-6 sm:h-8 sm:w-8" />
+                    ) : (
+                      <Copy className="h-6 w-6 sm:h-8 sm:w-8" />
+                    )}
+                  </Button>
+                </div>
+                <p className="text-base sm:text-xl text-center font-bold">
+                  Your UUID has been generated. Copy it to use with {appName}.
+                </p>
               </div>
-              <p className="text-base sm:text-xl text-center font-bold">
-                Your UUID has been generated. Copy it to use with {appName}.
-              </p>
-            </div>
+            )}
           </div>
         </div>
 
