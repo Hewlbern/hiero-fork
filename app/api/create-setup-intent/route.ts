@@ -12,8 +12,8 @@ export async function POST() {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
 			mode: "setup",
-			success_url: `${appDomain()}/protected/save-card-success?session_id={CHECKOUT_SESSION_ID}`,
-			cancel_url: `${appDomain()}/protected/save-card`,
+			success_url: `https://${appDomain()}/protected/save-card-success?session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `https://${appDomain()}/protected/save-card`,
 		});
 
 		return NextResponse.json({ sessionId: session.id });
