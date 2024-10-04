@@ -1,14 +1,14 @@
 import { signOutAction } from "@/app/actions/auth";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Image from "next/image";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { JoinWaitlistModal } from "./join-waitlist-modal";
+} from "../ui/dropdown-menu";
+import { JoinWaitlistModal } from "../join-waitlist-modal";
 import { createClient } from "@/utils/supabase/server";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Menu } from "lucide-react";
@@ -23,7 +23,7 @@ export async function AuthButton() {
 			{user ? (
 				<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button className="bg-white text-black border-2 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px] transition-all font-bold text-lg">
+							<Button className="bg-black text-white border-2 border-white hover:shadow-[6px_6px_0px_0px_rgba(103,232,249,0.5)] hover:translate-x-[-6px] hover:translate-y-[-6px] data-[state=open]:shadow-[6px_6px_0px_0px_rgba(103,232,249,0.5)] data-[state=open]:translate-x-[-6px] data-[state=open]:translate-y-[-6px] transition-all font-bold text-lg">
 								{user.email}
 							</Button>
 						</DropdownMenuTrigger>
@@ -43,7 +43,7 @@ export async function AuthButton() {
 				</DropdownMenu>
 			) : (
 				<JoinWaitlistModal>
-					<Button className="bg-[#D05353] text-white border-2 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px] hover:bg-[#FF8C00] transition-all font-bold text-lg">
+					<Button className="bg-black text-white border-2 border-white hover:shadow-[6px_6px_0px_0px_rgba(103,232,249,0.5)] hover:translate-x-[-6px] hover:translate-y-[-6px] active:shadow-[6px_6px_0px_0px_rgba(103,232,249,0.5)] active:translate-x-[-6px] active:translate-y-[-6px] transition-all font-bold text-lg">
 						Join Waitlist
 					</Button>
 				</JoinWaitlistModal>

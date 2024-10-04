@@ -54,8 +54,8 @@ export default async function AppPage({
 	};
 
 	return (
-		<>
+		<div>
 			<AIApplicationCard app={mockAppData} />
-		</>
+		</div>
 	);
 }

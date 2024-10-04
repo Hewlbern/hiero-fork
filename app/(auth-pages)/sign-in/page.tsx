@@ -6,7 +6,7 @@ import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GitHubSignInButton } from "@/components/github-sign-in-button";
+import { GitHubSignInButton } from "@/components/auth/github-sign-in-button";
 import { useEffect, useState } from "react";
 
 export default function Login({ searchParams }: { searchParams: Message }) {

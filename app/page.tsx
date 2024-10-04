@@ -30,12 +30,13 @@ export default function Home() {
 					<link rel="canonical" href="https://hiero.gl" />
 			</Head>
 			<main className="min-h-screen bg-white flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
-				<h1 className="text-5xl sm:text-7xl md:text-9xl font-black mb-6 sm:mb-12 text-center text-white uppercase tracking-tighter transform -skew-x-12 rotate-2 border-4 sm:border-8 border-black p-2 sm:p-4 bg-black shadow-[8px_8px_0px_0px_rgba(255,0,0,1)] sm:shadow-[16px_16px_0px_0px_rgba(255,0,0,1)] transition-all duration-300 hover:rotate-0 hover:skew-x-0 hover:scale-105 hover:shadow-[0px_0px_0px_4px_rgba(255,255,255,1),0px_0px_0px_8px_rgba(0,0,0,1)] hover:translate-x-2 hover:translate-y-2">
-					Hiero
+				<h1 className="text-5xl sm:text-7xl md:text-9xl font-black mb-6 sm:mb-12 text-center uppercase tracking-tighter transform -skew-x-12 rotate-2 border-4 sm:border-8 border-black p-2 sm:p-4 bg-black relative shadow-[8px_8px_0_0_#34d399] sm:shadow-[16px_16px_0_0_#34d399] transition-all duration-300 hover:rotate-0 hover:skew-x-0 hover:scale-105 hover:shadow-[0px_0px_0px_4px_rgba(255,255,255,1),0px_0px_0px_8px_rgba(0,0,0,1)] hover:translate-x-2 hover:translate-y-2">
+					<span className="text-white relative z-10">Hiero</span>
+					<span className="absolute inset-0 bg-gradient-to-r from-teal-200  via-cyan-300 to-emerald-200 opacity-20 mix-blend-overlay"></span>
 				</h1>
 				<p className="text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-16 text-center max-w-3xl text-white bg-black p-4 sm:p-8 border-4 sm:border-8 border-x-green-100 shadow-neutral-400 sm:shadow-[16px_16px_0px_0px_rgba(255,255,255,1)] transform -rotate-1">
 					A brand new way to charge for usage based apps.{" "}
-					<span className="font-black text-red-600">
+					<span className="font-black bg-gradient-to-r from-sky-400 via-teal-300 to-emerald-500 bg-clip-text text-transparent">
 						Be part of the future.
 					</span>
 				</p>
@@ -44,7 +45,7 @@ export default function Home() {
 						<span className="relative z-10 transform -skew-x-12">
 							Join Waitlist
 						</span>
-						<span className="absolute inset-0 bg-red-600 transform -skew-x-12 -translate-x-full transition-transform duration-300 group-hover:translate-x-0"></span>
+						<span className="absolute inset-0 bg-gradient-to-r from-sky-400 via-teal-300 to-emerald-500 transform -skew-x-12 -translate-x-full transition-transform duration-300 group-hover:translate-x-0"></span>
 					</Button>
 				</JoinWaitlistModal>
 			</main>

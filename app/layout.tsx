@@ -1,4 +1,4 @@
-import  Header  from "@/components/header-auth";
+import  Header  from "@/components/auth/header-auth";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import "../styles/globals.css";
@@ -28,7 +28,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Header />
-					<main className="flex-grow flex flex-col items-center">
+					<main>
 						{children}
 					</main>
 				</ThemeProvider>
