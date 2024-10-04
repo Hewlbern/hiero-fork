@@ -184,3 +184,45 @@ export const signInWithGoogleAuth = async (next?: string) => {
 	console.log("Google sign-in successful, redirecting to:", data.url);
 	return redirect(data.url);
 };
+
+export const handleSendOtp = async (phoneNumber: string) => {
+	const supabase = createClient();
+
+	try {
+		const { error } = await supabase.auth.signInWithOtp({
+			phone: phoneNumber,
+		});
+
+		if (error) throw error;
+
+		return { success: true, message: "OTP sent successfully" };
+	} catch (error) {
+		console.error("Error sending OTP:", error);
+		return { 
+			success: false, 
+			message: error instanceof Error ? error.message : "Failed to send OTP. Please try again." 
+		};
+	}
+};
+
+export const handleVerifyOtp = async (phoneNumber: string, otp: string) => {
+	const supabase = createClient();
+
+	try {
+		const { error } = await supabase.auth.verifyOtp({
+			phone: phoneNumber,
+			token: otp,
+			type: "sms",
+		});
+
+		if (error) throw error;
+
+		return { success: true, message: "Phone number verified successfully" };
+	} catch (error) {
+		console.error("Error verifying OTP:", error);
+		return { 
+			success: false, 
+			message: error instanceof Error ? error.message : "Failed to verify OTP. Please try again." 
+		};
+	}
+};
