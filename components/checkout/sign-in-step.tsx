@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { signInWithGoogleAuth } from "@/app/actions/auth";
-import { PhoneInput } from "@/components/auth/phone-input";
+
 
 interface SignInStepProps {
   onSignIn: () => void;
@@ -41,9 +41,7 @@ export default function SignInStep({ onSignIn }: SignInStepProps) {
           className="w-full h-auto"
         />
       </motion.button>
-      <PhoneInput
-        className="mt-4"
-      />
+
     </>
   );
 }

@@ -17,53 +17,51 @@ export default function Login({ searchParams }: { searchParams: Message }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-sky-50 flex flex-col items-center justify-center p-4 font-mono w-7/8 md:w-2/4">
-      <div className="w-full max-w-md bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-8">
-        {/* Hiero Logo */}
-        <div className="flex items-center justify-center mb-6 sm:mb-8">
-          <Image
+    <div className="flex items-center justify-center min-h-screen bg-sky-200 p-4">
+      <div className="w-full max-w-md bg-white border-4 border-black shadow-[8px_8px_0_0_#000] p-8">
+     
+
+        <h1 className="text-4xl font-bold mb-6 text-black tracking-tight text-center uppercase">   <Image
             src="/0_0.jpeg"
             alt="Hiero logo"
             width={48}
             height={48}
-            className="w-12 h-12 sm:w-16 sm:h-16"
-          />
-          <h2 className="text-3xl sm:text-4xl text-black font-black uppercase tracking-tighter ml-3 sm:ml-4">Hiero</h2>
-        </div>
-
-        <h1 className="text-4xl sm:text-5xl font-bold mb-6 sm:mb-8 text-[#2D4B73] tracking-tight">Sign in</h1>
+            className="w-12 h-12"
+          />Sign in</h1>
         
-        <form className="space-y-4 sm:space-y-6" action={signInAction}>
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#2D4B73] font-bold">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="w-full p-2 border-2 border-black rounded-none focus:ring-[#FF8A00] focus:ring-4 focus:border-black"
-              placeholder="you@example.com"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="password" className="text-[#2D4B73] font-bold">Password</Label>
-              <Link
-                className="text-xs text-[#FF8A00] font-bold hover:underline"
-                href="/forgot-password"
-              >
-                Forgot Password?
-              </Link>
+        <form className="space-y-6" action={signInAction}>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email" className="text-lg font-bold text-black">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="mt-1 block w-full border-2 border-black p-2 text-lg"
+                placeholder="you@example.com"
+              />
             </div>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="w-full p-2 border-2 border-black rounded-none focus:ring-[#FF8A00] focus:ring-4 focus:border-black"
-              placeholder="Your password"
-            />
+            
+            <div>
+              <div className="flex justify-between items-center">
+                <Label htmlFor="password" className="text-lg font-bold text-black">Password</Label>
+                <Link
+                  className="text-sm text-emerald-500 font-bold hover:underline"
+                  href="/forgot-password"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
+                className="mt-1 block w-full border-2 border-black p-2 text-lg"
+                placeholder="Your password"
+              />
+            </div>
           </div>
           
           {mounted && <FormMessage message={searchParams} />}
@@ -71,35 +69,50 @@ export default function Login({ searchParams }: { searchParams: Message }) {
           <SubmitButton
             pendingText="Signing In..."
             formAction={signInAction}
-            className="w-full bg-[#FF8A00] text-white py-3 px-4 rounded-none border-2 border-black font-bold text-lg hover:bg-[#E67A00] hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+            className="w-full bg-emerald-500 text-white font-bold py-3 px-4 border-2 border-black shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-lg uppercase"
           >
             Sign in
           </SubmitButton>
         </form>
         
-        <p className="mt-6 sm:mt-8 text-center text-sm sm:text-base text-[#2D4B73] font-bold">
-          Don&apos;t have an account?{' '}
-          <Link href="/sign-up" className="text-[#FF8A00] hover:underline inline-flex items-center">
-            Sign up
-          </Link>
-        </p>
+        <div className="mt-8 text-center">
+          <p className="text-black font-bold">
+            Don&apos;t have an account?{' '}
+            <Link href="/sign-up" className="text-emerald-500 underline hover:text-emerald-600">
+              Sign up
+            </Link>
+          </p>
+        </div>
 
         {/* Social Login Options */}
-        <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
-          <button
-            onClick={() => signInWithGoogleAuth()}
-            className="w-full p-2 flex justify-center items-center transition-all duration-200 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 bg-white border-2 border-black rounded-none"
-          >
-            <Image
-              src="/gauth/Web/svg/dark/web_dark_rd_SI.svg"
-              alt="Sign in with Google"
-              width={191}
-              height={46}
-              className="h-9 sm:h-11 w-auto"
-            />
-          </button>
+        <div className="mt-8">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t-2 border-black" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-black font-bold">
+                Or continue with
+              </span>
+            </div>
+          </div>
 
-          <GitHubSignInButton />
+          <div className="mt-6 grid grid-cols-2 gap-4">
+            <button
+              onClick={() => signInWithGoogleAuth()}
+              className="flex items-center justify-center py-3 px-4 border-2 border-black bg-white shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
+            >
+              <Image
+                src="/gauth/Web/svg/dark/web_dark_rd_SI.svg"
+                alt="Sign in with Google"
+                width={191}
+                height={46}
+                className="h-8 w-auto"
+              />
+            </button>
+
+            <GitHubSignInButton className="flex items-center justify-center py-3 px-4 border-2 border-black bg-white shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all" />
+          </div>
         </div>
       </div>
     </div>
