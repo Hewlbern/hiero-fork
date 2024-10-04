@@ -66,7 +66,7 @@ export default function Checkout() {
   const steps = [
     { title: "Sign In" },
     { title: "Save Card" },
-    { title: "Complete" },
+    { title: "Connect" },
     ...(appName ? [{ title: "Connect" }] : []),
   ];
 
