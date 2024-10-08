@@ -23,6 +23,8 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 		setIsSubmitting(true);
 		setError("");
 
+		console.log("Submitting form with data:", { email, firstName });
+
 		try {
 			const response = await fetch("/api/subscribe", {
 				method: "POST",
@@ -30,16 +32,20 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 				body: JSON.stringify({ email, firstName }),
 			});
 
+			console.log("Response status:", response.status);
+
 			if (response.ok) {
 				const data = await response.json();
+				console.log("Subscription successful:", data);
 				setSuccess(true);
 			} else {
 				const errorData = await response.text();
+				console.error("Subscription failed:", errorData);
 				setError(errorData || "An error occurred");
 			}
 		} catch (err) {
-			setError("An error occurred while submitting the form");
 			console.error("Fetch error:", err);
+			setError("An error occurred while submitting the form");
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -48,8 +54,8 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className="bg-[#E6C9A8] border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-0 w-full max-w-md">
-				<DialogHeader className="bg-[#D05353] text-white p-6 border-b-8 border-black">
+			<DialogContent className="bg-cyan-50 border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-0 w-full max-w-md">
+				<DialogHeader className="bg-gradient-to-r from-sky-400 via-teal-300 to-emerald-500 text-black p-6 border-b-8 border-black">
 					<DialogTitle className="text-3xl font-black uppercase">
 						Become a Hiero Developer.
 					</DialogTitle>
@@ -104,7 +110,7 @@ export function JoinWaitlistModal({ children }: { children: ReactNode }) {
 								)}
 								<Button
 									type="submit"
-									className="w-full bg-black text-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-none hover:translate-x-[8px] hover:translate-y-[8px] hover:bg-[#00FF00] hover:text-black transition-all font-black text-xl uppercase p-4"
+									className="w-full bg-black text-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(52,211,153,0.5)] hover:shadow-none hover:translate-x-[8px] hover:translate-y-[8px] hover:bg-gradient-to-r hover:from-sky-400 hover:via-teal-300 hover:to-emerald-500 hover:text-black transition-all font-black text-xl uppercase p-4"
 									disabled={isSubmitting}
 								>
 									{isSubmitting ? "Submitting..." : "Apply Today"}

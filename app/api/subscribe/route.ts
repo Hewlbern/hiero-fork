@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const AUDIENCE_ID = process.env.WAITINGLIST_AUDIENCE_ID || "";
+const AUDIENCE_ID = "028269d1-e177-4938-a71f-81b65cc03515";
 
 export async function POST(request: Request) {
 	try {
