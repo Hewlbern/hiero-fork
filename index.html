@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiero Onboarding - Quillow</title>
+<style>
+    body {
+        background-color: #000;
+        color: #00FF41;
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        padding: 0;
+    }
+    #chat-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    #messages {
+        height: 500px;
+        overflow-y: auto;
+        border: 1px solid #00FF41;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .message {
+        margin: 10px 0;
+    }
+    .bot-message {
+        color: #00FF41;
+    }
+    .user-message {
+        color: #FFFFFF;
+        text-align: right;
+    }
+    #input-area {
+        display: flex;
+        margin-top: 20px;
+    }
+    #user-input {
+        flex-grow: 1;
+        background-color: #000;
+        color: #00FF41;
+        border: 1px solid #00FF41;
+        padding: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    #send-button {
+        background-color: #000;
+        color: #00FF41;
+        border: 1px solid #00FF41;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    #send-button:hover {
+        background-color: #00FF41;
+        color: #000;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #00FF41;
+    }
+    ::-webkit-scrollbar-track {
+        background: #000;
+    }
+</style>
+</head>
+<body>
+<div id="chat-container">
+    <div id="messages">
+        <!-- Messages will appear here -->
+    </div>
+    <div id="input-area">
+        <input type="text" id="user-input" placeholder="Type your response..." autofocus autocomplete="off">
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+<script>
+    const messagesDiv = document.getElementById('messages');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+
+    let state = 0;
+    let userData = {};
+
+    // Function to simulate typing effect
+    function typeMessage(text, sender) {
+        let index = 0;
+        let messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender === 'bot' ? 'bot-message' : 'user-message');
+        messagesDiv.appendChild(messageDiv);
+        
+        function typeNextChar() {
+            if (index < text.length) {
+                messageDiv.textContent += text.charAt(index);
+                index++;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                setTimeout(typeNextChar, 50); // Adjust delay for typing effect (50ms per character)
+            }
+        }
+
+        typeNextChar();
+    }
+
+    function botMessage(text) {
+        typeMessage('> ' + text, 'bot');
+    }
+
+    function userMessage(text) {
+        typeMessage(text, 'user');
+    }
+
+    function processUserInput(input) {
+        input = input.trim();
+        if (input === '') return;
+        userMessage(input);
+
+        switch(state) {
+            case 0:
+                userData.region = input.toUpperCase();
+                state = 1;
+                setTimeout(() => botMessage('Please enter your mobile number:'), 1000); // Delay after region
+                break;
+            case 1:
+                userData.mobile = input;
+                state = 2;
+                setTimeout(() => botMessage('Enter your credit card number (Don’t worry, this is a secure process):'), 1000); // Delay after mobile
+                break;
+            case 2:
+                userData.creditCard = input;
+                state = 3;
+                setTimeout(() => {
+                    botMessage('Your credit card has been saved. You have been credited with 1 million tokens to use within Quillow.');
+                    setTimeout(() => botMessage('Would you like to accept one of our special offers?'), 1000);
+                    setTimeout(() => botMessage('1. 80% off Hiero subscription for a year.'), 2000);
+                    setTimeout(() => botMessage('2. 15% off Hiero subscription for a month.'), 3000);
+                }, 1000); // Delay after credit card input
+                break;
+            case 3:
+                if (input === '1') {
+                    botMessage('You have selected 80% off for a year. Congratulations on your premium subscription!');
+                } else if (input === '2') {
+                    botMessage('You have selected 15% off for a month. Enjoy your premium subscription!');
+                } else {
+                    botMessage('Please select either 1 or 2 for the offer.');
+                }
+                state = 4;
+                break;
+            default:
+                botMessage('Thank you for connecting with Quillow. Type "restart" to begin again.');
+        }
+    }
+
+    sendButton.addEventListener('click', () => {
+        const input = userInput.value;
+        userInput.value = '';
+        processUserInput(input);
+    });
+
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendButton.click();
+        }
+    });
+
+    // Start the conversation
+    botMessage('Welcome to Quillow - Your AI-powered second brain.');
+    setTimeout(() => {
+        botMessage('I am Hiero, your connection agent.');
+        setTimeout(() => botMessage('To get started, which region are you connecting from? (e.g., AU, US)'), 1000);
+    }, 1000);
+</script>
+</body>
+</html>
