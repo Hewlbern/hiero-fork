@@ -111,7 +111,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
               />
             </button>
 
-            <GitHubSignInButton className="flex items-center justify-center py-3 px-4 border-2 border-black bg-white shadow-[4px_4px_0_0_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all" />
+            <GitHubSignInButton  />
           </div>
         </div>
       </div>

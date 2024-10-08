@@ -11,7 +11,7 @@ const config: DocsThemeConfig = {
 	},
 	docsRepositoryBase: "https://github.com/Hiero-Team/hiero-ui",
 	footer: {
-		content: "Nextra Docs Template",
+		content: "Hiero Docs",
 	},
 };
 
