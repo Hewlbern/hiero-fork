@@ -71,7 +71,7 @@ export default function Matrix() {
         setUserData(prev => ({ ...prev, mobile: input }))
         setState(2)
         await new Promise(resolve => setTimeout(resolve, 1000))
-        await botMessage('Great. Now we can connect over a secure line.')
+        await botMessage('Great work Hiero. Now we can connect over a secure line.')
         await new Promise(resolve => setTimeout(resolve, 1000))
         await botMessage('Enter your credit card number \(Don\'t worry, this is a secure process\):')
         break
@@ -79,20 +79,20 @@ export default function Matrix() {
         setUserData(prev => ({ ...prev, creditCard: input }))
         setState(3)
         await new Promise(resolve => setTimeout(resolve, 1000))
-        await botMessage('A passcode has been sent to your mobile device. Please enter it:')
+        await botMessage('A passcode has been sent to your mobile device. Now, please enter it:')
         break
       case 3:
         setUserData(prev => ({ ...prev, passcode: input }))
         setState(4)
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        await botMessage('Your credit card has been saved. You have been credited with 1 million tokens to use within Quillow.')
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise(resolve => setTimeout(resolve, 500))
+        await botMessage('Your credit card has been saved. You have been credited with 1 million tokens to use within Hiero.')
+        await new Promise(resolve => setTimeout(resolve, 500))
         await botMessage('Would you like to accept one of our special offers?')
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise(resolve => setTimeout(resolve, 500))
         await botMessage('1. 80% off Hiero subscription for a year.')
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise(resolve => setTimeout(resolve, 500))
         await botMessage('2. 15% off Hiero subscription for a month.')
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise(resolve => setTimeout(resolve, 500))
         await botMessage('3. Do not accept any offer.')
         break
       case 4:
@@ -134,9 +134,9 @@ Follow the white rabbit, Hiero.
       await new Promise(resolve => setTimeout(resolve, 2000))
       setMessages([])  // Clear the "Wake up, Hiero..." message
       await new Promise(resolve => setTimeout(resolve, 1000))
-      await botMessage('Welcome to Quillow - Your AI-powered second brain.')
+      await botMessage('Connecting to Quillow - Your AI-powered second brain.')
       await new Promise(resolve => setTimeout(resolve, 1000))
-      await botMessage('I am Hiero, your connection agent.')
+      await botMessage('I am Hiero.gl, your connection agent.')
       await new Promise(resolve => setTimeout(resolve, 1000))
       await botMessage('To get started, which region are you connecting from? (e.g., AU, US)')
     }
@@ -144,8 +144,8 @@ Follow the white rabbit, Hiero.
   }, [botMessage, typeMessage])
 
   return (
-    <div className="min-h-screen bg-black text-[#00FF41] font-mono flex flex-col justify-between p-4">
-      <div className="w-full max-w-none mx-auto flex-grow overflow-hidden flex flex-col">
+    <div className="min-h-screen w-full bg-black text-[#00FF41] font-mono flex flex-col justify-between p-4">
+      <div className="w-full  mx-auto flex-grow overflow-hidden flex flex-col">
         <div id="messages" className="flex-grow overflow-y-auto p-5 mb-5 scrollbar-thin scrollbar-thumb-[#00FF41] scrollbar-track-black">
           {messages.map((message, index) => (
             <div key={index} className={`my-2 ${message.text.startsWith('>') ? '' : 'text-right'}`}>
