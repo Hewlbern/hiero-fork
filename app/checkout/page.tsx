@@ -5,13 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { motion, AnimatePresence } from "framer-motion";
-import SaveCardButton from "@/components/save-card-form";
+import SaveCardButton from "@/components/checkout/ui/payments/save-card-form";
 import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
-import SignInStep from "@/components/checkout/sign-in-step";
-import Footer from "@/components/checkout/checkout-footer";
-import ConnectToHiero from "@/components/checkout/connect";
-import CheckoutHeader from "@/components/checkout/checkout-header";
-import Steps from "@/components/checkout/steps";
+import SignInStep from "@/components/checkout/ui/sign-in-step";
+import Footer from "@/components/checkout/ui/checkout-footer";
+import ConnectToHiero from "@/components/checkout/ui/connect";
+import CheckoutHeader from "@/components/checkout/ui/checkout-header";
+import Steps from "@/components/checkout/ui/steps";
 
 export default function Checkout() {
   const router = useRouter();

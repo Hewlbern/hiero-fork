@@ -226,3 +226,56 @@ export const handleVerifyOtp = async (phoneNumber: string, otp: string) => {
 		};
 	}
 };
+
+export const handleSignInWithOTP = async (email: string, isDevelopment: boolean) => {
+	if (isDevelopment) {
+		console.log('Development mode: Simulating OTP sign-in for', email);
+		
+		// Simulate a 1-second loading time
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		
+		return { success: true, message: 'OTP sent successfully' };
+	}
+
+	const supabase = createClient();
+
+	try {
+		const { error } = await supabase.auth.signInWithOtp({
+			email: email,
+			options: {
+				shouldCreateUser: true,
+			},
+		});
+
+		if (error) throw error;
+
+		return { success: true, message: 'OTP sent successfully' };
+	} catch (err) {
+		console.error('Error sending OTP:', err);
+		return { success: false, message: 'Failed to send verification code. Please try again.' };
+	}
+};
+
+export const handleVerifyOTP = async (email: string, otp: string, isDevelopment: boolean) => {
+	if (isDevelopment) {
+		console.log('Development mode: Simulating OTP verification');
+		return { success: true, message: 'OTP verified successfully' };
+	}
+
+	const supabase = createClient();
+
+	try {
+		const { error } = await supabase.auth.verifyOtp({
+			email: email,
+			token: otp,
+			type: 'email',
+		});
+
+		if (error) throw error;
+
+		return { success: true, message: 'OTP verified successfully' };
+	} catch (err) {
+		console.error('Error verifying OTP:', err);
+		return { success: false, message: 'Invalid verification code. Please try again.' };
+	}
+};

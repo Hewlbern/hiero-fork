@@ -3,17 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { generateUserConnectionKey } from "@/app/actions/generate-user-connection-key";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { motion, AnimatePresence } from "framer-motion";
-import SaveCardForm from "@/components/save-card-form";
-import SignInStep from "@/components/checkout/sign-in-step";
-import Footer from "@/components/checkout/checkout-footer";
-import ConnectToHiero from "@/components/checkout/connect";
-import CheckoutHeader from "@/components/checkout/checkout-header";
-import Steps from "@/components/checkout/steps";
-import AppInfo from "@/components/checkout/app-info";
+import SaveCardForm from "@/components/checkout/ui/payments/save-card-form";
+import SignInStep from "@/components/checkout/ui/sign-in-step";
+import Footer from "@/components/checkout/ui/checkout-footer";
+import ConnectToHiero from "@/components/checkout/ui/connect";
+import CheckoutHeader from "@/components/checkout/ui/checkout-header";
+import Steps from "@/components/checkout/ui/steps";
+import AppInfo from "@/components/checkout/ui/app-info";
 
 type AIApp = {
   id: string;

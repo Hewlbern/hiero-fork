@@ -1,8 +1,10 @@
 "use server";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { HieroCheckout } from "@/components/hiero-checkout";
+import { HieroCheckout } from "@/components/checkout/hiero-checkout";
 import { Bot, Brain, Zap, Image } from "lucide-react";
+import { PaymentSection } from '@/components/checkout/ui/payments/payment-section';
+import SaveCardButton from '@/components/checkout/ui/payments/save-card-form';
 
 const iconMap = {
 	v0: <Bot className="h-8 w-8" />,
@@ -20,8 +22,10 @@ const colorMap = {
 
 export default async function AppPage({
 	params,
+	searchParams,
 }: {
 	params: { slug: string };
+	searchParams: { email?: string };
 }) {
 	const supabase = createClient();
 
@@ -51,12 +55,12 @@ export default async function AppPage({
 		amountSpent: Math.floor(Math.random() * 15) + 1,
 		usage: Math.floor(Math.random() * 100),
 		slug: params.slug,
-		email: "emilawatts@gmail.com", // Add this line
+		email: searchParams.email || 'emilawatts@gmail.com',
 	};
 
 	return (
 		<div>
-			<HieroCheckout app={mockAppData} />
+			<HieroCheckout app={mockAppData} PaymentComponent={SaveCardButton} />
 		</div>
 	);
 }
