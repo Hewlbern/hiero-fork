@@ -10,6 +10,7 @@ import { generateUserConnectionKey } from "@/app/actions/generate-user-connectio
 import { signInWithGoogleAuth, handleSignInWithOTP, handleVerifyOTP } from "@/app/actions/auth";
 import { EmailChangeModal } from '@/components/auth/email-modal';
 import SignInComponent from '@/components/checkout/ui/otp-step'; // Add this import
+import { Button } from "@/components/ui/button"
 
 type AIApp = {
   id: string;
@@ -25,6 +26,7 @@ type AIApp = {
   usage: number;
   slug: string;
   email: string; // Add this line
+  redirectUrl: string; // Add this line
 };
 
 type AIAppProps = {
@@ -45,6 +47,7 @@ type GoogleAuthResult = {
   user: User | null;
   error?: string;
 };
+
 
 // New Header component
 function Header() {
@@ -147,13 +150,31 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
   const handleSaveCard = () => {
     // Implement the logic for saving the card
     console.log('Card saved');
-    setStep('success'); // Assuming you want to move to a success step after saving the card
+    setStep('success');
+    
+    // Check if redirectUrl is provided and redirect after a short delay
+    if (app.redirectUrl) {
+      setTimeout(() => {
+        window.location.href = app.redirectUrl;
+      }, 2000); // 2-second delay before redirect
+    }
   };
 
 
   const handleVerificationSuccess = () => {
     setStep('payment');
   };
+
+
+const handleConnectApp = () => {
+  // Implement the logic to connect to app.name
+  console.log(`Connecting to ${app.name}`)
+}
+
+const handleBuyTokens = () => {
+  // Implement the logic to buy Hiero Tokens
+  console.log('Buying $10 of Hiero Tokens')
+}
 
   return (
     <div className="min-h-screen flex items-start justify-center bg-[#e0e0e0] p-4 pt-8">
@@ -200,17 +221,34 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
               </motion.div>
             ) : (
               <motion.div
-                key="success"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <h2 className="text-2xl text-black font-bold mb-4">Payment Successful</h2>
-                <p className="text-sm text-gray-600 mb-6">
-                  Your card has been saved successfully.
+              key="success"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col items-center"
+            >
+              <h2 className="text-2xl text-black font-bold mb-4">Hiero Account Created</h2>
+              <p className="text-sm text-gray-600 mb-6">
+                Your card has been saved successfully.
+              </p>
+              <div>
+                Do you want too
+              </div>
+              <div className="flex flex-col w-full gap-4 mt-4">
+                <Button onClick={handleConnectApp} className="w-full">
+                  Connect to {app.name}
+                </Button>
+                <Button onClick={handleBuyTokens} variant="outline" className="w-full">
+                  Buy $10 of Hiero Tokens for an extra 3 months of usage
+                </Button>
+              </div>
+              {app.redirectUrl && (
+                <p className="text-sm text-gray-600 mt-4">
+                  You will be redirected in a moment...
                 </p>
-              </motion.div>
+              )}
+            </motion.div>
             )}
           </AnimatePresence>
         </div>

@@ -53,6 +53,13 @@ export default function SaveCardForm({ onSave, isTest = false }: SaveCardButtonP
         <br />
         <strong className="text-black">Your card will not be charged now.</strong>
       </p>
+      <p className="text-sm text-gray-600 mb-6">
+        Normally 1 million tokens cost:
+        <br />
+        • $15 per month
+        <br />
+        • $18 for a one-time payment (plus tax)
+      </p>
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

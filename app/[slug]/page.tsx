@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { HieroCheckout } from "@/components/checkout/hiero-checkout";
 import { Bot, Brain, Zap, Image } from "lucide-react";
-import { PaymentSection } from '@/components/checkout/ui/payments/payment-section';
 import SaveCardButton from '@/components/checkout/ui/payments/save-card-form';
 
 const iconMap = {
@@ -25,7 +24,7 @@ export default async function AppPage({
 	searchParams,
 }: {
 	params: { slug: string };
-	searchParams: { email?: string };
+	searchParams: { email?: string; redirectUrl?: string };
 }) {
 	const supabase = createClient();
 
@@ -56,6 +55,7 @@ export default async function AppPage({
 		usage: Math.floor(Math.random() * 100),
 		slug: params.slug,
 		email: searchParams.email || 'emilawatts@gmail.com',
+		redirectUrl: searchParams.redirectUrl || '',
 	};
 
 	return (
