@@ -16,9 +16,6 @@ import {
 } from "@/components/ui/navigation-menu";
 
 const navItems = [
-	{ href: "/protected/dashboard", label: "Overview" },
-	{ href: "/protected/dashboard/apps", label: "Apps" },
-	{ href: "/protected/dashboard/usage", label: "Usage" },
 	{ href: "/protected/dashboard/developer", label: "Developer" },
 ];
 
