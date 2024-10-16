@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+import { App } from "@/types/supabase";
 
 export async function checkSlugAvailability(
 	slug: string,
@@ -27,12 +28,7 @@ export async function checkSlugAvailability(
 	return currentAppId ? data.id === currentAppId : false;
 }
 
-export async function createApp(appData: {
-	name: string;
-	url: string;
-	description: string;
-	slug: string;
-}) {
+export async function createApp(appData: Partial<App>): Promise<App> {
 	const supabase = createClient();
 	const {
 		data: { user },
@@ -47,7 +43,7 @@ export async function createApp(appData: {
 		.insert({
 			...appData,
 			user_id: user.id,
-			status: "pending",
+			status: "Active",
 		})
 		.select()
 		.single();
