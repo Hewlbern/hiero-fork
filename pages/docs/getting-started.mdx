@@ -7,31 +7,52 @@ Welcome to the Hiero API documentation. This guide will help you integrate Hiero
 To get started with the Hiero API, you\'ll need to:
 
 <Steps>
-## Sign Up
-Sign up for a Hiero account at [https://hiero.gl](https://hiero.gl). All users sign up the same way - subscribers and developers.
+## Create an App & API Key
 
-When signing up, you will be asked to subscribe to a plan. You are free to do this if you want to start using Hiero to access other apps. It is also possible to skip this by clicking the "Skip" link.
-
-## Create an App
-
-Once you are logged in, you will be able to create a new app on the developer dashboard. This will give you a unique link for your app which looks like this:
+Creating an app will give you a unique link for your app which looks like this:
 
 ```
 https://hiero.gl/a/yourappname
 ```
 
-This is the link you will share with your users so they can connect your app to Hiero. See our guide on [how to integrate Hiero in your UX](/docs/integration) for more information.
+This is the link you will share with your users so they can connect your app to Hiero. See our guide on [how to integrate Hiero in your UX](/docs/user-experience) for more information.
 
-When a user connects to your app, they will be given a connection key. You will need this connection key to deduct tokens from the user's balance. Make sure you give the user a field to enter this key, then store this connection key securely. Note, the connection key is specific to the user and app and cannot be used by another user or app.
+Once you've created an app, you will be able to generate an API key. This key will be used to authenticate your requests. You should keep this key secret and not share it with anyone. It should be used on your backend only and never exposed to the client.
 
-## Generate an API Key
+When creating an API key, you can also enter a webhook URL to be notified when a user connects to Hiero. We'll come back to that later.
 
-Once you have created an app, you will be able to generate an API key. This key will be used to authenticate your requests. You should keep this key secret and not share it with anyone. It should be used on your backend only and never exposed to the client. Ideally this should be stored in a secure environment such as an environment variable. Call the environment variable `HIERO_API_KEY` as we use this in the examples below.
+Note that you can create multiple API keys for different environments such as development, testing, and production.
 
-## Deduct Tokens on usage
+## Integrate Hiero token deduction
 
-Once you have an API key and a User Connection Key, you can deduct tokens from the user's balance when they use your app. We've designed Hiero for the "AI World". Pass in the number of tokens you want to deduct. Optionally you can pass in a multiplier to deduct more or less than the cost of the AI call. You can also pass in a model, and label so that you can track usage by app, user, and model.
+Hiero provides a simple API to deduct tokens from a user's balance. This is done using a Hiero callback URL that is called immediately after incuring usage on your app. For example, you can add this URL as a callback to langchain or llama index to pass in the number of tokens used.
 
-It's easy to deduct tokens with Hiero. Simply add a callback to your AI call, and deduct the tokens from the user's balance. We have SDKs available to make this easy.
+Note that you can call this endpoint even if the user is not connected to Hiero yet. That will build up usage stats that you can use to calculate pricing later. You can pass any user identifier you like - it can be an email, or something else that is unique to the user. This id is not used for billing, it's only useful to help you find and support users in the Hiero dashboard.
+
+See our guide on [deducting tokens](/docs/user-experience) for more information.
+
+## (Optional) Add Multipliers & Unit tracking
+
+You will earn $10 per 1,000,000 Hiero tokens. We have designed that model around the pricing for popular large language models (LLMs). If you just track usage of LLMs, you should be able to make profit even if you keep the multiplier at 1.
+
+Depending on the value you are providing, you may want to charge more or less than the cost of the AI call. For example, for a specialist legal system you may want to charge 5x the cost of the AI call. You can do this by passing in a multiplier. The effect of a multiplier is to deduct more or less tokens than the raw number of tokens used.
+
+Secondly, you may want to track usage by unit. For example, you may want to track usage by document. You can do this by passing in a unit. Units are useful to help your users understand how much value your app is generating "per unit". You track usage by passing in the name of the unit. e.g. document, image, video, etc. and an identifier for that unit e.g. document id. You can call the API multiple times for the same unit to track token usage against it. Alternatively you can pass a fixed number of tokens to deduct for the unit.
+
+## Implement connection Web Hook
+
+Remember those fields for the webhook? You will need that setup to connect users to your app.
+
+The webhook is a URL that Hiero will call when a user connects to your app. You will need to implement this on your backend. When the webhook is called, you will receive a User Connection Key. This key is used to authenticate the user connection so you can deduct tokens from the user's balance.
+
+You will also need a secret to verify the webhook. This is used to verify that the webhook is from Hiero. You will need to set this in your app settings.
+
+See our guide on [implementing a webhook](/docs/webhooks) for more information.
+
+## Launch Pay with Hiero
+
+You can include a Pay with Hiero button anywhere in your app - and even in marketing material. This link will open a checkout page where the user can create their wallet and authorize your app.
+
+See our guide on [launching pay with Hiero](/docs/launching-pay-with-hiero) for more information.
 
 </Steps>
