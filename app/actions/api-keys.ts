@@ -61,3 +61,7 @@ export async function fetchApiKeys(appId: string) {
 function maskApiKey(key: string) {
 	return `${key.slice(0, 4)}${"*".repeat(key.length - 8)}${key.slice(-4)}`;
 }
+
+export async function generateApiKey(appId: string) {
+	// Implementation here
+}

@@ -1,4 +1,4 @@
-import  Header  from "@/components/auth/header-auth";
+import Header from "@/components/auth/header-auth";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import "../styles/globals.css";
@@ -28,9 +28,7 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Header />
-					<main>
-						{children}
-					</main>
+					<main>{children}</main>
 				</ThemeProvider>
 			</body>
 		</html>

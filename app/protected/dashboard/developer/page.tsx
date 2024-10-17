@@ -1,5 +1,4 @@
 import { DeveloperDashboard } from "@/components/developer-dashboard";
-import { OnboardingFlow } from "@/components/onboarding-flow";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function DeveloperPage() {
@@ -25,7 +24,7 @@ export default async function DeveloperPage() {
 			<h1 className="text-3xl font-bold mb-6 text-gray-800">
 				Developer Dashboard
 			</h1>
-			{isFirstTimeUser ? <OnboardingFlow /> : <DeveloperDashboard />}
+			<DeveloperDashboard isFirstTimeUser={isFirstTimeUser} />
 		</div>
 	);
 }
