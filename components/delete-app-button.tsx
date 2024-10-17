@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { deleteApp } from "@/app/actions/apps";
 import { useState } from "react";
+import { Trash } from "lucide-react";
 
 interface DeleteAppButtonProps {
 	appId: string;
@@ -33,7 +34,9 @@ export function DeleteAppButton({ appId, onAppDeleted }: DeleteAppButtonProps) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button>Delete</Button>
+				<Button variant="destructive">
+					<Trash />
+				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<form

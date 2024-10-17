@@ -1,14 +1,14 @@
 "use client";
 import { OnboardingFlow } from "@/components/onboarding-flow";
-import { redirect } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 export default function InstructionsPage({
 	params,
 }: {
 	params: { appId: string };
 }) {
+	const router = useRouter();
 	const handleComplete = () => {
-		redirect("/protected/dashboard/developer");
+		router.push("../");
 	};
 
 	return <OnboardingFlow appId={params.appId} onComplete={handleComplete} />;

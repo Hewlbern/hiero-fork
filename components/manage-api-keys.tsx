@@ -12,10 +12,22 @@ import { Button } from "@/components/ui/button";
 import { CopyToClipboardButton } from "@/components/copy-to-clipboard-button";
 import { ApiKey, NewApiKey } from "@/types/supabase";
 import { Trash } from "lucide-react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function ManageApiKeys({ appId }: { appId: string }) {
 	const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
 	const [newApiKey, setNewApiKey] = useState<NewApiKey | null>(null);
+	const [keyToDelete, setKeyToDelete] = useState<string | null>(null);
 
 	const { toast } = useToast();
 
@@ -83,6 +95,7 @@ export function ManageApiKeys({ appId }: { appId: string }) {
 				variant: "destructive",
 			});
 		}
+		setKeyToDelete(null);
 	};
 
 	const maskApiKey = (key: string) => {
@@ -120,12 +133,30 @@ export function ManageApiKeys({ appId }: { appId: string }) {
 							className="flex flex-row gap-2 pb-2 justify-between"
 						>
 							<span>{key.masked_key}</span>
-							<Button
-								variant="destructive"
-								onClick={() => handleDeleteApiKey(key.id)}
-							>
-								<Trash className="w-4 h-4" />
-							</Button>
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant="destructive">
+										<Trash className="w-4 h-4" />
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>Are you sure?</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete
+											the API key.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction
+											onClick={() => handleDeleteApiKey(key.id)}
+										>
+											Delete
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
 						</li>
 					))}
 			</ul>

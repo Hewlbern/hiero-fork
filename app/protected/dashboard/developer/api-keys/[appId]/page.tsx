@@ -17,10 +17,7 @@ export default function ApiKeysPage({ params }: { params: { appId: string } }) {
 			</p>
 			<ManageApiKeys appId={appId} />
 			<div className="flex justify-end space-x-2">
-				<Button
-					variant="secondary"
-					onClick={() => router.push(`/dashboard/developer`)}
-				>
+				<Button variant="secondary" onClick={() => router.push(`../`)}>
 					Back to Dashboard
 				</Button>
 				<Button onClick={() => router.push(`../instructions/${appId}`)}>
