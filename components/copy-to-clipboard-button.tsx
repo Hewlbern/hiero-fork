@@ -13,8 +13,10 @@ export const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
 }) => {
 	const [isCopied, setIsCopied] = useState(false);
 
+	console.log(code);
 	const copyToClipboard = async () => {
 		try {
+			console.log("copying code", code);
 			await navigator.clipboard.writeText(code);
 			setIsCopied(true);
 			toast({

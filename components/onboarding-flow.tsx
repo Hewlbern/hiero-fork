@@ -9,6 +9,8 @@ import { AppForm } from "./app-form";
 import IntegrateTokenDeduction from "@/app/code-snippets/integrate-token-deduction.mdx";
 import ImplementWebhook from "@/app/code-snippets/implement-webhook.mdx";
 import LaunchPayWithHiero from "@/app/code-snippets/launch-pay-with-hiero.mdx";
+import CodePre from "./code-pre";
+import CodeBlock from "./code-block";
 
 export type Step = {
 	title: string;
@@ -100,14 +102,12 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 				/>
 			)}
 			{currentStepData.CodeSnippetComponent && (
-				<div className="mb-4 p-4 bg-gray-100 rounded-md overflow-x-auto relative">
-					<currentStepData.CodeSnippetComponent />
-				</div>
+				<currentStepData.CodeSnippetComponent />
 			)}
 			{currentStep === 1 && apiKey && (
 				<div className="mb-4 p-4 bg-green-100 rounded-md">
 					<p className="font-bold">Your API Key:</p>
-					<p className="font-mono">{apiKey}</p>
+					<CodeBlock language="bash">{apiKey}</CodeBlock>
 					<p className="mt-2 text-sm text-gray-600">
 						Keep this key secret and don&apos;t share it with anyone!
 					</p>
