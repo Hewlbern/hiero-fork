@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { createApp } from "@/app/actions/apps";
 import { createApiKey } from "@/app/actions/api-keys";
 import { useToast } from "@/hooks/use-toast";
+
+import { App } from "@/types/supabase";
+
+import { AppForm } from "./app-form";
 
 export type Step = {
 	title: string;
 	description: string;
-	fields?: Array<{ name: string; label: string; type: string }>;
 	codeSnippet?: string;
 };
 
@@ -19,12 +19,6 @@ const steps: Step[] = [
 	{
 		title: "Create an App & API Key",
 		description: "Let's start by creating your app in Hiero.",
-		fields: [
-			{ name: "name", label: "App Name", type: "input" },
-			{ name: "description", label: "App Description", type: "textarea" },
-			{ name: "url", label: "App URL", type: "input" },
-			{ name: "slug", label: "App Slug", type: "input" },
-		],
 	},
 	{
 		title: "Integrate Hiero token deduction",
@@ -46,7 +40,12 @@ const deductTokens = async (userId, tokens, multiplier = 1, unit = null) => {
 	{
 		title: "Implement connection Web Hook",
 		description: "Set up a webhook to handle user connections:",
-		fields: [{ name: "webhook_url", label: "Webhook URL", type: "input" }],
+		codeSnippet: `
+app.post('/webhook', (req, res) => {
+  // Handle webhook payload
+  res.status(200).send('OK');
+});
+		`,
 	},
 	{
 		title: "Launch Pay with Hiero",
@@ -64,40 +63,20 @@ interface OnboardingFlowProps {
 }
 
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
+	const [name, setName] = useState("");
+	const [url, setUrl] = useState("");
+	const [description, setDescription] = useState("");
+	const [error, setError] = useState("");
+	const [isOpen, setIsOpen] = useState(false);
+	const [slug, setSlug] = useState("");
+	const [isSlugAvailable, setIsSlugAvailable] = useState(false);
+
 	const [currentStep, setCurrentStep] = useState(0);
-	const [appData, setAppData] = useState({
-		name: "",
-		description: "",
-		url: "",
-		slug: "",
-		webhook_url: "",
-	});
+	const [appId, setAppId] = useState<string | null>(null);
 	const [apiKey, setApiKey] = useState("");
-	const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 	const { toast } = useToast();
 
 	const handleNext = async () => {
-		setFieldErrors({});
-		if (currentStep === 0) {
-			try {
-				const app = await createApp(appData);
-				const apiKeyResult = await createApiKey(app.id);
-				if (apiKeyResult.success && apiKeyResult.apiKey) {
-					setApiKey(apiKeyResult.apiKey.key);
-				} else {
-					throw new Error("Failed to create API key");
-				}
-			} catch (error) {
-				console.error("Error creating app or API key:", error);
-				toast({
-					title: "Error",
-					description: "Failed to create app or API key. Please try again.",
-					variant: "destructive",
-				});
-				return;
-			}
-		}
-
 		if (currentStep < steps.length - 1) {
 			setCurrentStep(currentStep + 1);
 		} else {
@@ -105,25 +84,42 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 		}
 	};
 
-	const handleInputChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		const { name, value } = e.target;
-		setAppData({ ...appData, [name]: value });
-		if (fieldErrors[name]) {
-			setFieldErrors({ ...fieldErrors, [name]: "" });
+	const handleBack = () => {
+		if (currentStep > 0) {
+			setCurrentStep(currentStep - 1);
 		}
 	};
 
-	const validateFields = () => {
-		const errors: Record<string, string> = {};
-		steps[currentStep].fields?.forEach((field) => {
-			if (!appData[field.name as keyof typeof appData]) {
-				errors[field.name] = `${field.label} is required`;
+	const handleAppCreated = async (app: App) => {
+		setAppId(app?.id);
+		if (app?.id) {
+			toast({
+				title: "App created",
+				description: "Your app has been created.",
+				variant: "default",
+			});
+		} else {
+			toast({
+				title: "Error",
+				description: "Failed to create app. Please try again.",
+				variant: "destructive",
+			});
+		}
+
+		try {
+			const apiKeyResult = await createApiKey(app.id || "");
+			if (apiKeyResult.success && apiKeyResult.apiKey) {
+				setApiKey(apiKeyResult.apiKey.key);
 			}
-		});
-		setFieldErrors(errors);
-		return Object.keys(errors).length === 0;
+			handleNext();
+		} catch (error) {
+			console.error("Error creating app or API key:", error);
+			toast({
+				title: "Error",
+				description: "Failed to create API Key.",
+				variant: "destructive",
+			});
+		}
 	};
 
 	const currentStepData = steps[currentStep];
@@ -133,38 +129,14 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 			<h2 className="text-2xl font-bold mb-4">{currentStepData.title}</h2>
 			<p className="mb-6 text-gray-600">{currentStepData.description}</p>
 
-			{currentStepData.fields?.map((field) => (
-				<div key={field.name} className="mb-4">
-					<label
-						htmlFor={field.name}
-						className="block text-sm font-medium text-gray-700"
-					>
-						{field.label}
-					</label>
-					{field.type === "input" ? (
-						<Input
-							id={field.name}
-							name={field.name}
-							value={appData[field.name as keyof typeof appData]}
-							onChange={handleInputChange}
-							className={fieldErrors[field.name] ? "border-red-500" : ""}
-						/>
-					) : (
-						<Textarea
-							id={field.name}
-							name={field.name}
-							value={appData[field.name as keyof typeof appData]}
-							onChange={handleInputChange}
-							className={fieldErrors[field.name] ? "border-red-500" : ""}
-						/>
-					)}
-					{fieldErrors[field.name] && (
-						<p className="mt-1 text-sm text-red-600">
-							{fieldErrors[field.name]}
-						</p>
-					)}
-				</div>
-			))}
+			{currentStep === 0 && (
+				<AppForm
+					mode="create"
+					onAppCreated={(app: App) => {
+						handleAppCreated(app);
+					}}
+				/>
+			)}
 
 			{currentStepData.codeSnippet && (
 				<pre className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
@@ -181,24 +153,16 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 					</p>
 				</div>
 			)}
-
-			<div className="flex justify-between mt-8">
-				<Button
-					onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-					disabled={currentStep === 0}
-				>
-					Back
-				</Button>
-				<Button
-					onClick={() => {
-						if (validateFields()) {
-							handleNext();
-						}
-					}}
-				>
-					{currentStep === steps.length - 1 ? "Finish" : "Next"}
-				</Button>
-			</div>
+			{currentStep > 0 && (
+				<div className="flex justify-between mt-8">
+					<Button onClick={handleBack} disabled={currentStep === 0}>
+						Back
+					</Button>
+					<Button onClick={handleNext} disabled={!appId}>
+						{currentStep === steps.length - 1 ? "Finish" : "Next"}
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 }
