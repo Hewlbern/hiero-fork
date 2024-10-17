@@ -12,20 +12,15 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { ManageApiKeysDialog } from "@/components/manage-api-keys-dialog";
 import { DeleteAppButton } from "@/components/delete-app-button";
-import { AppDialog } from "@/components/app-dialog";
 import { appUrl } from "@/lib/appUrl";
-import { CreateNewAppButton } from "@/components/create-new-app-button";
+import { App } from "@/types/supabase";
 
-export function DeveloperDashboard({
-	isFirstTimeUser,
-}: {
-	isFirstTimeUser: boolean;
-}) {
-	const [apps, setApps] = useState<any[]>([]);
+export function DeveloperDashboard() {
+	const [apps, setApps] = useState<App[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [isFirstTimeUser, setIsFirstTimeUser] = useState(true);
 
 	const fetchApps = async () => {
 		setLoading(true);
@@ -45,7 +40,8 @@ export function DeveloperDashboard({
 			console.error("Error fetching apps:", error);
 			setError("Error loading apps. Please try again later.");
 		} else {
-			setApps(data || []);
+			setApps((data as App[]) || []);
+			setIsFirstTimeUser(data?.length === 0);
 		}
 		setLoading(false);
 	};
@@ -120,13 +116,13 @@ export function DeveloperDashboard({
 										</TableCell>
 										<TableCell className="font-bold">{app.status}</TableCell>
 										<TableCell className="flex flex-row gap-2 justify-end">
-											<ManageApiKeysDialog appId={app.id} />
-											<AppDialog
-												mode="edit"
-												app={app}
-												triggerButton={<Button>Edit</Button>}
-												onAppUpdated={handleAppUpdate}
-											/>
+											<Link
+												href={`/protected/dashboard/developer/edit-app/${app.id}`}
+												passHref
+											>
+												<Button>Edit App</Button>
+											</Link>
+
 											<DeleteAppButton
 												appId={app.id}
 												onAppDeleted={handleAppUpdate}

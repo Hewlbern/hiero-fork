@@ -1,3 +1,4 @@
+"use client";
 import { generateSlugFromDomain } from "@/utils/slug-utils";
 import { useEffect } from "react";
 import { useDebounce } from "@/utils/use-debounce";
@@ -14,12 +15,14 @@ export function AppForm({
 	mode,
 	app,
 	onAppCreated,
+	onAPIKeys,
 	onCancel,
 }: {
 	mode: "create" | "edit";
 	app?: Partial<App>;
 	onAppCreated?: (app: App) => void;
 	onCancel?: () => void | undefined;
+	onAPIKeys?: () => void | undefined;
 }) {
 	const [name, setName] = useState(app?.name || "");
 	const [url, setUrl] = useState(app?.url || "");
@@ -108,6 +111,11 @@ export function AppForm({
 				{onCancel && (
 					<Button type="button" onClick={() => onCancel()} variant="outline">
 						Cancel
+					</Button>
+				)}
+				{mode === "edit" && (
+					<Button type="button" variant="outline" onClick={() => onAPIKeys?.()}>
+						API Keys
 					</Button>
 				)}
 				<Button type="submit" disabled={!isSlugAvailable}>

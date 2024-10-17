@@ -18,3 +18,15 @@ export type DeveloperApiKey = {
 	key: string;
 	created_at: string;
 };
+
+export type ApiKey = {
+	id: string;
+	masked_key: string;
+	created_at: string;
+};
+
+export type NewApiKey = {
+	id: string;
+	key: string;
+	created_at: string;
+};

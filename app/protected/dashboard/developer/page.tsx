@@ -24,7 +24,7 @@ export default async function DeveloperPage() {
 			<h1 className="text-3xl font-bold mb-6 text-gray-800">
 				Developer Dashboard
 			</h1>
-			<DeveloperDashboard isFirstTimeUser={isFirstTimeUser} />
+			<DeveloperDashboard />
 		</div>
 	);
 }
