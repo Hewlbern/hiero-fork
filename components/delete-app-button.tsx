@@ -15,15 +15,15 @@ import { useState } from "react";
 
 interface DeleteAppButtonProps {
 	appId: string;
+	onAppDeleted?: (appId: string) => void;
 }
 
-export function DeleteAppButton({ appId }: DeleteAppButtonProps) {
+export function DeleteAppButton({ appId, onAppDeleted }: DeleteAppButtonProps) {
 	const [open, setOpen] = useState(false);
 	const handleConfirmDelete = async () => {
 		try {
 			await deleteApp(appId);
-			// Optionally, you can add a toast notification here to confirm deletion
-			// You might also want to trigger a refresh of the app list
+			onAppDeleted?.(appId);
 		} catch (error) {
 			console.error("Failed to delete app:", error);
 			// Handle error (e.g., show an error message to the user)

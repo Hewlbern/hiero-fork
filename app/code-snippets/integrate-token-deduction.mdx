@@ -1,0 +1,18 @@
+```typescript
+const deductTokens = async (
+	userId: string,
+	tokens: number,
+	multiplier = 1,
+	unit: string | null = null
+) => {
+	const response = await fetch("https://api.hiero.gl/deduct-tokens", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"X-API-Key": "YOUR_API_KEY_HERE",
+		},
+		body: JSON.stringify({ userId, tokens, multiplier, unit }),
+	});
+	return response.json();
+};
+```

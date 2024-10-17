@@ -1,10 +1,7 @@
-import { Steps } from "nextra/components";
-
 # Adding the Express Checkout Button
 
 The Hiero Express Checkout Button allows users to pay for usage using Hiero, enabling them to either log into their existing Hiero account or pay with Hiero directly. This guide will walk you through the process of adding and configuring the Hiero Express Checkout Button in your application.
 
-<Steps>
 ## Install the Hiero UI Package
 
 First, install the Hiero UI package in your project:
@@ -18,16 +15,16 @@ npm i hiero-ui --save
 Import the `HieroCheckoutButton` component from the `@hiero/ui` package:
 
 ```jsx copy
-import { HieroCheckoutButton } from '@hiero/ui';
+import { HieroCheckoutButton } from "@hiero/ui";
 ```
 
 Then, use the component in your React application:
 
 ```jsx copy
-<HieroCheckoutButton 
-  appName="your-app-name"
-  redirectUrl="https://your-app.com/success"
-  email="user@example.com" // Optional
+<HieroCheckoutButton
+	appName="your-app-name"
+	redirectUrl="https://your-app.com/success"
+	email="user@example.com" // Optional
 />
 ```
 
@@ -56,8 +53,6 @@ Before going live, thoroughly test the integration:
 3. Verify that you're redirected back to your application with the connection key
 4. Confirm that the transaction is properly recorded and the user's access is updated
 
-</Steps>
-
 ## Best Practices
 
 1. **Security**: Ensure that the `appName` is not exposed to the client-side. You may need to generate this value server-side.
@@ -72,7 +67,4 @@ Before going live, thoroughly test the integration:
 
 6. **Responsive Design**: Ensure that the checkout button and process work well on various device sizes.
 
-
 By following these steps and best practices, you can successfully integrate the Hiero Express Checkout Button into your application, providing a seamless payment experience for your users.
-
-

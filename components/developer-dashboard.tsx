@@ -1,6 +1,7 @@
-"use server";
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,23 +16,54 @@ import { ManageApiKeysDialog } from "@/components/manage-api-keys-dialog";
 import { DeleteAppButton } from "@/components/delete-app-button";
 import { AppDialog } from "@/components/app-dialog";
 import { appUrl } from "@/lib/appUrl";
+import { CreateNewAppButton } from "@/components/create-new-app-button";
 
-export async function DeveloperDashboard() {
-	const supabase = createClient();
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
+export function DeveloperDashboard({
+	isFirstTimeUser,
+}: {
+	isFirstTimeUser: boolean;
+}) {
+	const [apps, setApps] = useState<any[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-	const { data: apps, error } = await supabase
-		.from("apps")
-		.select("id, name, status, description, url, slug")
-		.eq("user_id", user?.id)
-		.is("deleted_at", null)
-		.order("created_at", { ascending: false });
+	const fetchApps = async () => {
+		setLoading(true);
+		const supabase = createClient();
+		const {
+			data: { user },
+		} = await supabase.auth.getUser();
+
+		const { data, error } = await supabase
+			.from("apps")
+			.select("id, name, status, description, url, slug")
+			.eq("user_id", user?.id)
+			.is("deleted_at", null)
+			.order("created_at", { ascending: false });
+
+		if (error) {
+			console.error("Error fetching apps:", error);
+			setError("Error loading apps. Please try again later.");
+		} else {
+			setApps(data || []);
+		}
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		fetchApps();
+	}, []);
+
+	const handleAppUpdate = () => {
+		fetchApps();
+	};
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
 
 	if (error) {
-		console.error("Error fetching apps:", error);
-		return <div>Error loading apps. Please try again later.</div>;
+		return <div>{error}</div>;
 	}
 
 	return (
@@ -45,50 +77,66 @@ export async function DeveloperDashboard() {
 				<CardHeader>
 					<CardTitle className="text-2xl font-bold flex justify-between items-center">
 						Your Apps
-						<AppDialog
-							mode="create"
-							triggerButton={<Button>Create New App</Button>}
-						/>
+						<Link href="/protected/dashboard/developer/create-app" passHref>
+							<Button>Create New App</Button>
+						</Link>
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<Table>
-						<TableHeader>
-							<TableRow className="border-b-2 border-black">
-								<TableHead className="font-bold">App Name</TableHead>
-								<TableHead className="font-bold">Status</TableHead>
-								<TableHead className="font-bold text-right">Actions</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{apps.map((app) => (
-								<TableRow key={app.id} className="border-b-2 border-black">
-									<TableCell>
-										<Link
-											href={`/a/${app.slug}`}
-											className="hover:underline font-bold text-lg"
-										>
-											{app.name}
-										</Link>
-										<br />
-										<Link href={`/a/${app.slug}`} className="hover:underline">
-											{appUrl(app.slug)}
-										</Link>
-									</TableCell>
-									<TableCell className="font-bold">{app.status}</TableCell>
-									<TableCell className="flex flex-row gap-2 justify-end">
-										<ManageApiKeysDialog appId={app.id} />
-										<AppDialog
-											mode="edit"
-											app={app}
-											triggerButton={<Button>Edit</Button>}
-										/>
-										<DeleteAppButton appId={app.id} />
-									</TableCell>
+					{isFirstTimeUser ? (
+						<div className="text-center py-8">
+							<p className="text-lg mb-4">
+								Welcome! Let&apos;s create your first app.
+							</p>
+							<Link href="/protected/dashboard/developer/create-app" passHref>
+								<Button>Create New App</Button>
+							</Link>
+						</div>
+					) : (
+						<Table>
+							<TableHeader>
+								<TableRow className="border-b-2 border-black">
+									<TableHead className="font-bold">App Name</TableHead>
+									<TableHead className="font-bold">Status</TableHead>
+									<TableHead className="font-bold text-right">
+										Actions
+									</TableHead>
 								</TableRow>
-							))}
-						</TableBody>
-					</Table>
+							</TableHeader>
+							<TableBody>
+								{apps.map((app) => (
+									<TableRow key={app.id} className="border-b-2 border-black">
+										<TableCell>
+											<Link
+												href={`/a/${app.slug}`}
+												className="hover:underline font-bold text-lg"
+											>
+												{app.name}
+											</Link>
+											<br />
+											<Link href={`/a/${app.slug}`} className="hover:underline">
+												{appUrl(app.slug)}
+											</Link>
+										</TableCell>
+										<TableCell className="font-bold">{app.status}</TableCell>
+										<TableCell className="flex flex-row gap-2 justify-end">
+											<ManageApiKeysDialog appId={app.id} />
+											<AppDialog
+												mode="edit"
+												app={app}
+												triggerButton={<Button>Edit</Button>}
+												onAppUpdated={handleAppUpdate}
+											/>
+											<DeleteAppButton
+												appId={app.id}
+												onAppDeleted={handleAppUpdate}
+											/>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					)}
 				</CardContent>
 			</Card>
 		</main>

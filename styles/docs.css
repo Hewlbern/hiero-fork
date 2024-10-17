@@ -1,0 +1,92 @@
+.docs-layout {
+	display: flex;
+}
+
+.docs-sidebar {
+	width: 250px;
+	background-color: #1e1e1e;
+	color: #ffffff;
+	position: fixed;
+	height: 100vh;
+	overflow-y: auto;
+	/* Add styling for your sidebar */
+}
+
+.docs-content {
+	flex: 1;
+	margin-left: 250px;
+	padding: 20px;
+	@apply prose;
+	/* Prose styles for MDX content */
+}
+
+.docs-content :global(h1) {
+	@apply text-3xl font-bold mb-4;
+}
+
+.docs-content :global(h2) {
+	@apply text-2xl font-semibold mt-8 mb-4;
+}
+
+.docs-content :global(p) {
+	@apply mb-4;
+}
+
+/* Add styles for other elements like code blocks, lists, etc. */
+
+.docs-sidebar nav ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.docs-sidebar nav li {
+	margin: 0;
+}
+
+.docs-sidebar nav li ul {
+	padding-left: 1rem;
+}
+
+.docs-sidebar nav a {
+	display: block;
+	padding: 0.5rem 1rem;
+	color: var(--foreground);
+	text-decoration: none;
+}
+
+.docs-sidebar nav a:hover {
+	background-color: var(--muted);
+}
+
+.docs-sidebar nav a.active {
+	background-color: var(--secondary);
+	font-weight: 500;
+}
+
+.docs-nav {
+	padding: 20px;
+}
+
+.docs-nav-title {
+	font-size: 1.5em;
+	margin-bottom: 1em;
+}
+
+.docs-nav-list {
+	list-style: none;
+	padding: 0;
+}
+
+.docs-nav-item {
+	margin-bottom: 1em;
+}
+
+.docs-nav-link {
+	color: #ffffff;
+	text-decoration: none;
+	line-height: 1.5; /* Optional: adjust line-height for better spacing */
+}
+
+.docs-nav-link:hover {
+	color: #00aaff;
+}
