@@ -1,20 +1,20 @@
-"use client";
-
-import { useEffect, useState } from "react";
+// Remove "use client"; to convert to a server component
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { createApiKey } from "@/app/actions/api-keys";
 import { useToast } from "@/hooks/use-toast";
-
 import { App } from "@/types/supabase";
-
 import { AppForm } from "./app-form";
+// Import MDX files
+import IntegrateTokenDeduction from "@/app/code-snippets/integrate-token-deduction.mdx";
+import ImplementWebhook from "@/app/code-snippets/implement-webhook.mdx";
+import LaunchPayWithHiero from "@/app/code-snippets/launch-pay-with-hiero.mdx";
 
 export type Step = {
 	title: string;
 	description: string;
-	codeSnippet?: string;
+	CodeSnippetComponent?: React.ComponentType;
 };
-
 const steps: Step[] = [
 	{
 		title: "Create an App & API Key",
@@ -23,59 +23,27 @@ const steps: Step[] = [
 	{
 		title: "Integrate Hiero token deduction",
 		description: "Here's how to integrate Hiero token deduction into your app:",
-		codeSnippet: `
-const deductTokens = async (userId, tokens, multiplier = 1, unit = null) => {
-  const response = await fetch('https://api.hiero.gl/deduct-tokens', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': 'YOUR_API_KEY_HERE'
-    },
-    body: JSON.stringify({ userId, tokens, multiplier, unit })
-  });
-  return response.json();
-};
-		`,
+		CodeSnippetComponent: IntegrateTokenDeduction,
 	},
 	{
 		title: "Implement connection Web Hook",
 		description: "Set up a webhook to handle user connections:",
-		codeSnippet: `
-app.post('/webhook', (req, res) => {
-  // Handle webhook payload
-  res.status(200).send('OK');
-});
-		`,
+		CodeSnippetComponent: ImplementWebhook,
 	},
 	{
 		title: "Launch Pay with Hiero",
 		description: "Add the 'Pay with Hiero' button to your app:",
-		codeSnippet: `
-<Link href="https://hiero.gl/a/YOUR_APP_SLUG">
-  <Button>Pay with Hiero</Button>
-</Link>
-		`,
+		CodeSnippetComponent: LaunchPayWithHiero,
 	},
 ];
-
 interface OnboardingFlowProps {
 	onComplete: () => void;
 }
-
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
-	const [name, setName] = useState("");
-	const [url, setUrl] = useState("");
-	const [description, setDescription] = useState("");
-	const [error, setError] = useState("");
-	const [isOpen, setIsOpen] = useState(false);
-	const [slug, setSlug] = useState("");
-	const [isSlugAvailable, setIsSlugAvailable] = useState(false);
-
 	const [currentStep, setCurrentStep] = useState(0);
 	const [appId, setAppId] = useState<string | null>(null);
 	const [apiKey, setApiKey] = useState("");
 	const { toast } = useToast();
-
 	const handleNext = async () => {
 		if (currentStep < steps.length - 1) {
 			setCurrentStep(currentStep + 1);
@@ -83,13 +51,11 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 			onComplete();
 		}
 	};
-
 	const handleBack = () => {
 		if (currentStep > 0) {
 			setCurrentStep(currentStep - 1);
 		}
 	};
-
 	const handleAppCreated = async (app: App) => {
 		setAppId(app?.id);
 		if (app?.id) {
@@ -105,7 +71,6 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 				variant: "destructive",
 			});
 		}
-
 		try {
 			const apiKeyResult = await createApiKey(app.id || "");
 			if (apiKeyResult.success && apiKeyResult.apiKey) {
@@ -121,14 +86,11 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 			});
 		}
 	};
-
 	const currentStepData = steps[currentStep];
-
 	return (
 		<div className="max-w-2xl mx-auto">
 			<h2 className="text-2xl font-bold mb-4">{currentStepData.title}</h2>
 			<p className="mb-6 text-gray-600">{currentStepData.description}</p>
-
 			{currentStep === 0 && (
 				<AppForm
 					mode="create"
@@ -137,19 +99,17 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 					}}
 				/>
 			)}
-
-			{currentStepData.codeSnippet && (
-				<pre className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-4">
-					<code>{currentStepData.codeSnippet}</code>
-				</pre>
+			{currentStepData.CodeSnippetComponent && (
+				<div className="mb-4 p-4 bg-gray-100 rounded-md overflow-x-auto relative">
+					<currentStepData.CodeSnippetComponent />
+				</div>
 			)}
-
 			{currentStep === 1 && apiKey && (
 				<div className="mb-4 p-4 bg-green-100 rounded-md">
 					<p className="font-bold">Your API Key:</p>
 					<p className="font-mono">{apiKey}</p>
 					<p className="mt-2 text-sm text-gray-600">
-						Keep this key secret and don't share it with anyone!
+						Keep this key secret and don&apos;t share it with anyone!
 					</p>
 				</div>
 			)}
