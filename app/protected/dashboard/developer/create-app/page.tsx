@@ -29,7 +29,7 @@ export default function CreateAppPage() {
 			});
 		}
 
-		router.push(`../api-keys/${appId}`);
+		router.push(`/protected/dashboard/developer/api-keys/${appId}`);
 	};
 
 	return (

@@ -117,12 +117,6 @@ export function DeveloperDashboard() {
 										<TableCell className="font-bold">{app.status}</TableCell>
 										<TableCell className="flex flex-row gap-2 justify-end">
 											<Link
-												href={`/protected/dashboard/developer/api-keys/${app.id}`}
-												passHref
-											>
-												<Button>API Keys</Button>
-											</Link>
-											<Link
 												href={`/protected/dashboard/developer/edit-app/${app.id}`}
 												passHref
 											>

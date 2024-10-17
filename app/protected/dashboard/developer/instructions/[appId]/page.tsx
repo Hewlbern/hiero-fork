@@ -8,7 +8,7 @@ export default function InstructionsPage({
 }) {
 	const router = useRouter();
 	const handleComplete = () => {
-		router.push("../");
+		router.push(`/protected/dashboard/developer`);
 	};
 
 	return <OnboardingFlow appId={params.appId} onComplete={handleComplete} />;

@@ -20,8 +20,12 @@ export default function ApiKeysPage({ params }: { params: { appId: string } }) {
 				<Button variant="secondary" onClick={() => router.push(`../`)}>
 					Back to Dashboard
 				</Button>
-				<Button onClick={() => router.push(`../instructions/${appId}`)}>
-					How to Integrate
+				<Button
+					onClick={() =>
+						router.push(`/protected/dashboard/developer/instructions/${appId}`)
+					}
+				>
+					Integration Instructions
 				</Button>
 			</div>
 		</div>

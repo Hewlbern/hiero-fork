@@ -4,6 +4,23 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { App } from "@/types/supabase";
 
+export async function getAppData(appId: string): Promise<App> {
+	const supabase = createClient();
+
+	const { data: app, error } = await supabase
+		.from("apps")
+		.select("*")
+		.eq("id", appId)
+		.single();
+
+	if (error) {
+		console.error("Error fetching app data:", error);
+		throw new Error("Failed to fetch app data");
+	}
+
+	return app;
+}
+
 export async function checkSlugAvailability(
 	slug: string,
 	currentAppId?: string
