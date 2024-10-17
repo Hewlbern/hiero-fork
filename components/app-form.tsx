@@ -1,3 +1,4 @@
+"use client";
 import { generateSlugFromDomain } from "@/utils/slug-utils";
 import { useEffect } from "react";
 import { useDebounce } from "@/utils/use-debounce";

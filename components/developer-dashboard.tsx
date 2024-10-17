@@ -14,9 +14,7 @@ import {
 } from "@/components/ui/table";
 import { ManageApiKeysDialog } from "@/components/manage-api-keys-dialog";
 import { DeleteAppButton } from "@/components/delete-app-button";
-import { AppDialog } from "@/components/app-dialog";
 import { appUrl } from "@/lib/appUrl";
-import { CreateNewAppButton } from "@/components/create-new-app-button";
 
 export function DeveloperDashboard({
 	isFirstTimeUser,
@@ -121,12 +119,13 @@ export function DeveloperDashboard({
 										<TableCell className="font-bold">{app.status}</TableCell>
 										<TableCell className="flex flex-row gap-2 justify-end">
 											<ManageApiKeysDialog appId={app.id} />
-											<AppDialog
-												mode="edit"
-												app={app}
-												triggerButton={<Button>Edit</Button>}
-												onAppUpdated={handleAppUpdate}
-											/>
+											<Link
+												href={`/protected/dashboard/developer/edit-app/${app.id}`}
+												passHref
+											>
+												<Button>Edit App</Button>
+											</Link>
+
 											<DeleteAppButton
 												appId={app.id}
 												onAppDeleted={handleAppUpdate}
