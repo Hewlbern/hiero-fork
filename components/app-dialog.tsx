@@ -16,9 +16,15 @@ type AppDialogProps = {
 	mode: "create" | "edit";
 	app?: Partial<App>;
 	triggerButton: React.ReactNode;
+	onAppUpdated?: (app: App) => void;
 };
 
-export function AppDialog({ mode, app, triggerButton }: AppDialogProps) {
+export function AppDialog({
+	mode,
+	app,
+	triggerButton,
+	onAppUpdated,
+}: AppDialogProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
@@ -36,6 +42,7 @@ export function AppDialog({ mode, app, triggerButton }: AppDialogProps) {
 					onCancel={() => setIsOpen(false)}
 					onAppCreated={(app: App) => {
 						setIsOpen(false);
+						onAppUpdated?.(app);
 					}}
 				/>
 			</DialogContent>

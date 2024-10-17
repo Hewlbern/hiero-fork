@@ -10,8 +10,13 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { OnboardingFlow } from "@/components/onboarding-flow";
+import { App } from "@/types/supabase";
 
-export function CreateNewAppButton() {
+export function CreateNewAppButton({
+	onAppCreated,
+}: {
+	onAppCreated?: (app: App) => void;
+}) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
