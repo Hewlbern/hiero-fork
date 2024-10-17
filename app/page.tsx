@@ -1,7 +1,4 @@
-"use client";
-
 import Head from "next/head";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { JoinWaitlistModal } from "@/components/join-waitlist-modal";
 import HieroTitle from "@/components/HieroTitle";
@@ -60,7 +57,7 @@ export default function Home() {
 			<main className="min-h-screen bg-cyan-50 flex flex-col items-center justify-center p-4 sm:p-8 relative overflow-hidden">
 				<HieroTitle size="large" />
 				<p className="text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-16 text-center max-w-3xl text-white bg-black p-4 sm:p-8 border-4 sm:border-8 border-x-green-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.5)] sm:shadow-[16px_16px_0px_0px_rgba(0,0,0,0.5)] transform -rotate-1">
-					A brand new way to charge for usage based apps.{" "}
+					AI Payments - Auditable context, for verifiable claims. {" "}
 					<span className="font-black bg-gradient-to-r from-sky-400 via-teal-300 to-emerald-500 bg-clip-text text-transparent">
 						Be part of the future.
 					</span>
@@ -75,10 +72,10 @@ export default function Home() {
 				</JoinWaitlistModal>
 				
 				{/* FAQ Links */}
-				<div className="absolute bottom-4 right-4 text-sm text-gray-600">
+				{/* <div className="absolute bottom-4 right-4 text-sm text-gray-600">
 					<Link href="/blog/user-faq" className="mr-4 hover:underline">User FAQ</Link>
 					<Link href="/blog/business-faq" className="hover:underline">Business FAQ</Link>
-				</div>
+				</div> */}
 			</main>
 		</>
 	);
