@@ -1,13 +1,11 @@
-import nextra from "nextra";
+import remarkGfm from "remark-gfm";
+import createMDX from "@next/mdx";
 
-const withNextra = nextra({
-	theme: "nextra-theme-docs",
-	themeConfig: "./theme.config.tsx",
-	// ... your Nextra config
-});
-
-export default withNextra({
-	// ... your Next.js config
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+	// Configure `pageExtensions`` to include MDX files
+	pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+	// Optionally, add any other Next.js config below
 	redirects: async () => {
 		return [
 			{
@@ -17,4 +15,15 @@ export default withNextra({
 			},
 		];
 	},
+};
+
+const withMDX = createMDX({
+	// Add markdown plugins here, as desired
+	options: {
+		remarkPlugins: [remarkGfm],
+		rehypePlugins: [],
+	},
 });
+
+// Wrap MDX and Next.js config with each other
+export default withMDX(nextConfig);
