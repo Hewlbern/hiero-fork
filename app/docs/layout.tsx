@@ -26,6 +26,10 @@ const sidebarItems = [
 		href: "/docs/webhooks",
 	},
 	{
+		title: "Checkout",
+		href: "/docs/checkout",
+	},
+	{
 		title: "API Endpoints",
 		type: "heading",
 		href: "/docs/api-endpoints",
