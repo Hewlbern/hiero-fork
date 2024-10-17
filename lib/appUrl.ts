@@ -10,12 +10,12 @@ export function appProtocol() {
 	return typeof window !== "undefined"
 		? window.location.protocol
 		: process.env.VERCEL_ENV === "development"
-			? "http"
+			? "http:"
 			: "https:";
 }
 
 export function appUrl(slug: string) {
 	// Updated function signature
 
-	return `${appProtocol()}://${appDomain()}/a/${slug}`;
+	return `${appProtocol()}//${appDomain()}/a/${slug}`;
 }
