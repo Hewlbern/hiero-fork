@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Lock, ArrowRight } from "lucide-react";
 import InputOTPDemo from "@/components/auth/verification-code-input";
 import { handleVerifyOTP } from "@/app/actions/auth";
+import { Button } from "@/components/ui/button";
 
 type SignInComponentProps = {
 	email: string;
@@ -78,14 +79,13 @@ const SignInComponent: React.FC<SignInComponentProps> = ({
 					<div className="flex-grow"></div>
 					<div>
 						<div className="w-full h-0.5 bg-white mb-6"></div>
-						<button
-							className="w-full bg-black text-white py-4 rounded-lg font-medium hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg"
+						<Button
+							className="w-full py-6 text-base font-medium shadow-lg"
 							onClick={handleVerOTP}
 							disabled={isLoading}
 						>
-							<span>Verify</span>
-							<ArrowRight size={20} />
-						</button>
+							Verify
+						</Button>
 					</div>
 				</>
 			)}

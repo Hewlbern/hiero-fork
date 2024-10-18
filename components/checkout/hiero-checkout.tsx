@@ -57,9 +57,9 @@ type GoogleAuthResult = {
 // New Header component
 function Header() {
 	return (
-		<div className="text-center mb-6">
+		<div className="text-center">
 			<h1 className="text-4xl text-black font-bold mb-1">Hiero</h1>
-			<p className="text-sm text-gray-600 mb-2">Pay once, use many</p>
+			<p className="text-sm text-gray-600 mb-2">Use everywhere</p>
 			<div className="w-16 h-0.5 bg-white mx-auto"></div>
 		</div>
 	);
@@ -78,19 +78,19 @@ function EmailInfo({
 				<div className="w-10 h-10 bg-black rounded-full mr-4 flex items-center justify-center text-white">
 					<Mail size={20} />
 				</div>
+
 				<div className="flex-grow">
-					<p className="text-sm text-black font-medium">{email}</p>
+					<Link
+						href="#"
+						className=" text-sm text-black font-medium hover:underline"
+						onClick={onChangeEmail}
+					>
+						{email}
+					</Link>
 
 					<p className="text-xs text-gray-500">
 						Balance: 1,000,000 free tokens!
 					</p>
-					<Link
-						href="#"
-						className="text-xs text-gray-500 hover:underline"
-						onClick={onChangeEmail}
-					>
-						Not you?
-					</Link>
 				</div>
 			</CardContent>
 		</Card>
