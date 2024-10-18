@@ -17,6 +17,7 @@ import SignInComponent from "@/components/checkout/ui/otp-step"; // Add this imp
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import Link from "next/link";
+import AppInfo from "./ui/app-info";
 
 type AIApp = {
 	id: string;
@@ -105,7 +106,7 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 	const [user, setUser] = useState<User | null>(null);
 	const [currentStep, setCurrentStep] = useState(0);
 	const [cardSaved, setCardSaved] = useState(false);
-	const [step, setStep] = useState("verify");
+	const [step, setStep] = useState("first");
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showEmailModal, setShowEmailModal] = useState(false);
@@ -123,12 +124,6 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 		checkUser();
 	}, []);
 
-	useEffect(() => {
-		if (app.email) {
-			handleSignInWithOTPCheck();
-		}
-	}, [app.email]);
-
 	const handleSignInWithOTPCheck = async () => {
 		setIsLoading(true);
 		setError(null);
@@ -136,7 +131,7 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 		const result = await handleSignInWithOTP(app.email, isDevelopment ?? false);
 
 		if (result.success) {
-			setStep("verify");
+			setStep("first");
 		} else {
 			setError(result.message);
 		}
@@ -205,7 +200,27 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 					/>
 
 					<AnimatePresence mode="wait">
-						{step === "verify" ? (
+						{step === "first" ? (
+							<motion.div
+								key="first"
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -20 }}
+								transition={{ duration: 0.3 }}
+								className="flex flex-col h-[400px]"
+							>
+								<AppInfo name={app.name} avgSpent={6.73} />
+								<Button
+									className="w-full py-6 text-base font-medium shadow-lg"
+									onClick={() => {
+										setStep("verify");
+									}}
+									disabled={isLoading}
+								>
+									Connect It
+								</Button>
+							</motion.div>
+						) : step === "verify" ? (
 							<motion.div
 								key="verify"
 								initial={{ opacity: 0, y: 20 }}
