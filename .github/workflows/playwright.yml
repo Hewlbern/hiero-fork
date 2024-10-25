@@ -25,6 +25,11 @@ jobs:
           version: latest
       - name: Start Supabase
         run: supabase start
+      - name: Update environment with Supabase credentials
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$(supabase status --output json | jq -r '.api.anonKey')" >> $GITHUB_ENV
+          echo "SUPABASE_SERVICE_ROLE_KEY=$(supabase status --output json | jq -r '.api.serviceRoleKey')" >> $GITHUB_ENV
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Run Playwright tests
