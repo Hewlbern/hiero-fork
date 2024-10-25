@@ -6,7 +6,9 @@
 		"start": "next start",
 		"test": "jest",
 		"test:e2e": "playwright test",
-		"test:e2eui": "playwright test --ui"
+		"test:e2eui": "playwright test --ui",
+		"db:reset": "supabase db reset && pnpm db:seed",
+		"db:seed": "tsx scripts/seed.ts"
 	},
 	"dependencies": {
 		"@mdx-js/loader": "^3.0.1",
