@@ -155,15 +155,14 @@ export const signInWithGitHub = async () => {
 };
 
 export const signInWithGoogleAuth = async (next?: string) => {
-	
-
 	const supabase = createClient();
 	const origin = headers().get("origin");
 	const isLocalEnv = process.env.NODE_ENV === "development";
-	
-	const baseRedirectUrl = isLocalEnv ? `${origin}/auth/callback` : "https://hiero.gl/auth/callback";
+
+	const baseRedirectUrl = isLocalEnv
+		? `${origin}/auth/callback`
+		: "https://hiero.gl/auth/callback";
 	const redirectTo = `${baseRedirectUrl}${next ? `?next=${encodeURIComponent(next)}` : ""}`;
-	
 
 	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider: "google",
@@ -198,9 +197,12 @@ export const handleSendOtp = async (phoneNumber: string) => {
 		return { success: true, message: "OTP sent successfully" };
 	} catch (error) {
 		console.error("Error sending OTP:", error);
-		return { 
-			success: false, 
-			message: error instanceof Error ? error.message : "Failed to send OTP. Please try again." 
+		return {
+			success: false,
+			message:
+				error instanceof Error
+					? error.message
+					: "Failed to send OTP. Please try again.",
 		};
 	}
 };
@@ -220,21 +222,27 @@ export const handleVerifyOtp = async (phoneNumber: string, otp: string) => {
 		return { success: true, message: "Phone number verified successfully" };
 	} catch (error) {
 		console.error("Error verifying OTP:", error);
-		return { 
-			success: false, 
-			message: error instanceof Error ? error.message : "Failed to verify OTP. Please try again." 
+		return {
+			success: false,
+			message:
+				error instanceof Error
+					? error.message
+					: "Failed to verify OTP. Please try again.",
 		};
 	}
 };
 
-export const handleSignInWithOTP = async (email: string, isDevelopment: boolean) => {
+export const handleSignInWithOTP = async (
+	email: string,
+	isDevelopment: boolean
+) => {
 	if (isDevelopment) {
-		console.log('Development mode: Simulating OTP sign-in for', email);
-		
+		console.log("Development mode: Simulating OTP sign-in for", email);
+
 		// Simulate a 1-second loading time
-		await new Promise(resolve => setTimeout(resolve, 1000));
-		
-		return { success: true, message: 'OTP sent successfully' };
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+
+		return { success: true, message: "OTP sent successfully" };
 	}
 
 	const supabase = createClient();
@@ -249,17 +257,24 @@ export const handleSignInWithOTP = async (email: string, isDevelopment: boolean)
 
 		if (error) throw error;
 
-		return { success: true, message: 'OTP sent successfully' };
+		return { success: true, message: "OTP sent successfully" };
 	} catch (err) {
-		console.error('Error sending OTP:', err);
-		return { success: false, message: 'Failed to send verification code. Please try again.' };
+		console.error("Error sending OTP:", err);
+		return {
+			success: false,
+			message: "Failed to send verification code. Please try again.",
+		};
 	}
 };
 
-export const handleVerifyOTP = async (email: string, otp: string, isDevelopment: boolean) => {
+export const handleVerifyOTP = async (
+	email: string,
+	otp: string,
+	isDevelopment: boolean
+) => {
 	if (isDevelopment) {
-		console.log('Development mode: Simulating OTP verification');
-		return { success: true, message: 'OTP verified successfully' };
+		console.log("Development mode: Simulating OTP verification");
+		return { success: true, message: "OTP verified successfully" };
 	}
 
 	const supabase = createClient();
@@ -268,14 +283,17 @@ export const handleVerifyOTP = async (email: string, otp: string, isDevelopment:
 		const { error } = await supabase.auth.verifyOtp({
 			email: email,
 			token: otp,
-			type: 'email',
+			type: "email",
 		});
 
 		if (error) throw error;
 
-		return { success: true, message: 'OTP verified successfully' };
+		return { success: true, message: "OTP verified successfully" };
 	} catch (err) {
-		console.error('Error verifying OTP:', err);
-		return { success: false, message: 'Invalid verification code. Please try again.' };
+		console.error("Error verifying OTP:", err);
+		return {
+			success: false,
+			message: "Invalid verification code. Please try again.",
+		};
 	}
 };

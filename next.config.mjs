@@ -15,6 +15,11 @@ const nextConfig = {
 				destination: "/docs/getting-started",
 				permanent: true,
 			},
+			{
+				source: "/protected",
+				destination: "/protected/dashboard",
+				permanent: true,
+			},
 		];
 	},
 };
