@@ -28,8 +28,8 @@ jobs:
           version: latest
       - name: Start Supabase
         env:
-        SUPABASE_AUTH_GITHUB_CLIENT_ID: 'dummy-client-id'
-          SUPABASE_AUTH_GITHUB_SECRET: 'dummy-secret'
+          SUPABASE_AUTH_GITHUB_CLIENT_ID: "dummy-client-id"
+          SUPABASE_AUTH_GITHUB_SECRET: "dummy-secret"
         run: supabase start
       - name: Update environment with Supabase credentials
         run: |
