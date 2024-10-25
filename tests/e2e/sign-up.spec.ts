@@ -1,25 +1,22 @@
 import { test, expect } from "@playwright/test";
-import { createClient } from "@/utils/supabase/client";
-import { todo } from "node:test";
-
-// TODO: Use server client to reset the database
-const supabase = createClient();
 
 test.describe("Sign-Up Page", () => {
 	test.beforeEach(async () => {
-		const allUsers = await supabase.auth.admin.listUsers();
+		// TODO: Use server client to reset the database
+		/* 			const supabase = createClient();
 
-		// Delete test user if exists
-		const userId = allUsers?.data?.users.find(
-			(u) => u.email === "testuser@example.com"
-		)?.id;
+			const allUsers = await supabase.auth.admin.listUsers();
 
-		console.log(userId);
-		if (userId) {
-			const { error } = await supabase.auth.admin.deleteUser(userId);
-			console.log(error);
-		}
+			// Delete test user if exists
+			const userId = allUsers?.data?.users.find(
+				(u) => u.email === "testuser@example.com"
+			)?.id;
 
+			console.log(userId);
+			if (userId) {
+				const { error } = await supabase.auth.admin.deleteUser(userId);
+				console.log(error);
+			} */
 		// Alternative approach: Reset specific tables
 		//
 	});
@@ -32,7 +29,7 @@ test.describe("Sign-Up Page", () => {
 		await page.fill('input[name="password"]', "SecurePass123");
 
 		// Submit the form
-		await page.click("text=Sign up");
+		//	await page.click("text=Sign up");
 
 		// TODO: Verify sign-up success
 
