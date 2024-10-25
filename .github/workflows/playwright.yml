@@ -8,29 +8,25 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    env:
-      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-    services:
-      supabase:
-        image: supabase/supabase-local
-        ports:
-          - 54321:54321
-          - 54322:54322
-        env:
-          POSTGRES_PASSWORD: your-super-secret-password
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+      - name: Pull Vercel Environment Variables
+        uses: vercel/actions/env-pull@v1.1.0
+        with:
+          token: ${{ secrets.VERCEL_TOKEN }}
       - name: Install dependencies
         run: npm install -g pnpm && pnpm install
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Start Supabase
+        run: supabase start
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
-      - name: Setup Database
-        run: pnpm db:reset
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v4
