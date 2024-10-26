@@ -8,7 +8,8 @@
 		"test:e2e": "playwright test",
 		"test:e2eui": "playwright test --ui",
 		"db:reset": "supabase db reset && pnpm db:seed",
-		"db:seed": "tsx scripts/seed.ts"
+		"db:seed": "tsx scripts/seed.ts",
+		"db:gen": "supabase gen types typescript --schema public | sed 's/export interface Database {/export type Database = {/g' > types/database.ts"
 	},
 	"dependencies": {
 		"@mdx-js/loader": "^3.0.1",
@@ -70,6 +71,7 @@
 		"jest-environment-jsdom": "^29.7.0",
 		"pg": "^8.13.0",
 		"postcss": "8.4.33",
+		"supawright": "^0.3.0",
 		"tailwind-merge": "^2.5.4",
 		"tailwindcss": "3.4.1",
 		"tailwindcss-animate": "^1.0.7",

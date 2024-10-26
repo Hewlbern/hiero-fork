@@ -1,22 +1,25 @@
-import { test, expect } from "@playwright/test";
+import type { Database } from "../../types/database";
+import { withSupawright } from "supawright";
+
+const test = withSupawright<Database, "public">(["public"]);
 
 test.describe("Sign-Up Page", () => {
-	test.beforeEach(async () => {
+	test.beforeEach(async ({ supawright }) => {
 		// TODO: Use server client to reset the database
-		/* 			const supabase = createClient();
+		const supabase = await supawright.create("public", "session");
 
-			const allUsers = await supabase.auth.admin.listUsers();
+		const allUsers = await supabase.auth.admin.listUsers();
 
-			// Delete test user if exists
-			const userId = allUsers?.data?.users.find(
-				(u) => u.email === "testuser@example.com"
-			)?.id;
+		// Delete test user if exists
+		const userId = allUsers?.data?.users.find(
+			(u) => u.email === "testuser@example.com"
+		)?.id;
 
-			console.log(userId);
-			if (userId) {
-				const { error } = await supabase.auth.admin.deleteUser(userId);
-				console.log(error);
-			} */
+		console.log(userId);
+		if (userId) {
+			const { error } = await supabase.auth.admin.deleteUser(userId);
+			console.log(error);
+		}
 		// Alternative approach: Reset specific tables
 		//
 	});

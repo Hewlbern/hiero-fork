@@ -180,6 +180,9 @@ importers:
       postcss:
         specifier: 8.4.33
         version: 8.4.33
+      supawright:
+        specifier: ^0.3.0
+        version: 0.3.0(@playwright/test@1.48.1)(@supabase/supabase-js@2.45.4)(@types/node@20.10.6)
       tailwind-merge:
         specifier: ^2.5.4
         version: 2.5.4
@@ -4159,6 +4162,12 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
 
+  supawright@0.3.0:
+    resolution: {integrity: sha512-sz/AE+MJsFdLbRboxydbsnZR6TREmVBBNR3utawiXzv1tMcUOwel/fZAMPjUXle8d9d+xONOoI+G70mwLpa4gQ==}
+    peerDependencies:
+      '@playwright/test': ^1.37.1
+      '@supabase/supabase-js': ^2.33.1
+
   supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -4276,6 +4285,12 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  ts-postgres@2.0.1:
+    resolution: {integrity: sha512-tN8bDZpy82yP0xW9BGRT4cYgRlTy+dKfMeCaf8fcQ6Ddd7RSIczjr8Bsp/vMzs0AjI8FA5RXNjFUa3+UDUDzCA==}
+    engines: {node: '>=18.0'}
+    peerDependencies:
+      '@types/node': ^20
 
   tslib@2.8.0:
     resolution: {integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==}
@@ -9356,6 +9371,15 @@ snapshots:
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
 
+  supawright@0.3.0(@playwright/test@1.48.1)(@supabase/supabase-js@2.45.4)(@types/node@20.10.6):
+    dependencies:
+      '@faker-js/faker': 8.4.1
+      '@playwright/test': 1.48.1
+      '@supabase/supabase-js': 2.45.4
+      ts-postgres: 2.0.1(@types/node@20.10.6)
+    transitivePeerDependencies:
+      - '@types/node'
+
   supports-color@5.5.0:
     dependencies:
       has-flag: 3.0.0
@@ -9488,6 +9512,10 @@ snapshots:
   trough@2.2.0: {}
 
   ts-interface-checker@0.1.13: {}
+
+  ts-postgres@2.0.1(@types/node@20.10.6):
+    dependencies:
+      '@types/node': 20.10.6
 
   tslib@2.8.0: {}
 

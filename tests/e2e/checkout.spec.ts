@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { login } from "../utils/helpers";
+import { withSupawright } from "supawright";
 
 test.describe("Checkout Page", () => {
 	test.beforeEach(async ({ page }) => {
