@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { siGithub } from "simple-icons";
 import { signInWithGitHub } from "@/app/actions/auth";
