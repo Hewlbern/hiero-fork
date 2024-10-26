@@ -22,10 +22,15 @@ jobs:
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
       - name: Install dependencies
         run: npm install -g pnpm && pnpm install
+      - name: Build Next.js app
+        run: pnpm build
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
-      - name: Run Playwright tests
-        run: pnpm exec playwright test
+      - name: Start Next.js app and run tests
+        run: |
+          pnpm start & # Start in background
+          sleep 10 # Wait for app to be ready
+          pnpm exec playwright test
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
