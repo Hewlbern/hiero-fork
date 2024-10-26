@@ -19,18 +19,21 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel env pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
       - name: Install dependencies
         run: npm install -g pnpm && pnpm install
       - name: Build Next.js app
         run: pnpm build
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
+        run: pnpm exec playwright install chromium
       - name: Start Next.js app and run tests
         run: |
-          pnpm start & # Start in background
-          sleep 10 # Wait for app to be ready
-          pnpm exec playwright test
+          pnpm dev &
+          sleep 10
+          pnpm exec playwright test --project=chromium
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
