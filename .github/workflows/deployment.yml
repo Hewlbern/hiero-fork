@@ -18,6 +18,6 @@ jobs:
       - name: Install Playwright
         run: pnpm dlx playwright install --with-deps
       - name: Run Playwright tests
-        run: pnpm dlx playwright test
+        run: pnpm exec playwright test
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
