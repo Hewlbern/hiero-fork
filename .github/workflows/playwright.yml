@@ -22,9 +22,9 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm dlx playwright install --with-deps
       - name: Install Vercel CLI
-        run: npm install -g vercel
+        run: pnpm install -g vercel
       - name: Pull environment variables
-        run: vercel env pull --environment=preview --token ${{ env.VERCEL_TOKEN }} --scope ${{ env.VERCEL_ORG_ID }} --project ${{ env.VERCEL_PROJECT_ID }}
+        run: vercel env pull --environment=preview --token ${{ env.VERCEL_TOKEN }}
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v4
