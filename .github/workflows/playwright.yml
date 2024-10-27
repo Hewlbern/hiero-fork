@@ -1,4 +1,8 @@
 name: Playwright Tests
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
     branches: [main, master]
@@ -17,6 +21,10 @@ jobs:
         run: npm install -g pnpm && pnpm install
       - name: Install Playwright Browsers
         run: pnpm dlx playwright install --with-deps
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Pull environment variables
+        run: vercel env pull --environment=preview --token ${{ env.VERCEL_TOKEN }} --scope ${{ env.VERCEL_ORG_ID }} --project ${{ env.VERCEL_PROJECT_ID }}
       - name: Run Playwright tests
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v4
