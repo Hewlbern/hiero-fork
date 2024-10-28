@@ -5,7 +5,8 @@ import { AgentDetails } from '@/components/agents/agent-details'
 
 
 export default function AgentPage() {
-  const { id } = useParams() // Use useParams to get the id
+  const params = useParams()
+  const id = params?.id
   const [agentId, setAgentId] = useState<string | null>(null)
 
   useEffect(() => {
