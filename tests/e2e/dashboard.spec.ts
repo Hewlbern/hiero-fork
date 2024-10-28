@@ -49,8 +49,6 @@ test.describe("Developer Dashboard", () => {
 			.fill("https://myamazingapp2.com");
 
 		// TODO: Fix deleting app so that the slug can be reused
-
-		/* 
 		await page.getByRole("button", { name: "Create App" }).click();
 
 		await page.getByRole("button", { name: "Create New API Key" }).click();
@@ -67,6 +65,10 @@ test.describe("Developer Dashboard", () => {
 			.getByRole("button")
 			.nth(1)
 			.click();
-		await page.getByRole("button", { name: "Delete" }).click(); */
+		await page.getByRole("button", { name: "Delete" }).click();
+
+		await expect(page.getByLabel("Confirm Deletion")).toBeVisible();
+
+		await page.getByRole("button", { name: "Delete" }).click();
 	});
 });
