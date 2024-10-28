@@ -26,4 +26,12 @@ test.describe("Developer Dashboard", () => {
 		// Fill in the app creation form as needed
 		// ...
 	});
+
+	test("App link redirects to app page", async ({ page }) => {
+		await page.goto("/protected/dashboard/developer");
+
+		await page.getByRole("link", { name: "/a/" }).click();
+
+		await expect(page.locator("text=Cat Video Generator")).toBeVisible();
+	});
 });
