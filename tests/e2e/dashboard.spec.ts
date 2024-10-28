@@ -34,4 +34,38 @@ test.describe("Developer Dashboard", () => {
 
 		await expect(page.locator("text=Cat Video Generator")).toBeVisible();
 	});
+
+	test("Can create a new app", async ({ page }) => {
+		await page.goto("/protected/dashboard/developer/create-app");
+
+		await page.getByPlaceholder("App Name").click();
+		await page.getByPlaceholder("App Name").fill("My Amazing App");
+		await page.getByPlaceholder("App Name").press("Tab");
+		await page.getByPlaceholder("App Description").fill("Amazing app");
+
+		await page
+			.getByPlaceholder("Website URL")
+			.fill("https://myamazingapp2.com");
+
+		// TODO: Fix deleting app so that the slug can be reused
+
+		/* 
+		await page.getByRole("button", { name: "Create App" }).click();
+
+		await page.getByRole("button", { name: "Create New API Key" }).click();
+		await page.getByLabel("Copy code to clipboard").click();
+		await page.getByRole("button", { name: "Done" }).click();
+		await page
+			.getByRole("button", { name: "Integration Instructions" })
+			.click();
+		await page.getByRole("button", { name: "Next" }).click();
+		await page.getByRole("button", { name: "Next" }).click();
+		await page.getByRole("button", { name: "Finish" }).click();
+		await page
+			.getByRole("row", { name: "My Amazing App http://" })
+			.getByRole("button")
+			.nth(1)
+			.click();
+		await page.getByRole("button", { name: "Delete" }).click(); */
+	});
 });

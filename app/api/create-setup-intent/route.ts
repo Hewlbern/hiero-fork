@@ -1,4 +1,4 @@
-import { appDomain, appProtocol, appUrl } from "@/lib/appUrl";
+import { getServerInfo } from "@/lib/getServerInfo";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -7,12 +7,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST() {
+	const { protocol, host } = await getServerInfo();
 	try {
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
 			mode: "setup",
-			success_url: `http://${appDomain()}/protected/save-card-success?session_id={CHECKOUT_SESSION_ID}`,
-			cancel_url: `${appProtocol()}//${appDomain()}/protected/save-card`,
+			success_url: `${protocol}//${host}/protected/save-card-success?session_id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${protocol}//${host}/protected/save-card`,
 		});
 
 		return NextResponse.json({ sessionId: session.id });
