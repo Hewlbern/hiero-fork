@@ -13,14 +13,17 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { DeleteAppButton } from "@/components/delete-app-button";
-import { appUrl } from "@/lib/appUrl";
 import { App } from "@/types/supabase";
-
+import useAppUrl from "@/hooks/use-appurl";
 export function DeveloperDashboard() {
 	const [apps, setApps] = useState<App[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [isFirstTimeUser, setIsFirstTimeUser] = useState(true);
+
+	const { loaded: loadedAppUrl, appUrl: fullAppUrl } = useAppUrl(
+		apps[0]?.slug || ""
+	);
 
 	const fetchApps = async () => {
 		setLoading(true);
@@ -110,8 +113,11 @@ export function DeveloperDashboard() {
 												{app.name}
 											</Link>
 											<br />
-											<Link href={`/a/${app.slug}`} className="hover:underline">
-												{appUrl(app.slug)}
+											<Link
+												href={loadedAppUrl ? "#" : `/a/${app.slug}`}
+												className="hover:underline"
+											>
+												{fullAppUrl}
 											</Link>
 										</TableCell>
 										<TableCell className="font-bold">{app.status}</TableCell>

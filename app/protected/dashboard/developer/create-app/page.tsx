@@ -15,6 +15,7 @@ export default function CreateAppPage() {
 
 	const handleAppCreated = async (app: App) => {
 		setAppId(app?.id);
+
 		if (app?.id) {
 			toast({
 				title: "App created",
@@ -29,7 +30,7 @@ export default function CreateAppPage() {
 			});
 		}
 
-		router.push(`/protected/dashboard/developer/api-keys/${appId}`);
+		router.push(`/protected/dashboard/developer/api-keys/${app?.id}`);
 	};
 
 	return (

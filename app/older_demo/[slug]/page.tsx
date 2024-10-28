@@ -1,7 +1,7 @@
 "use server";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { AIApplicationCard } from "@/components/ai-application-card";
+import { AIApplicationCard } from "@/components/old/ai-application-card";
 import { Bot, Brain, Zap, Image } from "lucide-react";
 
 const iconMap = {

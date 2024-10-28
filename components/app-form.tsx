@@ -5,11 +5,11 @@ import { useDebounce } from "@/utils/use-debounce";
 import { useState } from "react";
 import { checkSlugAvailability, createApp, editApp } from "@/app/actions/apps";
 import { extractDomainFromUrl } from "@/utils/slug-utils";
-import { appUrl } from "@/lib/appUrl";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { App } from "@/types/supabase";
+import useAppUrl from "@/hooks/use-appurl";
 
 export function AppForm({
 	mode,
@@ -31,6 +31,8 @@ export function AppForm({
 	const [slug, setSlug] = useState(app?.slug || "");
 	const [isSlugAvailable, setIsSlugAvailable] = useState(false);
 	const debouncedSlug = useDebounce(slug, 300);
+
+	const { appUrl: fullAppUrl } = useAppUrl(slug);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -67,8 +69,6 @@ export function AppForm({
 			});
 		}
 	}, [debouncedSlug, mode, app?.id]);
-
-	const fullAppUrl = appUrl(slug);
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">

@@ -6,9 +6,9 @@ import { useToast } from "@/hooks/use-toast";
 import { App } from "@/types/supabase";
 import { AppForm } from "./app-form";
 // Import MDX files
-import IntegrateTokenDeduction from "@/app/code-snippets/integrate-token-deduction.mdx";
-import ImplementWebhook from "@/app/code-snippets/implement-webhook.mdx";
-import LaunchPayWithHiero from "@/app/code-snippets/launch-pay-with-hiero.mdx";
+import IntegrateTokenDeduction from "@/components/code-snippets/integrate-token-deduction.mdx";
+import ImplementWebhook from "@/components/code-snippets/implement-webhook.mdx";
+import LaunchPayWithHiero from "@/components/code-snippets/launch-pay-with-hiero.mdx";
 import CodePre from "./code-pre";
 import CodeBlock from "./code-block";
 
