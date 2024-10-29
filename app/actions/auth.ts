@@ -3,8 +3,10 @@
 import { signIn, signOut } from "@/auth";
 import { createUser, updateUserPassword } from "@/lib/db";
 import { saltAndHashPassword } from "@/lib/password";
+import { signInSchema } from "@/lib/zod";
 
 import { encodedRedirect } from "@/utils/auth";
+import { CredentialsSignin } from "next-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -12,75 +14,60 @@ export const signInAction = async (formData: FormData) => {
 	const email = formData.get("email") as string;
 	const password = formData.get("password") as string;
 	const next = formData.get("next") as string;
-	const origin = headers().get("origin");
+	const origin = (await headers()).get("origin");
 
-	console.log("next", next);
+	await signIn("credentials", {
+		email,
+		password,
+		redirectTo: "/protected/dashboard/developer",
+	});
 
-	try {
-		await signIn("credentials", {
-			email,
-			password,
-		});
-		//		return redirect(decodeURIComponent(next) || "/protected");
-	} catch (error) {
-		console.error(error);
-		//	return encodedRedirect("error", "/sign-in", (error as Error).message, next);
+	if (next) {
+		return redirect(decodeURIComponent(next));
 	}
 
 	//return redirect(decodeURIComponent(next) || "/protected");
 };
 
 export const signUpAction = async (formData: FormData) => {
-	const email = formData.get("email")?.toString();
-	const password = formData.get("password")?.toString();
-	const next = formData.get("next") as string;
-
-	const origin = headers().get("origin");
-
-	if (!email || !password) {
-		return { error: "Email and password are required" };
-	}
-
-	const emailRedirectTo = `${origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
-
 	try {
+		const { email, password } = await signInSchema.parseAsync({
+			email: formData.get("email")?.toString(),
+			password: formData.get("password")?.toString(),
+		});
+
+		if (!email || !password) {
+			return { error: "Email and password are required" };
+		}
+
 		// Create the user in the database
 		const pwHash = saltAndHashPassword(password);
 		await createUser(email, pwHash, "user");
-
-		await signIn("credentials", {
-			email,
-			password,
-			options: {
-				emailRedirectTo,
-			},
-		});
 	} catch (error) {
-		console.error((error as Error).message);
-		return encodedRedirect("error", "/sign-up", (error as Error).message, next);
+		throw new CredentialsSignin(
+			`Couldn't create user: ${(error as Error).message}`
+		);
 	}
 
-	return encodedRedirect(
-		"success",
-		"/sign-up",
-		"Thanks for signing up! Please check your email for a verification link."
-	);
+	return signInAction(formData);
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
 	// Not implemented
+	return encodedRedirect("error", "/forgot-password", "Not implemented");
 };
 
 export const resetPasswordAction = async (formData: FormData) => {
 	// Not implemented
+	return encodedRedirect("error", "/reset-password", "Not implemented");
 };
 
 export const signOutAction = async () => {
-	await signOut();
+	await signOut({ redirectTo: "/sign-in" });
 };
 
 export const signInWithGitHub = async () => {
-	const origin = headers().get("origin");
+	const origin = (await headers()).get("origin");
 
 	try {
 		await signIn("github", {
@@ -99,7 +86,7 @@ export const signInWithGitHub = async () => {
 };
 
 export const signInWithGoogleAuth = async (next?: string) => {
-	const origin = headers().get("origin");
+	const origin = (await headers()).get("origin");
 	const isLocalEnv = process.env.NODE_ENV === "development";
 
 	const baseRedirectUrl = isLocalEnv
