@@ -21,7 +21,7 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
       - name: Pull environment variables
-        run: vercel env pull --environment=preview --token ${{ secrets.VERCEL_TOKEN }} --yes
+        run: vercel env pull --environment=preview --token ${{ secrets.VERCEL_TOKEN }} --yes --git-branch=${{ github.ref_name }}
       - name: Install Playwright Browsers
         run: pnpm dlx playwright install --with-deps
       - name: Run Playwright tests
