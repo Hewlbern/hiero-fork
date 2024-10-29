@@ -17,6 +17,7 @@ import { App } from "@/types/supabase";
 import useAppUrl from "@/hooks/use-appurl";
 import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
+import { fetchApps } from "@/app/actions/apps";
 
 export function DeveloperDashboard() {
 	const [apps, setApps] = useState<App[]>([]);
@@ -27,38 +28,18 @@ export function DeveloperDashboard() {
 	const { loaded: loadedAppUrl, appUrl: fullAppUrl } = useAppUrl(
 		apps[0]?.slug || ""
 	);
-	const { data: session } = useSession();
-	const user = session?.user;
-
-	const supabase = createClient();
-
-	const fetchApps = async () => {
-		setLoading(true);
-
-		const { data, error } = await supabase
-			.from("apps")
-			.select("id, name, status, description, url, slug")
-			.eq("user_id", user?.id)
-			.is("deleted_at", null)
-			.order("created_at", { ascending: false });
-
-		if (error) {
-			console.error("Error fetching apps:", error);
-			setError("Error loading apps. Please try again later.");
-		} else {
-			setApps((data as App[]) || []);
-			setIsFirstTimeUser(data?.length === 0);
-		}
-		setLoading(false);
-	};
-
-	useEffect(() => {
-		fetchApps();
-	}, []);
 
 	const handleAppUpdate = () => {
-		fetchApps();
+		setLoading(true);
+		fetchApps().then((data) => {
+			setApps(data);
+			setIsFirstTimeUser(data.length === 0);
+			setLoading(false);
+		});
 	};
+	useEffect(() => {
+		handleAppUpdate();
+	}, []);
 
 	if (loading) {
 		return <div>Loading...</div>;

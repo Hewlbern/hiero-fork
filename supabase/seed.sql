@@ -1,35 +1,3 @@
-SET session_replication_role = replica;
-
---
--- PostgreSQL database dump
---
-
---
--- Data for Name: users; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
---
-
-INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") VALUES
-	('00000000-0000-0000-0000-000000000000', 'f7a25109-f16f-458e-82d4-ae0f4f03f604', 'authenticated', 'authenticated', 'tombeckenham+user@gmail.com', '$2a$10$7vrMHEzI2TFft8Wfxigc3uLl.FBQu2ntf2GyvHQB0zWAtTTXMcXB6', '2024-09-13 02:38:27.536415+00', NULL, '', NULL, '694b004295846eb64c759adc111e66ce39217c15d49ef2b8c1330e6f', '2024-10-22 01:33:41.748589+00', '', '', NULL, NULL, '{"provider": "email", "providers": ["email"]}', '{}', NULL, '2024-09-13 02:38:27.530457+00', '2024-10-22 01:33:41.770815+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '64088097-4073-40c5-aed6-aa4abc692f86', 'authenticated', 'authenticated', 'testuser@example.com', '$2a$10$qNzAXxf2Iqq2h4cTp/SnfOQdlytfDCPy7V1NH8.j9j6w.5ttHtB5S', '2024-10-25 06:12:52.938253+00', NULL, '', NULL, '', NULL, '', '', NULL, '2024-10-25 06:12:52.942729+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "64088097-4073-40c5-aed6-aa4abc692f86", "email": "testuser@example.com", "email_verified": false, "phone_verified": false}', NULL, '2024-10-25 06:12:52.913437+00', '2024-10-25 06:12:52.960019+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '95f54b63-7196-4129-9c35-29e7c3b1067b', 'authenticated', 'authenticated', 'tombeckenham+dev@gmail.com', '$2a$10$aCAuDXrshYqZmZbBZR/VR.SB4KaIEi51vDgQhCJx6zKBX4EZsMsIO', '2024-09-13 02:37:50.358438+00', NULL, '', NULL, '', NULL, '', '', NULL, '2024-10-25 06:15:07.282777+00', '{"provider": "email", "providers": ["email"]}', '{}', NULL, '2024-09-13 02:37:50.348338+00', '2024-10-25 06:15:07.285061+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
-
-
---
--- Data for Name: identities; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
---
-
-INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "provider", "last_sign_in_at", "created_at", "updated_at", "id") VALUES
-	('95f54b63-7196-4129-9c35-29e7c3b1067b', '95f54b63-7196-4129-9c35-29e7c3b1067b', '{"sub": "95f54b63-7196-4129-9c35-29e7c3b1067b", "email": "tombeckenham+dev@gmail.com", "email_verified": false, "phone_verified": false}', 'email', '2024-09-13 02:37:50.354409+00', '2024-09-13 02:37:50.354446+00', '2024-09-13 02:37:50.354446+00', '9f1ef957-1827-457b-b3a0-629e8654c008'),
-	('f7a25109-f16f-458e-82d4-ae0f4f03f604', 'f7a25109-f16f-458e-82d4-ae0f4f03f604', '{"sub": "f7a25109-f16f-458e-82d4-ae0f4f03f604", "email": "tombeckenham+user@gmail.com", "email_verified": false, "phone_verified": false}', 'email', '2024-09-13 02:38:27.533495+00', '2024-09-13 02:38:27.533561+00', '2024-09-13 02:38:27.533561+00', '691a406d-5975-45ff-8e45-8de4950ff255'),
-	('64088097-4073-40c5-aed6-aa4abc692f86', '64088097-4073-40c5-aed6-aa4abc692f86', '{"sub": "64088097-4073-40c5-aed6-aa4abc692f86", "email": "testuser@example.com", "email_verified": false, "phone_verified": false}', 'email', '2024-10-25 06:12:52.930324+00', '2024-10-25 06:12:52.930357+00', '2024-10-25 06:12:52.930357+00', 'b3ce38cc-ee78-4e39-8529-2d4400242098');
-
-
---
--- Data for Name: instances; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
---
-
-
-
 
 --
 -- Data for Name: apps; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -49,16 +17,12 @@ INSERT INTO "public"."apps" ("id", "name", "url", "description", "user_id", "sta
 -- Data for Name: developer_api_keys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."developer_api_keys" ("key", "app_id", "created_at", "id") VALUES
-	('ba2a8aa0-0866-4d3f-a84a-048b96cd63cc', '71b46209-7116-4b81-a212-eafd1dc78c14', '2024-09-13 02:37:10.999685+00', '4ef6cff9-67ea-4b52-bfcb-bbeebf71f38e');
 
 
 --
 -- Data for Name: user_connection_keys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."user_connection_keys" ("key", "user_id", "app_id", "created_at", "id") VALUES
-	('1443f051-c89f-4863-a8a4-ba32d13d567c', 'f7a25109-f16f-458e-82d4-ae0f4f03f604', '71b46209-7116-4b81-a212-eafd1dc78c14', '2024-09-13 02:40:43.138181+00', '1d89eec1-e294-453c-9078-d255f5c9bba4');
 
 
 --
@@ -69,5 +33,47 @@ INSERT INTO "public"."user_tokens" ("user_id", "token_balance", "created_at", "u
 	('f7a25109-f16f-458e-82d4-ae0f4f03f604', 1000000, '2024-09-13 02:42:07.0113+00', '2024-09-13 02:42:07.0113+00');
 
 
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
-RESET ALL;
+INSERT INTO "public"."users" ("id", "email", "password_hash", "password_salt", "name", "created_at", "updated_at") VALUES
+	('f7a25109-f16f-458e-82d4-ae0f4f03f604', 'user@example.com', '0b671d32998d1c4597b6700e69a7832be6215e36317483e3127ec7a4bd438471d56b048a7dd669fca2c58bf4b6912d11a5c37ba8d570af221ad2b529ca2981fd', 'ef1a984adecb24716f42ca312459c2ee', NULL, '2024-09-13 02:38:27.530457+00', '2024-10-28 11:04:08.462746+00'),
+	('95f54b63-7196-4129-9c35-29e7c3b1067b', 'dev@example.com', 'a5b349e315d7a6ce7aa0be8ad8b9340719e55aff9bd8e4d67aa643624c4464ff4fdb8a5cfe9ce1a4481784bb86947a89b9c1dda84958c9b65830ce6fd85c819b', '263dcdcde131dadd128732e50435acdb', NULL, '2024-09-13 02:37:50.348338+00', '2024-10-28 11:07:12.467965+00');
+
+
+--
+-- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: objects; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: s3_multipart_uploads; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: s3_multipart_uploads_parts; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: hooks; Type: TABLE DATA; Schema: supabase_functions; Owner: supabase_functions_admin
+--
+
+
+
+--
+-- Data for Name: secrets; Type: TABLE DATA; Schema: vault; Owner: supabase_admin
+--
+
+

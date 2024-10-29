@@ -46,6 +46,31 @@ export async function checkSlugAvailability(
 	return currentAppId ? data.id === currentAppId : false;
 }
 
+export async function fetchApps() {
+	const session = await auth();
+	const user = session?.user;
+
+	if (!user) {
+		throw new Error("User not authenticated");
+	}
+
+	console.log("user", user);
+	const supabase = createClient();
+	const { data, error } = await supabase
+		.from("apps")
+		.select("id, name, status, description, url, slug")
+		.eq("user_id", user?.id)
+		.is("deleted_at", null)
+		.order("created_at", { ascending: false });
+
+	if (error) {
+		console.error("Error fetching apps:", error);
+		throw new Error("Error fetching apps:", error);
+	}
+	console.log("data", data);
+	return data as App[];
+}
+
 export async function createApp(appData: Partial<App>): Promise<App> {
 	const session = await auth();
 	const user = session?.user;

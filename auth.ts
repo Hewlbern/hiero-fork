@@ -33,7 +33,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					// meaning this is also the place you could do registration
 					throw new CredentialsSignin("User not found or invalid password.");
 				}
-
 				// return user object with their profile data
 				return user;
 			},
@@ -73,6 +72,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			// Otherwise authorized
 			// TODO:
 			return NextResponse.next();
+		},
+		async jwt({ token, user }) {
+			// If user is defined, we're signing in
+			if (user) {
+				token.id = user.id;
+			}
+			return token;
+		},
+		async session({ session, token }) {
+			if (token && session.user) {
+				session.user.id = token.id as string;
+			}
+			return session;
 		},
 	},
 });
