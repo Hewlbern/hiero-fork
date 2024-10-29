@@ -1,12 +1,12 @@
+import { auth } from "@/auth";
 import { DeveloperDashboard } from "@/components/developer-dashboard";
 import { createClient } from "@/utils/supabase/server";
+import { SessionProvider } from "next-auth/react";
 
 export default async function DeveloperPage() {
 	const supabase = createClient();
-
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
+	const session = await auth();
+	const user = session?.user;
 
 	let isFirstTimeUser = true;
 	if (user) {
@@ -24,7 +24,9 @@ export default async function DeveloperPage() {
 			<h1 className="text-3xl font-bold mb-6 text-gray-800">
 				Developer Dashboard
 			</h1>
-			<DeveloperDashboard />
+			<SessionProvider>
+				<DeveloperDashboard />
+			</SessionProvider>
 		</div>
 	);
 }

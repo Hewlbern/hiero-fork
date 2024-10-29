@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { App } from "@/types/supabase";
+import { auth } from "@/auth";
 
 export async function getAppData(appId: string): Promise<App> {
 	const supabase = createClient();
@@ -46,14 +47,14 @@ export async function checkSlugAvailability(
 }
 
 export async function createApp(appData: Partial<App>): Promise<App> {
-	const supabase = createClient();
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
+	const session = await auth();
+	const user = session?.user;
 
 	if (!user) {
 		throw new Error("User not authenticated");
 	}
+
+	const supabase = createClient();
 
 	const { data, error } = await supabase
 		.from("apps")
@@ -83,9 +84,8 @@ export async function editApp(
 	}
 ) {
 	const supabase = createClient();
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
+	const session = await auth();
+	const user = session?.user;
 
 	if (!user) {
 		throw new Error("User not authenticated");

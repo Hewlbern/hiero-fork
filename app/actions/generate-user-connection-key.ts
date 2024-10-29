@@ -1,14 +1,14 @@
 "use server";
 
+import { auth } from "@/auth";
 import { createClient } from "@/utils/supabase/server";
 
 export async function generateUserConnectionKey(
 	appId: string
 ): Promise<string> {
 	const supabase = createClient();
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
+	const session = await auth();
+	const user = session?.user;
 
 	const { data, error } = await supabase
 		.from("user_connection_keys")

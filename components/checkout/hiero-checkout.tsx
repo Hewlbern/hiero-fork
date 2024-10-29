@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import Link from "next/link";
 import AppInfo from "./ui/app-info";
+import { useSession } from "next-auth/react";
+import type { Session } from "next-auth";
 
 type AIApp = {
 	id: string;
@@ -103,7 +105,7 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 	//process.env.NODE_ENV === 'development'  || test
 	const router = useRouter();
 	const [uuid, setUUID] = useState<string | null>(null);
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<Session["user"] | null>(null);
 	const [currentStep, setCurrentStep] = useState(0);
 	const [cardSaved, setCardSaved] = useState(false);
 	const [step, setStep] = useState("first");
@@ -111,15 +113,15 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 	const [error, setError] = useState<string | null>(null);
 	const [showEmailModal, setShowEmailModal] = useState(false);
 
+	const { data: session } = useSession();
 	const supabase = createClient();
 
 	useEffect(() => {
 		const checkUser = async () => {
-			const {
-				data: { user },
-			} = await supabase.auth.getUser();
-			setUser(user);
-			if (user) setCurrentStep(1);
+			if (session?.user) {
+				setUser(session.user);
+				setCurrentStep(1);
+			}
 		};
 		checkUser();
 	}, []);
@@ -128,12 +130,13 @@ export function HieroCheckout({ app, PaymentComponent }: AIAppProps) {
 		setIsLoading(true);
 		setError(null);
 
-		const result = await handleSignInWithOTP(app.email, isDevelopment ?? false);
+		try {
+			await handleSignInWithOTP(app.email, isDevelopment ?? false);
 
-		if (result.success) {
 			setStep("first");
-		} else {
-			setError(result.message);
+		} catch (error) {
+			console.error("Error signing in with OTP:", error);
+			setError("An error occurred while signing in with OTP.");
 		}
 
 		setIsLoading(false);

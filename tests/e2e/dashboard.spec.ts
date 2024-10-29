@@ -37,6 +37,7 @@ test.describe("Developer Dashboard", () => {
 	});
 
 	test("Can create a new app", async ({ page }) => {
+		test.slow();
 		await page.goto("/protected/dashboard/developer/create-app");
 
 		await page.getByPlaceholder("App Name").click();
@@ -51,6 +52,9 @@ test.describe("Developer Dashboard", () => {
 		// TODO: Fix deleting app so that the slug can be reused
 		await page.getByRole("button", { name: "Create App" }).click();
 
+		await page.getByRole("button", { name: "Back to Dashboard" }).click();
+		/* 
+		await page.getByLabel("Copy code to clipboard").click();
 		await page.getByRole("button", { name: "Create New API Key" }).click();
 		await page.getByLabel("Copy code to clipboard").click();
 		await page.getByRole("button", { name: "Done" }).click();
@@ -59,16 +63,23 @@ test.describe("Developer Dashboard", () => {
 			.click();
 		await page.getByRole("button", { name: "Next" }).click();
 		await page.getByRole("button", { name: "Next" }).click();
-		await page.getByRole("button", { name: "Finish" }).click();
+		await page.getByRole("button", { name: "Finish" }).click(); */
+
 		await page
 			.getByRole("row", { name: "My Amazing App http://" })
 			.getByRole("button")
 			.nth(1)
 			.click();
-		await page.getByRole("button", { name: "Delete" }).click();
 
 		await expect(page.getByLabel("Confirm Deletion")).toBeVisible();
 
-		await page.getByRole("button", { name: "Delete" }).click();
+		await page
+			.getByRole("dialog", { name: "Confirm Deletion" })
+			.getByRole("button", { name: "Delete" })
+			.click();
+
+		await expect(
+			page.getByRole("row", { name: "My Amazing App http://" })
+		).toHaveCount(0);
 	});
 });

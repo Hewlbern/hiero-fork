@@ -15,6 +15,9 @@ import {
 import { DeleteAppButton } from "@/components/delete-app-button";
 import { App } from "@/types/supabase";
 import useAppUrl from "@/hooks/use-appurl";
+import { auth } from "@/auth";
+import { useSession } from "next-auth/react";
+
 export function DeveloperDashboard() {
 	const [apps, setApps] = useState<App[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -24,13 +27,13 @@ export function DeveloperDashboard() {
 	const { loaded: loadedAppUrl, appUrl: fullAppUrl } = useAppUrl(
 		apps[0]?.slug || ""
 	);
+	const { data: session } = useSession();
+	const user = session?.user;
+
+	const supabase = createClient();
 
 	const fetchApps = async () => {
 		setLoading(true);
-		const supabase = createClient();
-		const {
-			data: { user },
-		} = await supabase.auth.getUser();
 
 		const { data, error } = await supabase
 			.from("apps")

@@ -1,12 +1,5 @@
 export { auth as middleware } from "@/auth";
 
-/* import { type NextRequest } from "next/server";
-import { updateSession } from "@/utils/supabase/middleware";
-
-export async function middleware(request: NextRequest) {
-	return await updateSession(request);
-}
-
 export const config = {
 	matcher: [
 		/*
@@ -17,9 +10,7 @@ export const config = {
 		 * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
 		 * - apps - e.g. /a/catvideogenerator
 		 * Feel free to modify this pattern to include more paths.
-		 * /
+		 */
 		"/((?!api/subscribe|docs|_next/static|_next/image|favicon.ico|a/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
 	],
 };
-
- */
