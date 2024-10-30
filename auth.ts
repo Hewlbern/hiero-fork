@@ -19,6 +19,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		signIn: "/sign-in",
 		newUser: "/sign-up",
 	},
+	session: {
+		// Setting to JWT strategy so that credentials are stored in the JWT token
+		strategy: "jwt",
+	},
 	providers: [
 		GitHub,
 		Google,
@@ -37,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 					// logic to verify if the user exists
 					user = await getUserFromDbAndVerifyPassword(email, password);
-
+					console.log("user in authorize", user);
 					// return user object with their profile data
 				} catch (error) {
 					console.error("Error in authorize:", error);
