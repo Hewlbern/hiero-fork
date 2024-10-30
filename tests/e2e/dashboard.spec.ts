@@ -5,6 +5,8 @@ test.describe("Developer Dashboard", () => {
 	test.beforeEach(async ({ page }) => {
 		// Log in programmatically before each test
 		await login(page, true);
+
+		await page.waitForURL(/\/protected\/dashboard\/developer/);
 	});
 
 	test("should display user apps and allow creating a new app", async ({
