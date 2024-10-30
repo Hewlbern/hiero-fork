@@ -13,19 +13,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
       - name: Install dependencies
-        run: npm install -g pnpm && pnpm install
+        run: |
+          npm install -g pnpm
+          pnpm install
+
       - name: Install Vercel CLI
         run: npm install -g vercel
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      - name: Ensure Supabase database branch exists
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          supabase login --token $SUPABASE_ACCESS_TOKEN
+          BRANCH_NAME=${{ github.head_ref }}
+          if ! supabase db branches list --project-ref $SUPABASE_PROJECT_REF | grep -q "$BRANCH_NAME"; then
+            supabase db branch create $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF
+          fi
+
       - name: Pull environment variables
-        run: vercel env pull --environment=preview --token ${{ secrets.VERCEL_TOKEN }} --yes --git-branch=${{ github.head_ref }}
+        run: |
+          vercel env pull --environment=preview --token ${{ secrets.VERCEL_TOKEN }} --yes --git-branch=${{ github.head_ref }}
+
       - name: Install Playwright Browsers
         run: pnpx playwright install chromium --with-deps
+      - name: Install jq
+        run: sudo apt-get install jq
       - name: Run Playwright tests
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ supabase db branches get $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF --json | jq -r '.databaseUrl' }}
         run: pnpm exec playwright test
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
