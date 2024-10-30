@@ -34,10 +34,11 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: supabase login --token $SUPABASE_ACCESS_TOKEN
           BRANCH_NAME=${{ github.head_ref }}
-          DATABASE_URL=$(supabase db branches get $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF --json | jq -r '.databaseUrl')
           if ! supabase db branches list --project-ref $SUPABASE_PROJECT_REF | grep -q "$BRANCH_NAME"; then
           supabase db branch create $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF
           fi
+          DATABASE_URL=$(supabase db branches get $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF --json | jq -r '.databaseUrl')
+          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
       - name: Pull environment variables
         run: vercel env pull --environment=preview --token ${{ secrets.VERCEL_TOKEN }} --yes --git-branch=${{ github.head_ref }}
       - name: Install Playwright Browsers
@@ -46,7 +47,7 @@ jobs:
         run: sudo apt-get install jq
       - name: Run Playwright tests
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ DATABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ env.DATABASE_URL }}
         run: pnpm exec playwright test
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
