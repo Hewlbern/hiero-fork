@@ -41,4 +41,39 @@ test.describe("Sign-Up Page", () => {
 		// 	page.locator("text=Welcome, testuser@example.com")
 		// ).toBeVisible();
 	});
+
+	test("should not sign-up with invalid credentials", async ({ page }) => {
+		await page.goto("/");
+
+		await page.goto("/sign-up");
+		// Fill in the sign-up form
+		await page.fill('input[name="email"]', "newuser245@example.com");
+
+		const password = page.getByPlaceholder("Your password");
+
+		await password.fill("o");
+
+		await page.getByRole("button", { name: "Sign up" }).click();
+		// verify field prevents submission
+
+		const validationMessage = await password.evaluate((element) => {
+			const input = element as HTMLInputElement;
+			return input.validationMessage;
+		});
+		expect(validationMessage).toContain("Please lengthen");
+	});
+
+	test("should not sign-up with existing email", async ({ page }) => {
+		await page.goto("/");
+
+		await page.goto("/sign-up");
+		// Fill in the sign-up form
+		await page.fill('input[name="email"]', "dev@example.com");
+		await page.fill('input[name="password"]', "reallyLongPassword12344++");
+
+		await page.getByRole("button", { name: "Sign up" }).click();
+
+		await expect(page.locator("form")).toContainText("User already exists");
+		// Verify redirection to the dashboard
+	});
 });

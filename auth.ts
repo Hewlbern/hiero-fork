@@ -23,17 +23,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			},
 			authorize: async (credentials) => {
 				let user = null;
-				const { email, password } = await signInSchema.parseAsync(credentials);
+				try {
+					const { email, password } =
+						await signInSchema.parseAsync(credentials);
 
-				// logic to verify if the user exists
-				user = await getUserFromDbAndVerifyPassword(email, password);
+					// logic to verify if the user exists
+					user = await getUserFromDbAndVerifyPassword(email, password);
 
-				if (!user) {
-					// No user found, so this is their first attempt to login
-					// meaning this is also the place you could do registration
-					throw new CredentialsSignin("User not found or invalid password.");
+					// return user object with their profile data
+				} catch (error) {
+					console.error("Error in authorize:", error);
 				}
-				// return user object with their profile data
 				return user;
 			},
 		}),
