@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { HieroCheckout } from "@/components/checkout/hiero-checkout";
 import { Bot, Brain, Zap, Image } from "lucide-react";
-import SaveCardButton from '@/components/checkout/ui/payments/save-card-form';
+import SaveCardButton from "@/components/checkout/ui/payments/save-card-form";
+import { SessionProvider } from "next-auth/react";
 
 const iconMap = {
 	v0: <Bot className="h-8 w-8" />,
@@ -54,13 +55,15 @@ export default async function AppPage({
 		amountSpent: Math.floor(Math.random() * 15) + 1,
 		usage: Math.floor(Math.random() * 100),
 		slug: params.slug,
-		email: searchParams.email || 'emilawatts@gmail.com',
-		redirectUrl: searchParams.redirectUrl || '',
+		email: searchParams.email || "emilawatts@gmail.com",
+		redirectUrl: searchParams.redirectUrl || "",
 	};
 
 	return (
 		<div>
-			<HieroCheckout app={mockAppData} PaymentComponent={SaveCardButton} />
+			<SessionProvider>
+				<HieroCheckout app={mockAppData} PaymentComponent={SaveCardButton} />
+			</SessionProvider>
 		</div>
 	);
 }

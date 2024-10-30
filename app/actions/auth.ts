@@ -1,148 +1,81 @@
 "use server";
 
+import { signIn, signOut } from "@/auth";
+import { createUser, updateUserPassword } from "@/lib/db";
+import { saltAndHashPassword } from "@/lib/password";
+import { signInSchema } from "@/lib/zod";
+
 import { encodedRedirect } from "@/utils/auth";
-import { createClient } from "@/utils/supabase/server";
+import { CredentialsSignin } from "next-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const signInAction = async (formData: FormData) => {
 	const email = formData.get("email") as string;
 	const password = formData.get("password") as string;
-	const supabase = createClient();
 	const next = formData.get("next") as string;
+	const origin = (await headers()).get("origin");
 
-	const { error } = await supabase.auth.signInWithPassword({
+	await signIn("credentials", {
 		email,
 		password,
+		redirectTo: "/protected/dashboard/developer",
 	});
 
-	if (error) {
-		return encodedRedirect("error", "/sign-in", error.message, next);
+	if (next) {
+		return redirect(decodeURIComponent(next));
 	}
-	return redirect(decodeURIComponent(next) || "/protected");
+
+	//return redirect(decodeURIComponent(next) || "/protected");
 };
 
 export const signUpAction = async (formData: FormData) => {
-	const email = formData.get("email")?.toString();
-	const password = formData.get("password")?.toString();
-	const next = formData.get("next") as string;
+	try {
+		const { email, password } = await signInSchema.parseAsync({
+			email: formData.get("email")?.toString(),
+			password: formData.get("password")?.toString(),
+		});
 
-	const supabase = createClient();
-	const origin = headers().get("origin");
+		if (!email || !password) {
+			return { error: "Email and password are required" };
+		}
 
-	if (!email || !password) {
-		return { error: "Email and password are required" };
-	}
-
-	const emailRedirectTo = `${origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
-	const { error } = await supabase.auth.signUp({
-		email,
-		password,
-		options: {
-			emailRedirectTo,
-		},
-	});
-
-	if (error) {
-		console.error(error.code + " " + error.message);
-		return encodedRedirect("error", "/sign-up", error.message, next);
-	} else {
-		return encodedRedirect(
-			"success",
-			"/sign-up",
-			"Thanks for signing up! Please check your email for a verification link."
+		// Create the user in the database
+		const pwHash = saltAndHashPassword(password);
+		await createUser(email, pwHash, "user");
+	} catch (error) {
+		throw new CredentialsSignin(
+			`Couldn't create user: ${(error as Error).message}`
 		);
 	}
+
+	return signInAction(formData);
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
-	const email = formData.get("email")?.toString();
-	const supabase = createClient();
-	const origin = headers().get("origin");
-	const callbackUrl = formData.get("callbackUrl")?.toString();
-
-	if (!email) {
-		return encodedRedirect("error", "/forgot-password", "Email is required");
-	}
-
-	const { error } = await supabase.auth.resetPasswordForEmail(email, {
-		redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
-	});
-
-	if (error) {
-		console.error(error.message);
-		return encodedRedirect(
-			"error",
-			"/forgot-password",
-			"Could not reset password"
-		);
-	}
-
-	if (callbackUrl) {
-		return redirect(callbackUrl);
-	}
-
-	return encodedRedirect(
-		"success",
-		"/forgot-password",
-		"Check your email for a link to reset your password."
-	);
+	// Not implemented
+	return encodedRedirect("error", "/forgot-password", "Not implemented");
 };
 
 export const resetPasswordAction = async (formData: FormData) => {
-	const supabase = createClient();
-
-	const password = formData.get("password") as string;
-	const confirmPassword = formData.get("confirmPassword") as string;
-
-	if (!password || !confirmPassword) {
-		encodedRedirect(
-			"error",
-			"/protected/reset-password",
-			"Password and confirm password are required"
-		);
-	}
-
-	if (password !== confirmPassword) {
-		encodedRedirect(
-			"error",
-			"/protected/reset-password",
-			"Passwords do not match"
-		);
-	}
-
-	const { error } = await supabase.auth.updateUser({
-		password: password,
-	});
-
-	if (error) {
-		encodedRedirect(
-			"error",
-			"/protected/reset-password",
-			"Password update failed"
-		);
-	}
-
-	encodedRedirect("success", "/protected/reset-password", "Password updated");
+	// Not implemented
+	return encodedRedirect("error", "/reset-password", "Not implemented");
 };
 
 export const signOutAction = async () => {
-	const supabase = createClient();
-	await supabase.auth.signOut();
-	return redirect("/sign-in");
+	await signOut({ redirectTo: "/sign-in" });
 };
 
 export const signInWithGitHub = async () => {
-	const supabase = createClient();
-	const origin = headers().get("origin");
-	const { data, error } = await supabase.auth.signInWithOAuth({
-		provider: "github",
-		options: {
-			redirectTo: `${origin}/auth/callback`,
-		},
-	});
+	const origin = (await headers()).get("origin");
 
-	if (error) {
+	try {
+		await signIn("github", {
+			options: {
+				redirectTo: `${origin}/auth/callback`,
+			},
+		});
+	} catch (error) {
 		console.error("Error signing in with GitHub:", error);
 		return encodedRedirect(
 			"error",
@@ -150,13 +83,10 @@ export const signInWithGitHub = async () => {
 			"Could not sign in with GitHub"
 		);
 	}
-
-	return redirect(data.url);
 };
 
 export const signInWithGoogleAuth = async (next?: string) => {
-	const supabase = createClient();
-	const origin = headers().get("origin");
+	const origin = (await headers()).get("origin");
 	const isLocalEnv = process.env.NODE_ENV === "development";
 
 	const baseRedirectUrl = isLocalEnv
@@ -164,14 +94,13 @@ export const signInWithGoogleAuth = async (next?: string) => {
 		: "https://hiero.gl/auth/callback";
 	const redirectTo = `${baseRedirectUrl}${next ? `?next=${encodeURIComponent(next)}` : ""}`;
 
-	const { data, error } = await supabase.auth.signInWithOAuth({
-		provider: "google",
-		options: {
-			redirectTo,
-		},
-	});
-
-	if (error) {
+	try {
+		await signIn("google", {
+			options: {
+				redirectTo,
+			},
+		});
+	} catch (error) {
 		console.error("Error signing in with Google:", error);
 		return encodedRedirect(
 			"error",
@@ -179,16 +108,15 @@ export const signInWithGoogleAuth = async (next?: string) => {
 			"Could not sign in with Google"
 		);
 	}
-
-	console.log("Google sign-in successful, redirecting to:", data.url);
-	return redirect(data.url);
 };
 
 export const handleSendOtp = async (phoneNumber: string) => {
+	// Not implemented
+	/*
 	const supabase = createClient();
 
 	try {
-		const { error } = await supabase.auth.signInWithOtp({
+		const { error } = await signInWithOtp({
 			phone: phoneNumber,
 		});
 
@@ -205,9 +133,12 @@ export const handleSendOtp = async (phoneNumber: string) => {
 					: "Failed to send OTP. Please try again.",
 		};
 	}
+		*/
 };
 
 export const handleVerifyOtp = async (phoneNumber: string, otp: string) => {
+	// Not implemented
+	/*
 	const supabase = createClient();
 
 	try {
@@ -230,12 +161,15 @@ export const handleVerifyOtp = async (phoneNumber: string, otp: string) => {
 					: "Failed to verify OTP. Please try again.",
 		};
 	}
+		*/
 };
 
 export const handleSignInWithOTP = async (
 	email: string,
 	isDevelopment: boolean
 ) => {
+	// Not implemented
+	/*
 	if (isDevelopment) {
 		console.log("Development mode: Simulating OTP sign-in for", email);
 
@@ -265,6 +199,7 @@ export const handleSignInWithOTP = async (
 			message: "Failed to send verification code. Please try again.",
 		};
 	}
+	*/
 };
 
 export const handleVerifyOTP = async (
@@ -272,6 +207,8 @@ export const handleVerifyOTP = async (
 	otp: string,
 	isDevelopment: boolean
 ) => {
+	// Not implemented
+	/*
 	if (isDevelopment) {
 		console.log("Development mode: Simulating OTP verification");
 		return { success: true, message: "OTP verified successfully" };
@@ -296,4 +233,5 @@ export const handleVerifyOTP = async (
 			message: "Invalid verification code. Please try again.",
 		};
 	}
+*/
 };

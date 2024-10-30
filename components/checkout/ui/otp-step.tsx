@@ -43,12 +43,10 @@ const SignInComponent: React.FC<SignInComponentProps> = ({
 
 		const otp = verificationCode.join("");
 
-		const result = await handleVerifyOTP(email, otp, isDevelopment);
-
-		if (result.success) {
-			onVerificationSuccess();
-		} else {
-			setError(result.message);
+		try {
+			await handleVerifyOTP(email, otp, isDevelopment);
+		} catch (error) {
+			setError("An unexpected error occurred. Please try again.");
 		}
 
 		setIsLoading(false);

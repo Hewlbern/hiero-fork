@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function SaveCardSuccessPage() {
+function SaveCardSuccessPageComponent() {
 	const [status, setStatus] = useState<"loading" | "success" | "error">(
 		"loading"
 	);
@@ -42,5 +42,13 @@ export default function SaveCardSuccessPage() {
 				Return to Home
 			</Link>
 		</div>
+	);
+}
+
+export default function SaveCardSuccessPage() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<SaveCardSuccessPageComponent />
+		</Suspense>
 	);
 }
