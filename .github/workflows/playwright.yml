@@ -34,6 +34,7 @@ jobs:
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: supabase login --token $SUPABASE_ACCESS_TOKEN
           BRANCH_NAME=${{ github.head_ref }}
+          DATABASE_URL=$(supabase db branches get $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF --json | jq -r '.databaseUrl')
           if ! supabase db branches list --project-ref $SUPABASE_PROJECT_REF | grep -q "$BRANCH_NAME"; then
           supabase db branch create $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF
           fi
@@ -45,9 +46,8 @@ jobs:
         run: sudo apt-get install jq
       - name: Run Playwright tests
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ supabase db branches get $BRANCH_NAME --project-ref $SUPABASE_PROJECT_REF --json | jq -r '.databaseUrl' }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ DATABASE_URL }}
         run: pnpm exec playwright test
-
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
