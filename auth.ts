@@ -6,10 +6,22 @@ import { getUserFromDbAndVerifyPassword } from "@/lib/db";
 import { signInSchema } from "@/lib/zod";
 import { NextResponse } from "next/server";
 import { SupabaseAdapter } from "@auth/supabase-adapter";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+console.log("supabaseUrl", supabaseUrl);
+console.log("supabaseServiceRoleKey", supabaseServiceRoleKey);
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+	debug: true,
 	pages: {
 		signIn: "/sign-in",
 		newUser: "/sign-up",
+	},
+	session: {
+		// Setting to JWT strategy so that credentials are stored in the JWT token
+		strategy: "jwt",
 	},
 	providers: [
 		GitHub,
@@ -29,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 					// logic to verify if the user exists
 					user = await getUserFromDbAndVerifyPassword(email, password);
-
+					console.log("user in authorize", user);
 					// return user object with their profile data
 				} catch (error) {
 					console.error("Error in authorize:", error);
@@ -38,6 +50,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			},
 		}),
 	],
+	adapter: SupabaseAdapter({
+		url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+		secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+	}),
 	callbacks: {
 		authorized: async ({ auth, request }) => {
 			const isLoggedIn = !!auth;
@@ -81,6 +97,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			return token;
 		},
 		async session({ session, token }) {
+			console.log("session", session);
+			console.log("token", token);
 			if (token && session.user) {
 				session.user.id = token.id as string;
 			}
