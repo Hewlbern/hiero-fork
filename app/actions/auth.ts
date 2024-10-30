@@ -6,7 +6,7 @@ import { saltAndHashPassword } from "@/lib/password";
 import { signInSchema } from "@/lib/zod";
 
 import { encodedRedirect } from "@/utils/auth";
-import { CredentialsSignin } from "next-auth";
+import { AuthError, CredentialsSignin } from "next-auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -16,11 +16,24 @@ export const signInAction = async (formData: FormData) => {
 	const next = formData.get("next") as string;
 	const origin = (await headers()).get("origin");
 
-	await signIn("credentials", {
-		email,
-		password,
-		redirectTo: "/protected/dashboard/developer",
-	});
+	try {
+		await signIn("credentials", {
+			email,
+			password,
+			redirectTo: "/protected/dashboard/developer",
+		});
+	} catch (error) {
+		if (error instanceof AuthError) {
+			console.log("AuthError:", error.type);
+			switch (error.type) {
+				case "CredentialsSignin":
+					return encodedRedirect("error", "/sign-in", "Invalid credentials");
+				default:
+					return encodedRedirect("error", "/sign-in", "Something went wrong");
+			}
+		}
+		throw error;
+	}
 
 	if (next) {
 		return redirect(decodeURIComponent(next));
@@ -30,6 +43,11 @@ export const signInAction = async (formData: FormData) => {
 };
 
 export const signUpAction = async (formData: FormData) => {
+	const email = formData.get("email") as string;
+	const password = formData.get("password") as string;
+	const next = formData.get("next") as string;
+	const origin = (await headers()).get("origin");
+
 	try {
 		const { email, password } = await signInSchema.parseAsync({
 			email: formData.get("email")?.toString(),
@@ -43,13 +61,32 @@ export const signUpAction = async (formData: FormData) => {
 		// Create the user in the database
 		const pwHash = saltAndHashPassword(password);
 		await createUser(email, pwHash, "user");
-	} catch (error) {
-		throw new CredentialsSignin(
-			`Couldn't create user: ${(error as Error).message}`
-		);
-	}
 
-	return signInAction(formData);
+		await signIn("credentials", {
+			email,
+			password,
+			redirectTo: "/protected/dashboard/developer",
+		});
+	} catch (error) {
+		if (error instanceof AuthError) {
+			switch (error.type) {
+				case "CredentialsSignin":
+					return encodedRedirect("error", "/sign-up", "Invalid credentials");
+				default:
+					return encodedRedirect("error", "/sign-up", "Something went wrong");
+			}
+		}
+		if (error instanceof Error) {
+			if (error.message.includes("duplicate")) {
+				return encodedRedirect("error", "/sign-up", "User already exists");
+			}
+			return encodedRedirect("error", "/sign-up", "Something went wrong");
+		}
+		throw error;
+	}
+	if (next) {
+		return redirect(decodeURIComponent(next));
+	}
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
